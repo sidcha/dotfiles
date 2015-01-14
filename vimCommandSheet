@@ -1,0 +1,166 @@
+Text Insert/Append/Open/Replace
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+i -> insert before cursor
+a -> apped text after cursor
+o -> open new line below curent line and enter insert mode.
+r -> Replace one character
+
+R -> Replace many characters
+I -> insert at the begining of line
+A -> append to the end of line
+O -> open new line above curent line and enter insert mode.
+
+Movement/Selection
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+h  -> move left
+j  -> move down
+k  -> move up
+l  -> move right
+w  -> move to next word
+W  -> move to next blank delimited word
+b  -> move to the beginning of the word
+B  -> move to the beginning of blank delimted word
+e  -> move to the end of the word
+E  -> move to the end of Blank delimited word
+(  -> move a sentence back
+)  -> move a sentence forward
+{  -> move a paragraph back
+}  -> move a paragraph forward
+0  -> move to the begining of the line
+$  -> move to the end of the line
+1G -> move to the first line of the file
+G  -> move to the last line of the file
+nG -> move to nth line of the file
+:n -> move to nth line of the file
+fc -> move forward to c
+Fc -> move back to c
+H  -> move to top of screen
+M  -> move to middle of screen
+L  -> move to botton of screen
+%  -> move to associated ( ), { }, [ ]
+
+v          -> select
+SHIFT + v  -> select row(s)
+CTRL  + v  -> select blocks (columns)
+H/M/L      -> place the curor up/middle/low in screen
+zt/zz/zb   -> move the screen to top/middle/bottom
+:gi        -> inserts to the last insert location
+:g;        -> go to the first empty line
+ggVG       -> select contents of entire file
+
+Yank/Delete/Change/Put(paste)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+c  -> change
+d  -> delete
+y  -> yank
+
+Note: any of tha above commands run twice in close (cc/dd/yy) succession
+would result in the operation on the wholle line.
+
+C  -> same as c$
+Y  -> same as yy
+D  -> same as d$
+
+p -> Put after the position or after the line
+P -> Put before the poition or before the line
+
+Prefixed Operators:
+n  -> number of line to repeat operation over
+
+Postfix Operator:
+w  -> to start of next word
+e  -> to end of current work
+$  -> to end of current line
+fX -> till occrance of next X
+
+x  -> delete one char to right
+X  -> delete one char to left
+
+Buffers/Macros
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+qX  -> start recording a macro (X = key to assign macro to)                 
+q   -> stop recording a macro
+@X  -> playback macro (X = key macro was assigned to)
+n@X -> repeat macro with key X n times
+@@  -> replay previously played macro
+:bN -> open buffer (N = buffer number)
+ls -> list buffers
+
+Code Formating/Navigation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>          -> indent selected text
+<          -> unindent selected text
+.          -> repeat the last indent
+mX         -> Leave named marks (X = name of mark)
+'X         -> Move to first no blank char of line marked X
+`X         -> Move to beginning of line maked X
+:marks     -> show all bookmarks
+:delm X    -> delete a bookmark (X = key bookmark to delete)
+:delm!     -> delete all bookmarks
+:retab     -> convert tabs to spaces
+=          -> format selected code
+
+Text Search/Replace
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/string             -> Search forward for string
+?string             -> Search back for string
+n                   -> Search for next instance of string
+N                   -> Search for previous instance of string
+*                   -> search for word under cursor
+:s/old/new/flags    -> seach for 'new' and replace with 'old' in current line
+:%s/old/new/flags   -> seach for 'new' and replace with 'old' in current file
+:m,ns/old/new/flags -> seach for 'new' and replace with 'old' in line n to m
+&                   -> repeat the last search. usefull in single line replace
+
+Flags:
+g -> Flag - Replace all occurences of pattern
+c -> Flag - Confirm replaces.
+& -> Repeat last :s command
+
+Working with Multiple Files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+gf            -> open file under cursor
+              -> (absolute path or relative)
+U             -> convert selected text to uppercase
+u             -> convert selected text to lowercase
+~             -> invert case of selected text
+CTRL + n      -> auto-complete a word you are typing
+:split        -> split screen horizontally
+:vsplit       -> split screen vertically
+CTRL + w + j  -> move down a screen
+CTRL + w + k  -> move up a screen
+CTRL + w + h  -> move left a scren
+CTRL + w + l  -> move right a screen
+:only         -> close all other split screens
+
+Other commands
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CTRL+R (=expr) -> Do math 'expr' without exiting the editor
+!command       -> do bash commands without exiting the editor
+:sh            -> leave editor to bash. come back with bash 'exit'
+!!command      -> Replace current line with output of bash command 'command'
+:hardcopy      -> print
+:sort          -> sort selected rows
+~ -> Toggle upp and lower case
+J -> Join lines
+. -> Repeat last text-changing command
+u -> Undo last change
+U -> Undo all changes to line
+
+Ranges
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Ranges may precede most "colon" commands and cause them to be executed 
+on a line or lines
+:n,m        -> Range - Lines n-m
+:.          -> Range - Current line
+:$          -> Range - Last line
+:'c         -> Range - Marker c
+:%          -> Range - All lines in file
+:g/pattern/ -> Range - All lines that contain pattern
+
+Save/Exit
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+:x    -> Exit, saving changes
+:q    -> Exit as long as there have been no changes
+ZZ    -> Exit and save changes if any have been made
+:q!   -> Exit and ignore any changes
