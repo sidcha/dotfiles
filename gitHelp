@@ -1,0 +1,30 @@
+Set the the username and email. 
+Reremove the --global to set for the current directory alone.
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+Init a directory with git repository.
+  git init
+
+Add the remore computer's url to the local git repository.
+  git remote add origin https://cbsiddharth@bitbucket.org/embedjournal/balancebot.git
+
+Add all .c and .h files to the staging area for commiting.
+  git add '*.[ch]'
+
+Add commit messages within quotes. multiple commits can be made to the same local repo.
+each and every change need not ne pushed to the master.
+  git commit -m "commit message"
+
+Push the commited change(s) to the master.
+  git push -u origin master
+
+Pull the changes from the master
+  git pull origin master
+
+see the version control log
+  git log
+
+look at the diff of curent chages with the master
+  git diff fileName
