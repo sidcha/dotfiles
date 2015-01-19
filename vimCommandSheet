@@ -37,11 +37,11 @@ Fc -> move back to c
 H  -> move to top of screen
 M  -> move to middle of screen
 L  -> move to botton of screen
-%  -> move to associated ( ), { }, [ ]
 
 v          -> select
 SHIFT + v  -> select row(s)
 CTRL  + v  -> select blocks (columns)
+gv         -> reselect last selection
 H/M/L      -> place the curor up/middle/low in screen
 zt/zz/zb   -> move the screen to top/middle/bottom
 :gi        -> inserts to the last insert location
@@ -88,9 +88,16 @@ ls -> list buffers
 
 Code Formating/Navigation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->          -> indent selected text
-<          -> unindent selected text
-.          -> repeat the last indent
+%          -> move to associated ( ), { }, [ ]
+gd         -> go to the declaration of local variable.
+[[         -> move to start of file
+]]         -> move to end of file
+[]         -> move one function up
+][         -> move one function down
+[{         -> move to opening '{' of current block
+]}         -> move to closing '}' of current block
+ctrl + o   -> move back to previous location
+ctrl + i   -> move forward to same location after a 'ctrl + o'
 mX         -> Leave named marks (X = name of mark)
 'X         -> Move to first no blank char of line marked X
 `X         -> Move to beginning of line maked X
@@ -99,6 +106,9 @@ mX         -> Leave named marks (X = name of mark)
 :delm!     -> delete all bookmarks
 :retab     -> convert tabs to spaces
 =          -> format selected code
+>          -> indent selected text
+<          -> unindent selected text
+.          -> repeat the last indent
 
 Text Search/Replace
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
