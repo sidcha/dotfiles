@@ -11,18 +11,12 @@ syntax on
 " Higlhight search
 set hls
 
-" Wrap text instead of being on one line
-"set lbr
-
 " Change colorscheme from default to delek
 colorscheme delek
 
 " Use arduio syntax file for sketches.
 au BufRead,BufNewFile *.pde set filetype=arduino
 au BufRead,BufNewFile *.ino set filetype=arduino
-
-" Enable syntax highlighting
-syntax on
 
 " Show partial commands in the last line of the screen
 set showcmd
@@ -48,7 +42,7 @@ set nostartofline
 set confirm
 
 " Enable use of the mouse for all modes
-"set mouse=a
+set mouse=a
 
 " Set the command window height to 2 lines, to avoid many cases of having to
 " "press <Enter> to continue"
@@ -56,3 +50,12 @@ set confirm
 
 " Use <F11> to toggle between 'paste' and 'nopaste'
 set pastetoggle=<F11>
+
+" Page up and page down to retain cursor position
+nnoremap <silent> <PageUp> <C-U><C-U>
+vnoremap <silent> <PageUp> <C-U><C-U>
+inoremap <silent> <PageUp> <C-\><C-O><C-U><C-\><C-O><C-U>
+
+nnoremap <silent> <PageDown> <C-D><C-D>
+vnoremap <silent> <PageDown> <C-D><C-D>
+inoremap <silent> <PageDown> <C-\><C-O><C-D><C-\><C-O><C-D>
