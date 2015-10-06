@@ -8,11 +8,8 @@ set number
 " Set syntax on
 syntax on
 
-" Higlhight search
-set hls
-
 " Change colorscheme from default to delek
-colorscheme delek
+colorscheme desert
 
 " Use arduio syntax file for sketches.
 au BufRead,BufNewFile *.pde set filetype=arduino
@@ -24,6 +21,7 @@ set showcmd
 " Highlight searches (use <C-L> to temporarily turn off highlighting; see the
 " mapping of <C-L> below)
 set hlsearch
+nnoremap <silent> <C-l> :nohl<CR><C-l>
 
 " Use case insensitive search, except when using capital letters
 set ignorecase
