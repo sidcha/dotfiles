@@ -1,30 +1,52 @@
-Set the the username and email. 
-Reremove the --global to set for the current directory alone.
+Set the the username and email.
+-----------------------------------------------------------------
+/* Reremove the --global to set for the current directory alone. */
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
 
-  git config --global user.email "you@example.com"
-  git config --global user.name "Your Name"
+/* Add the remore computer's url to the local git repository. */
+git remote add origin https://cbsiddharth@bitbucket.org/embedjournal/balancebot.git
 
-Init a directory with git repository.
-  git init
 
-Add the remore computer's url to the local git repository.
-  git remote add origin https://cbsiddharth@bitbucket.org/embedjournal/balancebot.git
+Basic git operations
+-----------------------------------------------------------------
+git add -A	// Add all new and modified files to staging area
+git commit -m "commit message"	// Add commit messages within quotes. 
+git push -u origin master	// Push the commited change(s) to the master. 
+git pull origin master		// git push origin --delete <branchName>
+git log				// see the version control log
+git diff fileName		// git push origin --delete <branchName>
 
-Add all .c and .h files to the staging area for commiting.
-  git add '*.[ch]'
 
-Add commit messages within quotes. multiple commits can be made to the same local repo.
-each and every change need not ne pushed to the master.
-  git commit -m "commit message"
+Working with git stash
+-----------------------------------------------------------------
+git stash			// shtash all uncommited changes.
+git stash list			// List all stashs that local repo has.
+git shash apply stash@{0}	// apply stash index 0 to current branch.
+git stash drop stash@{0}	// drop index 0 stash from stash list
+git stash pop stash@{0}		// apply index 0 stash and drop it from shash list.
 
-Push the commited change(s) to the master.
-  git push -u origin master
 
-Pull the changes from the master
-  git pull origin master
+Use vim diff as merge confilict resolve tool.
+-----------------------------------------------------------------
+git config merge.tool vimdiff
+git config merge.conflictstyle diff3
+git config mergetool.prompt false
 
-see the version control log
-  git log
+git mergetool			// Launch the git diff with,
 
-look at the diff of curent chages with the master
-  git diff fileName
+Go to the merged output file window and use,
+:diffg RE  // get from REMOTE
+:diffg BA  // get from BASE
+:diffg LO  // get from LOCAL
+
+Source: http://www.rosipov.com/blog/use-vimdiff-as-git-mergetool/
+
+
+Working with branchs
+-----------------------------------------------------------------
+git branch				// List all local branches
+git branch <branch name>		// Create a new Branch
+git branch -d				// Delete a local branch
+git checkout --track -b origin/<branch_name>	// Pull a branch from remote server and move to that branch. (-b option)
+git push origin --delete <branchName>	// Delete a remote branch
