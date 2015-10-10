@@ -1,3 +1,6 @@
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
 alias picocom='sudo picocom --omap crcrlf'
 alias minicom='sudo minicom'
 alias byebye='sudo shutdown -P now'
