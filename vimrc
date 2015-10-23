@@ -2,6 +2,9 @@
 filetype indent on
 set autoindent
 
+" Do not wrap text by default.
+set nowrap
+
 " Turn on line numbering. Turn it off with "set nonu" 
 set number
 
