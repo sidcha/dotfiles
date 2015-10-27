@@ -56,3 +56,9 @@ git branch -d					// Delete a local branch
 git checkout --track -b origin/<branch_name>	// Pull a branch from remote server and move to that branch. (-b option)
 git push origin --delete <branchName>		// Delete a remote branch
 git branch -b <from_branch> <to_branch> 	// Create and checkout a new branch.
+
+
+Reference:
+-----------------------------------------------------------------
+Ctags with git hooks
+http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
