@@ -44,15 +44,15 @@ up() { cd $(eval printf '../'%.0s {1..$1}); }
 # Genrerate random passwords
 randpwd() { (head -c 32 /dev/urandom | sha256sum | base64 | head -c 16 && echo""); }
 
+#Change prompt when inside version contol directories.
 PS1_BACK=$PS1
-
 if [ -f ~/bin/vcprompt ]; then
 	update_prompt() {
 		GIT_PROMPT=$(vcprompt)
 		if [ -z "$GIT_PROMPT" ]; then
-			export PS1='$PS1_BACK'
+			export PS1=$PS1_BACK
 		else
-			export PS1='$(vcprompt)\$ ' 
+			export PS1='$(vcprompt -f [%n@%b]%P%p%a%m%u$) ' 
 		fi
 	}
 	PROMPT_COMMAND=update_prompt
