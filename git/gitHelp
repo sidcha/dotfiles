@@ -18,6 +18,11 @@ git log				// see the version control log
 git diff fileName		// git push origin --delete <branchName>
 
 
+Usefull Git Aliases
+----------------------------------------------------------------
+git config --global alias.ctags '!.git/hooks/ctags' // run with 'git ctags'
+
+
 Working with git stash
 -----------------------------------------------------------------
 git stash			// shtash all uncommited changes.
@@ -45,8 +50,15 @@ Source: http://www.rosipov.com/blog/use-vimdiff-as-git-mergetool/
 
 Working with branchs
 -----------------------------------------------------------------
-git branch				// List all local branches
-git branch <branch name>		// Create a new Branch
-git branch -d				// Delete a local branch
+git branch					// List all local branches
+git branch <branch name>			// Create a new Branch
+git branch -d					// Delete a local branch
 git checkout --track -b origin/<branch_name>	// Pull a branch from remote server and move to that branch. (-b option)
-git push origin --delete <branchName>	// Delete a remote branch
+git push origin --delete <branchName>		// Delete a remote branch
+git branch -b <from_branch> <to_branch> 	// Create and checkout a new branch.
+
+
+Reference:
+-----------------------------------------------------------------
+Ctags with git hooks
+http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
