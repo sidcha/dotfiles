@@ -38,3 +38,19 @@ up() { cd $(eval printf '../'%.0s {1..$1}); }
 
 # Genrerate random passwords
 randpwd() { (head -c 32 /dev/urandom | sha256sum | base64 | head -c 16 && echo""); }
+
+PS1_BACK=$PS1
+
+if [ -f ~/bin/vcprompt ]; then
+	update_prompt() {
+		GIT_PROMPT=vcprompt
+		if [ -z "$GIT_PROMPT" ]; then
+			echo "No GIT"
+			export PS1='$PS1_BACK'
+		else
+			echo "Yes GIT"
+			export PS1='$(vcprompt)\$ ' 
+		fi
+	}
+	PROMPT_COMMAND=update_prompt
+fi
