@@ -1,0 +1,25 @@
+Virtual Host defenition:
+----------------------------------------------------------------------------
+$ cd /etc/apache2/sites-available         # This is apache2 config directory 
+$ sudo cp 000-default.conf siteName.conf  # Create a new vitutal host template
+###########################################################################
+######### Sample config file and how it should look. ######################
+###########################################################################
+   <VirtualHost *:80>
+       ServerAdmin admin@test.com
+       ServerName test.com
+       ServerAlias www.test.com
+       DocumentRoot /var/www/test.com/public_html
+       ErrorLog ${APACHE_LOG_DIR}/error.log
+       CustomLog ${APACHE_LOG_DIR}/access.log combined
+  </VirtualHost>
+###########################################################################
+$ sudo a2ensite siteName.conf             # a2dissite to diable it.
+
+Restart Apache service
+sudo service apache2 restart
+
+Setting up local host definetions
+-----------------------------------------------------------------------------
+$ vim /etc/hosts
+127.0.0.1       test.com
