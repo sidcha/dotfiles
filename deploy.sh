@@ -10,7 +10,7 @@ echo "source $DIR/runcon/bashrc" > ~/.bashrc
 
 mkdir -p ~/bin
 echo "Adding vcprompt executable to local bin"
-cp git/vcprompt ~/bin/vcprompt
+cp scripts/vcprompt ~/bin/vcprompt
 
 echo "Resourcing bashrc"
 . ~/.bashrc
