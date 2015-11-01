@@ -3,10 +3,10 @@ DIR=$PWD
 echo "Seting up siddhart's customizations"
 
 echo "Asking vimrc to source external customization file.."
-echo ":source $DIR/vim/vimrc" > ~/.vimrc
+echo ":source $DIR/runcon/vimrc" > ~/.vimrc
 
 echo "Asking bashrc to source external customization file.."
-echo "source $DIR/bash/bashrc" > ~/.bashrc
+echo "source $DIR/runcon/bashrc" > ~/.bashrc
 
 mkdir -p ~/bin
 echo "Adding vcprompt executable to local bin"
