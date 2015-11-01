@@ -1,0 +1,439 @@
+Text Insert/Append/Open/Replace
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+i -> insert before cursor
+a -> apped text after cursor
+o -> open new line below curent line and enter insert mode.
+r -> Replace one character
+
+R -> Replace many characters
+I -> insert at the begining of line
+A -> append to the end of line
+O -> open new line above curent line and enter insert mode.
+
+Movement/Selection
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+h  -> move left
+j  -> move down
+k  -> move up
+l  -> move right
+w  -> move to next word
+W  -> move to next blank delimited word
+b  -> move to the beginning of the word
+B  -> move to the beginning of blank delimted word
+e  -> move to the end of the word
+E  -> move to the end of Blank delimited word
+(  -> move a sentence back
+)  -> move a sentence forward
+{  -> move a paragraph back
+}  -> move a paragraph forward
+0  -> move to the begining of the line
+$  -> move to the end of the line
+1G -> move to the first line of the file
+G  -> move to the last line of the file
+nG -> move to nth line of the file
+:n -> move to nth line of the file
+fc -> move forward to c
+Fc -> move back to c
+H  -> move to top of screen
+M  -> move to middle of screen
+L  -> move to botton of screen
+
+v          -> select
+SHIFT + v  -> select row(s)
+CTRL  + v  -> select blocks (columns)
+gv         -> reselect last selection
+H/M/L      -> place the curor up/middle/low in screen
+zt/zz/zb   -> move the screen to top/middle/bottom
+:gi        -> inserts to the last insert location
+:g;        -> go to the first empty line
+ggVG       -> select contents of entire file
+
+Yank/Delete/Change/Put(paste)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+c  -> change
+d  -> delete
+y  -> yank
+
+Note: any of tha above commands run twice in close (cc/dd/yy) succession
+would result in the operation on the wholle line.
+
+C  -> same as c$
+Y  -> same as yy
+D  -> same as d$
+
+p -> Put after the position or after the line
+P -> Put before the poition or before the line
+
+Prefixed Operators:
+n  -> number of line to repeat operation over
+
+Postfix Operator:
+w  -> to start of next word
+e  -> to end of current work
+$  -> to end of current line
+fX -> till occrance of next X
+
+x  -> delete one char to right
+X  -> delete one char to left
+
+Buffers/Macros
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+qX  -> start recording a macro (X = key to assign macro to)                 
+q   -> stop recording a macro
+@X  -> playback macro (X = key macro was assigned to)
+n@X -> repeat macro with key X n times
+@@  -> replay previously played macro
+:bN -> open buffer (N = buffer number)
+ls -> list buffers
+
+Code Formating/Navigation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%          -> move to associated ( ), { }, [ ]
+gd         -> go to the declaration of local variable.
+[[         -> move to start of file
+]]         -> move to end of file
+[]         -> move one function up
+][         -> move one function down
+[{         -> move to opening '{' of current block
+]}         -> move to closing '}' of current block
+ctrl + o   -> move back to previous location
+ctrl + i   -> move forward to same location after a 'ctrl + o'
+mX         -> Leave named marks (X = name of mark)
+'X         -> Move to first no blank char of line marked X
+`X         -> Move to beginning of line maked X
+:marks     -> show all bookmarks
+:delm X    -> delete a bookmark (X = key bookmark to delete)
+:delm!     -> delete all bookmarks
+:retab     -> convert tabs to spaces
+=          -> format selected code
+>          -> indent selected text
+<          -> unindent selected text
+.          -> repeat the last indent
+
+Text Search/Replace
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/string             -> Search forward for string
+?string             -> Search back for string
+n                   -> Search for next instance of string
+N                   -> Search for previous instance of string
+*                   -> search for word under cursor
+:s/old/new/flags    -> seach for 'new' and replace with 'old' in current line
+:%s/old/new/flags   -> seach for 'new' and replace with 'old' in current file
+:m,ns/old/new/flags -> seach for 'new' and replace with 'old' in line n to m
+&                   -> repeat the last search. usefull in single line replace
+
+Flags:
+g -> Flag - Replace all occurences of pattern
+c -> Flag - Confirm replaces.
+& -> Repeat last :s command
+
+Working with Multiple Files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+gf            -> open file under cursor
+              -> (absolute path or relative)
+U             -> convert selected text to uppercase
+u             -> convert selected text to lowercase
+~             -> invert case of selected text
+CTRL + n      -> auto-complete a word you are typing
+:split        -> split screen horizontally
+:vsplit       -> split screen vertically
+CTRL + w + j  -> move down a screen
+CTRL + w + k  -> move up a screen
+CTRL + w + h  -> move left a scren
+CTRL + w + l  -> move right a screen
+:only         -> close all other split screens
+
+Other commands
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CTRL+R (=expr) -> Do math 'expr' without exiting the editor
+!command       -> do bash commands without exiting the editor
+:sh            -> leave editor to bash. come back with bash 'exit'
+!!command      -> Replace current line with output of bash command 'command'
+:hardcopy      -> print
+:sort          -> sort selected rows
+~ -> Toggle upp and lower case
+J -> Join lines
+. -> Repeat last text-changing command
+u -> Undo last change
+U -> Undo all changes to line
+
+Ranges
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Ranges may precede most "colon" commands and cause them to be executed 
+on a line or lines
+:n,m        -> Range - Lines n-m
+:.          -> Range - Current line
+:$          -> Range - Last line
+:'c         -> Range - Marker c
+:%          -> Range - All lines in file
+:g/pattern/ -> Range - All lines that contain pattern
+
+Save/Exit
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+:x    -> Exit, saving changes
+:q    -> Exit as long as there have been no changes
+ZZ    -> Exit and save changes if any have been made
+:q!   -> Exit and ignore any changes
+
+
+From Vim Quick Reference Card
+
+Basic movement
+
+h l k j    character left, right; line up, down
+b w        word/token left, right
+ge e       end of word/token left, right
+{ }        beginning of previous, next paragraph
+( )        beginning of previous, next sentence
+0 gm       beginning, middle of line
+^ $        first, last character of line
+nG ngg     line n, default the last, first
+n%         percentage n of the file (n must be provided)
+n|         column n of current line
+%          match of next brace, bracket, comment, #define
+nH nL      line n from start, bottom of window
+M          middle line of window
+
+Insertion & replace → insert mode
+
+i a        insert before, after cursor
+I A        insert at beginning, end of line
+gI         insert text in first column
+o O        open a new line below, above the current line
+rc         replace character under cursor with c
+grc        like r, but without affecting layout
+R          replace characters starting at the cursor
+gR         like R, but without affecting layout
+cm         change text of movement command m
+cc or S    change current line
+C          change to the end of line
+s          change one character and insert
+~          switch case and advance cursor
+g~m        switch case of movement command m
+gum gUm    lowercase, uppercase text of movement m
+<m >m      shift left, right text of movement m
+n<< n>>    shift n lines left, right
+
+Deletion
+
+x X          delete character under, before cursor
+dm           delete text of movement command m
+dd D         delete current line, to the end of line
+J gJ         join current line with next, without space
+:rd←-        delete range r lines
+:rdx←-       delete range r lines into register x
+
+Insert mode
+
+ˆVc ˆVn      insert char c literally, decimal value n
+ˆA           insert previously inserted text
+ˆ@           same as ˆA and stop insert → command mode
+ˆRx ˆRˆRx    insert content of register x, literally
+ˆN ˆP        text completion before, after cursor
+ˆW           delete word before cursor
+ˆU           delete all inserted character in current line
+ˆD ˆT        shift left, right one shift width
+ˆOc          execute c in temporary command mode
+ˆXˆE ˆXˆY    scroll up, down
+hesci or ˆ[  abandon edition → command mode
+
+Copying
+
+"x           use register x for next delete, yank, put
+:reg←-       show the content of all registers
+:reg x←-     show the content of registers x
+ym           yank the text of movement command m
+yy or Y      yank current line into register
+p P          put register after, before cursor position
+]p [p        like p, P with indent adjusted
+gp gP        like p, P leaving cursor after new text
+
+Advanced insertion
+
+g?m          perform rot13 encoding on movement m
+nˆA nˆX      +n, −n to number under cursor
+gqm          format lines of movement m to fixed width
+:rce w←-     center lines in range r to width w
+:rle i←-               left align lines in range r with indent i
+:rri w←-     right align lines in range r to width w
+!mc←-        filter lines of movement m through command c
+n!!c←-       filter n lines through command c
+:r!c←-       filter range r lines through command c
+
+Visual mode
+
+v V ˆV       start/stop highlighting characters, lines, block
+o            exchange cursor position with start of highlighting
+gv           start highlighting on previous visual area
+aw as ap     select a word, a sentence, a paragraph
+ab aB        select a block ( ), a block { }
+
+Undoing, repeating & registers
+
+u U          undo last command, restore last changed line
+. ˆR         repeat last changes, redo last undo
+n            repeat last changes with count replaced by n
+qc qC        record, append typed characters in register c
+q            stop recording
+@c           execute the content of register c
+@@           repeat previous @ command
+:@c←-        execute register c as an Ex command
+:rg/p/c←-    execute Ex command c on range r where pattern p matches
+
+Complex movement
+
+- +          line up, down on first non-blank character
+B W          space-separated word left, right
+gE E         end of space-separated word left, right
+n            down n − 1 line on first non-blank character
+g0           beginning of screen line
+g^ g$        first, last character of screen line
+gk gj        screen line up, down
+fc Fc        next, previous occurence of character c
+tc Tc        before next, previous occurence of c
+; ,          repeat last fFtT, in opposite direction
+[[ ]]        start of section backward, forward
+[] ][        end of section backward, forward
+[( ])        unclosed (, ) backward, forward
+[{ ]}        unclosed {, } backward, forward
+[m ]m        start of backward, forward Java method
+[# ]#        unclosed #if, #else, #endif backward, forward
+[* ]*        start, end of /* */ backward, forward
+
+Search & substitution
+
+/s←- ?s←-     search forward, backward for s
+/s/o←- ?s?o←- search fwd, bwd for s with offset o
+n or /←-      repeat forward last search
+N or ?←-      repeat backward last search
+# *           search backward, forward for word under cursor
+g# g*         same, but also find partial matches
+gd gD         local, global definition of symbol under cursor
+:rs x←-       repeat substitution with new r & x
+
+Special characters in search patterns
+
+. ˆ $         any single character, start, end of line
+\< \>         start, end of word
+[c 1 -c 2 ]   a single character in range c 1   c 2
+[ˆc 1 -c 2 ]  a single character not in range
+\i \k \I \K   an identifier, keyword; excl  digits
+\f \p \F \P   a file name, printable char ; excl  digits
+\s \S         a white space, a non-white space
+\e \t \r \b   hesci, htabi, h←-i, h←i
+\= * \+       match 0  1, 0  ∞, 1  ∞ of preceding atoms
+\|            separate two branches (≡ or )
+\( \)         group patterns into an atom
+\& \n         the whole matched pattern, n th () group
+\u \l         next character made upper, lowercase
+\c \C         ignore, match case on next pattern
+Offsets in search commands
+n or +n       n line downward in column 1
+-n            n line upward in column 1
+e+n e-n       n characters right, left to end of match
+s+n s-n       n characters right, left to start of match
+;sc           execute search command sc next
+
+Marks and motions
+
+mc            mark current position with mark c ∈ [a  Z]
+‘c ‘C         go to mark c in current, C in any file
+‘0..9         go to last exit position
+‘‘ ‘"         go to position before jump, at last edit
+‘[ ‘]         go to start, end of previously operated text
+:marks←-      print the active marks list
+:jumps←-      print the jump list
+nˆO           go to n th older position in jump list
+nˆI           go to n th newer position in jump list
+
+Key mapping & abbreviations
+
+:map c e←-    map c 7→ e in normal & visual mode
+:map! c e←-   map c 7→ e in insert & cmd-line mode
+:unmap c←-    remove mapping c
+:mk f ←-      write current mappings, settings    to file f
+:ab c e←-     add abbreviation for c 7→ e
+:ab c←-       show abbreviations starting with c
+:una c←-      remove abbreviation c
+
+Tags
+
+:ta t←-       jump to tag t
+:nta←-        jump to n th newer tag in list
+ˆ] ˆT         jump to the tag under cursor, return from tag
+:ts t←-       list matching tags and select one for jump
+:tj t←-       jump to tag or select one if multiple matches
+:tags←-       print tag list
+:npo←- :nˆT←- jump back from, to n th older tag
+:tl←-         jump to last matching tag
+ˆW} :pt t←-   preview tag under cursor, tag t
+ˆW]           split window and show tag under cursor
+ˆWz or :pc←-  close tag preview window
+
+Scrolling & multi-windowing
+
+ˆE ˆY         scroll line up, down
+ˆD ˆU         scroll half a page up, down
+ˆF ˆB         scroll page up, down
+zt or z←-     set current line at top of window
+zz or z       set current line at center of window
+zb or z-      set current line at bottom of window
+zh zl         scroll one character to the right, left
+zH zL         scroll half a screen to the right, left
+ˆWs or :split←- split window in two
+ˆWn or :new←-  create new empty window
+ˆWo or :on←-   make current window one on screen
+ˆWj ˆWk        move to window below, above
+ˆWw ˆWˆW       move to window below, above (wrap)
+
+Ex commands (←-)
+
+:e f             edit file f , unless changes have been made
+:e! f            edit file f always (by default reload current)
+:wn :wN          write file and edit next, previous one
+:n :N            edit next, previous file in list
+:rw              write range r to current file
+:rw f            write range r to file f
+:rw>>f           append range r to file f
+:q :q!           quit and confirm, quit and discard changes
+:wq or :x or ZZ  write to current file and exit
+hupi hdowni      recall commands starting with current
+:r f             insert content of file f below cursor
+:r! c            insert output of command c below cursor
+:args            display the argument list
+:rco a :rm a     copy, move range r below line a
+
+Ex ranges
+
+, ;             separates two lines numbers, set to first line
+n               an absolute line number n
+. $             the current line, the last line in file
+% *             entire file, visual area
+’t              position of mark t
+/p/ ?p?         the next, previous line where p matches
++n -n           +n, −n to the preceding line number
+
+Folding
+
+zfm            create fold of movement m
+:rfo           create fold for range r
+zd zE          delete fold at cursor, all in window
+zo zc zO zC    open, close one fold; recursively
+[z ]z          move to start, end of current open fold
+zj zk          move down, up to start, end of next fold
+
+Miscellaneous
+
+:sh←- :!c←-           start shell, execute command c in shell
+K                     lookup keyword under cursor with man
+:make←-               start make, read errors and jump to first
+:cn←- :cp←-           display the next, previous error
+:cl←- :cf←-           list all errors, read errors from file
+ˆL ˆG                 redraw screen, show filename and position
+gˆG                   show cursor column, line, and character position
+ga                    show A SCII value of character under cursor
+gf                    open file which filename is under cursor
+:redir>f ←-           redirect output to file f
+:mkview [f ]          save view configuration [to file f ]
+:loadview [f ]        load view configuration [from file f ]
+ˆ@ ˆK ˆ \ Fn ˆFn      unmapped keys
