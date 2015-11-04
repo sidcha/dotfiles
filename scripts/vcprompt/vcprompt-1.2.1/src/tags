@@ -1,0 +1,115 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CAPTURE_H	capture.h	2;"	d
+CVS_H	cvs.h	11;"	d
+DEFAULT_FORMAT	vcprompt.c	56;"	d	file:
+FOSSIL_H	fossil.h	11;"	d
+GIT_H	git.h	11;"	d
+HG_H	hg.h	11;"	d
+NODEID_LEN	hg.c	28;"	d	file:
+SVN_H	svn.h	11;"	d
+VCPROMPT_H	common.h	11;"	d
+_options	common.c	/^static options_t* _options = NULL;$/;"	v	file:
+_testmode	common.c	/^_testmode(char *name, mode_t bits, char what[])$/;"	f	file:
+branch	common.h	/^    char *branch;                       \/* name of current branch *\/$/;"	m	struct:__anon2
+buf	capture.h	/^    char *buf;$/;"	m	struct:__anon3
+capture_child	capture.c	/^capture_child(const char *file, char *const argv[])$/;"	f
+capture_t	capture.h	/^} capture_t;$/;"	t	typeref:struct:__anon4
+childerr	capture.h	/^    dynbuf childerr;$/;"	m	struct:__anon4
+childout	capture.h	/^    dynbuf childout;$/;"	m	struct:__anon4
+chop_newline	common.c	/^chop_newline(char *buf)$/;"	f
+csinfo_t	hg.c	/^} csinfo_t;$/;"	t	typeref:struct:__anon5	file:
+cvs_get_info	cvs.c	/^cvs_get_info(vccontext_t *context)$/;"	f	file:
+cvs_probe	cvs.c	/^cvs_probe(vccontext_t *context)$/;"	f	file:
+debug	common.c	/^debug(char *fmt, ...)$/;"	f
+debug	common.h	/^    int debug;$/;"	m	struct:__anon1
+debug_mode	common.c	/^debug_mode()$/;"	f
+dump_hex	common.c	/^dump_hex(char *dest, const char *data, int datasize)$/;"	f
+dynbuf	capture.h	/^} dynbuf;$/;"	t	typeref:struct:__anon3
+eof	capture.h	/^    int eof;$/;"	m	struct:__anon3
+exit_on_alarm	vcprompt.c	/^exit_on_alarm(int sig)$/;"	f
+features	vcprompt.c	/^static char* features[] = {$/;"	v	file:
+format	common.h	/^    char *format;                       \/* e.g. "[%b%u%m]" *\/$/;"	m	struct:__anon1
+fossil_get_info	fossil.c	/^fossil_get_info(vccontext_t *context)$/;"	f	file:
+fossil_probe	fossil.c	/^fossil_probe(vccontext_t *context)$/;"	f	file:
+free_capture	capture.c	/^free_capture(capture_t *result)$/;"	f
+free_context	common.c	/^free_context(vccontext_t *context)$/;"	f
+free_result	common.c	/^free_result(result_t *result)$/;"	f
+full_revision	common.h	/^    void *full_revision;$/;"	m	struct:__anon2
+get_branch_name	svn.c	/^get_branch_name(char *repos_path)$/;"	f	file:
+get_csinfo	hg.c	/^get_csinfo(const char *nodeid)$/;"	f	file:
+get_cvs_context	cvs.c	/^get_cvs_context(options_t *options)$/;"	f
+get_fossil_context	fossil.c	/^get_fossil_context(options_t *options)$/;"	f
+get_git_context	git.c	/^get_git_context(options_t *options)$/;"	f
+get_hg_context	hg.c	/^get_hg_context(options_t *options)$/;"	f
+get_info	common.h	/^    result_t* (*get_info)(vccontext_t*);$/;"	m	struct:vccontext_t
+get_svn_context	svn.c	/^get_svn_context(options_t *options)$/;"	f
+get_till_eol	common.c	/^get_till_eol(char *dest, const char *src, int nchars)$/;"	f
+git_get_info	git.c	/^git_get_info(vccontext_t *context)$/;"	f	file:
+git_probe	git.c	/^git_probe(vccontext_t *context)$/;"	f	file:
+hg_get_info	hg.c	/^hg_get_info(vccontext_t *context)$/;"	f	file:
+hg_probe	hg.c	/^hg_probe(vccontext_t *context)$/;"	f	file:
+init_context	common.c	/^init_context(const char *name,$/;"	f
+init_dynbuf	capture.c	/^init_dynbuf(dynbuf *dbuf, int bufsize)$/;"	f	file:
+init_result	common.c	/^init_result()$/;"	f
+is_revlog_inlined	hg.c	/^is_revlog_inlined(FILE *rlfile)$/;"	f	file:
+isdir	common.c	/^isdir(char *name)$/;"	f
+isfile	common.c	/^isfile(char *name)$/;"	f
+istip	hg.c	/^    int istip;$/;"	m	struct:__anon5	file:
+len	capture.h	/^    size_t len;                 \/* bytes filled *\/$/;"	m	struct:__anon3
+main	capture.c	/^main(int argc, char *argv[])$/;"	f
+main	vcprompt.c	/^main(int argc, char** argv)$/;"	f
+modified	common.h	/^    int modified;                       \/* any local changes? *\/$/;"	m	struct:__anon2
+name	common.h	/^    const char *name;                   \/* name of the VC system *\/$/;"	m	struct:vccontext_t
+new_capture	capture.c	/^new_capture()$/;"	f
+nodeid	hg.c	/^    char nodeid[NODEID_LEN];$/;"	m	struct:__anon5	file:
+non_zero	hg.c	/^non_zero(const unsigned char *data, int size)$/;"	f	file:
+options	common.h	/^    options_t *options;$/;"	m	struct:vccontext_t
+options_t	common.h	/^} options_t;$/;"	t	typeref:struct:__anon1
+parse_args	vcprompt.c	/^parse_args(int argc, char** argv, options_t *options)$/;"	f
+parse_format	vcprompt.c	/^parse_format(options_t *options)$/;"	f
+patch	common.h	/^    char *patch;                        \/* name of current patch *\/$/;"	m	struct:__anon2
+print_cmd	capture.c	/^print_cmd(char *const argv[])$/;"	f	file:
+print_result	vcprompt.c	/^print_result(vccontext_t *context, options_t *options, result_t *result)$/;"	f
+probe	common.h	/^    int (*probe)(vccontext_t*);$/;"	m	struct:vccontext_t
+probe_all	vcprompt.c	/^probe_all(vccontext_t** contexts, int num_contexts)$/;"	f
+probe_dirs	vcprompt.c	/^probe_dirs(vccontext_t** contexts, int num_contexts)$/;"	f
+put_nodeid	hg.c	/^put_nodeid(char *dest, const char *nodeid)$/;"	f	file:
+read_dynbuf	capture.c	/^read_dynbuf(int fd, dynbuf *dbuf)$/;"	f	file:
+read_file	common.c	/^read_file(const char *filename, char *buf, int size)$/;"	f
+read_first_line	common.c	/^read_first_line(char *filename, char *buf, int size)$/;"	f
+read_last_line	common.c	/^read_last_line(char *filename, char *buf, int size)$/;"	f
+read_modified_unknown	hg.c	/^read_modified_unknown(vccontext_t *context, result_t *result)$/;"	f	file:
+read_parents	hg.c	/^read_parents(vccontext_t *context, result_t *result)$/;"	f	file:
+read_patch_name	hg.c	/^read_patch_name(vccontext_t *context, result_t *result)$/;"	f	file:
+rel_path	common.h	/^    char *rel_path;$/;"	m	struct:vccontext_t
+result_set_branch	common.c	/^result_set_branch(result_t *result, const char *branch)$/;"	f
+result_set_revision	common.c	/^result_set_revision(result_t *result, const char *revision, int len)$/;"	f
+result_t	common.h	/^} result_t;$/;"	t	typeref:struct:__anon2
+rev	hg.c	/^    int rev;$/;"	m	struct:__anon5	file:
+revision	common.h	/^    char *revision;                     \/* current revision ID *\/$/;"	m	struct:__anon2
+set_alarm	vcprompt.c	/^set_alarm(unsigned int milliseconds)$/;"	f
+set_options	common.c	/^set_options(options_t *options)$/;"	f
+show_branch	common.h	/^    int show_branch;                    \/* show current branch? *\/$/;"	m	struct:__anon1
+show_features	common.h	/^    int show_features;                  \/* list builtin features *\/$/;"	m	struct:__anon1
+show_features	vcprompt.c	/^show_features(void)$/;"	f
+show_modified	common.h	/^    int show_modified;                  \/* show + if local changes? *\/$/;"	m	struct:__anon1
+show_patch	common.h	/^    int show_patch;                     \/* show patch name? *\/$/;"	m	struct:__anon1
+show_revision	common.h	/^    int show_revision;                  \/* show current revision? *\/$/;"	m	struct:__anon1
+show_unknown	common.h	/^    int show_unknown;                   \/* show ? if unknown files? *\/$/;"	m	struct:__anon1
+signal	capture.h	/^    int signal;                 \/* signal that killed the child (if any) *\/$/;"	m	struct:__anon4
+size	capture.h	/^    size_t size;                \/* bytes allocated *\/$/;"	m	struct:__anon3
+status	capture.h	/^    int status;                 \/* exit status that child passed (if any) *\/$/;"	m	struct:__anon4
+svn_get_info	svn.c	/^svn_get_info(vccontext_t *context)$/;"	f	file:
+svn_probe	svn.c	/^svn_probe(vccontext_t *context)$/;"	f	file:
+svn_read_custom	svn.c	/^svn_read_custom(FILE *fp, char line[], int size, int line_num, result_t *result)$/;"	f	file:
+svn_read_sqlite	svn.c	/^svn_read_sqlite(vccontext_t *context, result_t *result)$/;"	f	file:
+svn_read_xml	svn.c	/^svn_read_xml(FILE *fp, char line[], int size, int line_num, result_t *result)$/;"	f	file:
+timeout	common.h	/^    unsigned int timeout;               \/* timeout in milliseconds *\/$/;"	m	struct:__anon1
+unknown	common.h	/^    int unknown;                        \/* any unknown files? *\/$/;"	m	struct:__anon2
+vccontext_t	common.h	/^struct vccontext_t {$/;"	s
+vccontext_t	common.h	/^typedef struct vccontext_t vccontext_t;$/;"	t	typeref:struct:vccontext_t
