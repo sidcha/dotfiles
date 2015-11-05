@@ -1,0 +1,5 @@
+Makefile
+vcprompt
+config.*
+*.o
+tags

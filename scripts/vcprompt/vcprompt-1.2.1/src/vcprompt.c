@@ -84,6 +84,7 @@ parse_args(int argc, char** argv, options_t *options)
                 "  %p  show patch name (MQ, guilt, ...)\n"
                 "  %u  indicate unknown (untracked) files\n"
                 "  %m  indicate uncommitted changes (modified/added/removed)\n"
+                "  %w  show the relative path from repo root\n"
                 "  %%  show '%'\n"
                 );
                 printf("Environment Variables:\n"
@@ -112,6 +113,7 @@ parse_format(options_t *options)
     options->show_patch = 0;
     options->show_unknown = 0;
     options->show_modified = 0;
+    options->show_rel_path = 0;
 
     char *format = options->format;
     size_t len = strlen(format);
@@ -137,6 +139,9 @@ parse_format(options_t *options)
                     break;
                 case 'm':
                     options->show_modified = 1;
+                    break;
+                case 'w':
+                    options->show_rel_path = 1;
                     break;
                 case '%':
                     break;
@@ -184,6 +189,12 @@ print_result(vccontext_t *context, options_t *options, result_t *result)
                 case 'm':
                     if (result->modified)
                         putc('+', stdout);
+                    break;
+                case 'w':
+                     if (context->rel_path[0] != 0) {
+                        putc('/', stdout);
+                        fputs(context->rel_path, stdout);
+                    }
                     break;
                 case '%':               /* escaped % */
                     putc('%', stdout);
@@ -292,6 +303,7 @@ main(int argc, char** argv)
         .show_unknown  = 0,
         .show_modified = 0,
         .show_features = 0,
+        .show_rel_path = 0,
     };
 
     parse_args(argc, argv, &options);

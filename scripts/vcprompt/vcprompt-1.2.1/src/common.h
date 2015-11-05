@@ -20,6 +20,7 @@ typedef struct {
     int show_patch;                     /* show patch name? */
     int show_unknown;                   /* show ? if unknown files? */
     int show_modified;                  /* show + if local changes? */
+    int show_rel_path;                  /* show relative path from repo root */
     unsigned int timeout;               /* timeout in milliseconds */
     int show_features;                  /* list builtin features */
 } options_t;
