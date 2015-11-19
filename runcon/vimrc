@@ -52,6 +52,15 @@ set mouse=a
 " Use <F11> to toggle between 'paste' and 'nopaste'
 set pastetoggle=<F11>
 
+" Change vim's CWD to the direcotry of the file
+set autochdir
+
+" To help solve the :Wq annoyance
+:command WQ wq
+:command Wq wq
+:command W w
+:command Q q
+
 " Page up and page down to retain cursor position
 nnoremap <silent> <PageUp> <C-U><C-U>
 vnoremap <silent> <PageUp> <C-U><C-U>
