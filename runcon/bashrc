@@ -72,6 +72,7 @@ extract () {
 			*.gz)        gunzip $1      ;;
 			*.tar)       tar xvf $1     ;;
 			*.tbz2)      tar xvjf $1    ;;
+			*.tar.gz)    tar xvzf $1    ;;
 			*.tgz)       tar xvzf $1    ;;
 			*.zip)       unzip $1       ;;
 			*.Z)         uncompress $1  ;;
@@ -121,3 +122,4 @@ export WORK="/home/siddharth/work/project/git/dataloggerRF"
 export PATH=$PATH:"/opt/microchip/xc32/v1.34/bin"
 export PATH=$PATH:"/opt/microchip/xc16/v1.25/bin"
 
+sh ~/customizer/scripts/greet.sh
