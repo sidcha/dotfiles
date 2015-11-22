@@ -52,6 +52,12 @@ set mouse=a
 " Use <F11> to toggle between 'paste' and 'nopaste'
 set pastetoggle=<F11>
 
+" Fix the :Wq/:WQ/:wQ annoyance
+:command WQ wq
+:command Wq wq
+:command W w
+:command Q q
+
 " Page up and page down to retain cursor position
 nnoremap <silent> <PageUp> <C-U><C-U>
 vnoremap <silent> <PageUp> <C-U><C-U>
@@ -60,3 +66,7 @@ inoremap <silent> <PageUp> <C-\><C-O><C-U><C-\><C-O><C-U>
 nnoremap <silent> <PageDown> <C-D><C-D>
 vnoremap <silent> <PageDown> <C-D><C-D>
 inoremap <silent> <PageDown> <C-\><C-O><C-D><C-\><C-O><C-D>
+
+" Switch between tabs using ctrl -> and ctrl <-
+nnoremap <C-Left> :tabprevious<CR>
+nnoremap <C-Right> :tabnext<CR>

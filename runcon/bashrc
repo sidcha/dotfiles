@@ -112,6 +112,7 @@ alias minicom='sudo minicom'
 alias byebye='sudo shutdown -P now'
 alias py='python3.4'
 alias sl='ls'
+alias open='gnome-open'
 
 #PATHs
 export WORK="/home/siddharth/work/project/git/dataloggerRF"
