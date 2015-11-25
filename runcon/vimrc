@@ -1,5 +1,11 @@
+" Enable pathogen plugin management plugin
+execute pathogen#infect()
+"--- Install pathogen with
+" mkdir -p ~/.vim/autoload ~/.vim/bundle && \
+" curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+
 " Indent automatically depending on filetype
-filetype indent on
+filetype plugin indent on
 set autoindent
 
 " Do not wrap text by default.
@@ -60,6 +66,9 @@ set autochdir
 :command Wq wq
 :command W w
 :command Q q
+
+" Specify a tags file
+set tags=tags;
 
 " Page up and page down to retain cursor position
 nnoremap <silent> <PageUp> <C-U><C-U>
