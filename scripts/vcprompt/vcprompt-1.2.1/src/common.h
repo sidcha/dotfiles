@@ -23,6 +23,7 @@ typedef struct {
     int show_rel_path;                  /* show relative path from repo root */
     unsigned int timeout;               /* timeout in milliseconds */
     int show_features;                  /* list builtin features */
+    int show_vc_dir_name;               /* show dir of the vc system */
 } options_t;
 
 /* What we figured out by analyzing the working dir: info that
@@ -54,6 +55,7 @@ struct vccontext_t {
      * directory for a whole tree: git, hg, svn >= 1.7, etc.
      */
     char *rel_path;
+    char *vc_dir_name;
 
     /* context methods */
     int (*probe)(vccontext_t*);

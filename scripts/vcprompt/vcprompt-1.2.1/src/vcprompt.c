@@ -143,6 +143,8 @@ parse_format(options_t *options)
                 case 'w':
                     options->show_rel_path = 1;
                     break;
+                case 'd':
+                    options->show_vc_dir_name = 1;
                 case '%':
                     break;
                 default:
@@ -191,10 +193,14 @@ print_result(vccontext_t *context, options_t *options, result_t *result)
                         putc('+', stdout);
                     break;
                 case 'w':
-                     if (context->rel_path[0] != 0) {
+                     if (context->rel_path != NULL) {
                         putc('/', stdout);
                         fputs(context->rel_path, stdout);
                     }
+                    break;
+                case 'd':
+                    if (context->vc_dir_name != NULL)
+                        fputs(context->vc_dir_name, stdout);
                     break;
                 case '%':               /* escaped % */
                     putc('%', stdout);
@@ -232,7 +238,8 @@ probe_dirs(vccontext_t** contexts, int num_contexts)
         free(start_dir);
         return NULL;
     }
-    char *rel_path = start_dir + strlen(start_dir);
+    int start_dir_len = strlen(start_dir);
+    char *rel_path = start_dir + start_dir_len;
 
     vccontext_t *context = NULL;
     while (1) {
@@ -257,6 +264,12 @@ probe_dirs(vccontext_t** contexts, int num_contexts)
     if (context != NULL) {
         debug("found a context: %s (rel_path=%s)", context->name, rel_path);
         context->rel_path = strdup(rel_path);
+        rel_path[-1] = '\0';
+        do {
+            rel_path--;
+        } while (rel_path > start_dir && rel_path[-1] != '/');
+        context->vc_dir_name = strdup(rel_path);
+        debug("context directory %s", context->vc_dir_name);
     }
     free(start_dir);
     return context;

@@ -100,7 +100,7 @@ if [ -f ~/bin/vcprompt ]; then
 		if [ -z "$GIT_PROMPT" ]; then
 			export PS1=$PS1_BACK
 		else
-			export PS1='$(vcprompt -f [%n:%b%u%m]~%w$) ' 
+			export PS1='$(vcprompt -f [%d@%n:%b%u%m]~%w$) ' 
 		fi
 	}
 	PROMPT_COMMAND=update_prompt

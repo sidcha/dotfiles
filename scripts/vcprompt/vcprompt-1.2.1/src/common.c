@@ -92,6 +92,7 @@ void
 free_context(vccontext_t *context)
 {
     free(context->rel_path);
+    free(context->vc_dir_name);
     free(context);
 }
 
