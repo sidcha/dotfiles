@@ -51,11 +51,12 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+#PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+PS1='\u@\h:\w\$ '
 
 #use local bin if one exists
 if [ -d ~/bin ]; then
-	export PATH=$PATH:/home/siddharth/bin
+	export PATH=$PATH:$HOME/bin
 fi
 
 #Start Screen at terminal session
@@ -93,14 +94,18 @@ randpwd() { (head -c 32 /dev/urandom | sha256sum | base64 | head -c 16 && echo""
 edit() { sublime $1 & }
 
 #Change prompt when inside version contol directories.
-PS1_BACK=$PS1
-if [ -f ~/bin/vcprompt ]; then
+VCPROMPT="vcprompt"
+if [ $(uname -o) == "Cygwin" ]; then
+	VCPROMPT="vcprompt.exe"
+fi
+export PS1_BACK=$PS1
+if [ -f ~/bin/$VCPROMPT ]; then
 	update_prompt() {
-		GIT_PROMPT=$(vcprompt)
-		if [ -z "$GIT_PROMPT" ]; then
+		PRMT=$($VCPROMPT)
+		if [ -z "${PRMT// }" ]; then
 			export PS1=$PS1_BACK
 		else
-			export PS1='$(vcprompt -f [%d@%n:%b%u%m]~%w$) ' 
+			export PS1='$($VCPROMPT -f [%d@%n:%b%u%m]~%w$) '
 		fi
 	}
 	PROMPT_COMMAND=update_prompt

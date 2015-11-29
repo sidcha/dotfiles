@@ -146,4 +146,11 @@ dump_hex(char *dest, const char *data, int datasize);
 void
 get_till_eol(char *dest, const char *src, int nchars);
 
+
+/* Reverse a given string. Own implementaion as strrev in string.h is a
+ * non-standard function and may not be available in standard C library.
+ */
+char *
+str_rev(char *str);
+
 #endif
