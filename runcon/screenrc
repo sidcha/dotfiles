@@ -11,14 +11,6 @@ nonblock on
 vbell off
 msgwait 10
 
-screen    -t $         0
-screen    -t $         1
-screen    -t $         2
-screen    -t $         3
-screen    -t log       8 sudo tail -f /var/log/syslog.log
-screen    -t proc      9 htop
-select 0
-
 bind = resize =
 bind + resize +1
 bind - resize -1
@@ -70,13 +62,13 @@ hardstatus on
 hardstatus alwayslastline
 #hardstatus string "%w"
 #hardstatus string "%{.kW}%-w%{.W}%n %t%{-}%{=b kw}%?%+w%?"            #B&W
-hardstatus string "%{.kW}%-w%{.W}%n %t%{-}%{=b kw}%?%+w%? %=%c %d/%m/%Y" #B&W & date&time
+#hardstatus string "%{.kW}%-w%{.W}%n %t%{-}%{=b kw}%?%+w%? %=%c %d/%m/%Y" #B&W & date&time
 #hardstatus string "%{.kW}%-w%{.W}%n %t%{-}%{=b kw}%?%+w%? %=%c %d/%m/%Y" #B&W & date&time
 #hardstatus string '%{= R}[%{w}%H%{R}][%{w}%=%?%-Lw%?%{R}%n*%f%t%?(%u)%? %{w}%?%+Lw%?%?%=%{R}][%{w}%m/%d %{W}%C%A%{R}]'
 #hardstatus string "%{.kW}%-w%{.W}%n %t%{-}%+w %=%C %a "
 #hardstatus string "%{=b kw} %?%-Lw%?%{=br kw}[%n %t]%{=b kw}%?%+Lw%? %="
 #hardstatus alwayslastline '%{bk}[ %{W}%H %{b}][ %{w}%l%{b} ]   %{b}[%{w} %D %d.%m %c:%s%{b} ]'
-#hardstatus alwayslastline '%{bk}[%{W}%H%{b}] %{w} %l %= %n*%t%{-b r}%{w}%+w %= %{w}%d %D %{w}%c'
+hardstatus alwayslastline '%{bk}[%{W}%H%{b}] %{w} %l %= %n*%t%{-b r}%{w}%+w %= %{w}%d %D %{w}%c'
 #hardstatus alwayslastline '%{wk}[ %{g}][%= %{wk}%?%-Lw%?%{=b kR}(%{W}%n*%f %t%?(%u)%?%{=b kR})%{= kw}%?%+Lw%?%?%= %{g}][%{Y}%l%{g}]%{=b C}[ %m/%d %c ]%{W}'
 sorendition kw
 
