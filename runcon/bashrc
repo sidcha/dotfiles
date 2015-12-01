@@ -93,6 +93,11 @@ randpwd() { (head -c 32 /dev/urandom | sha256sum | base64 | head -c 16 && echo""
 
 edit() { sublime $1 & }
 
+# Kill all detached screens only.
+killscreens () {
+	screen -ls | grep Detached | cut -d. -f1 | awk '{print $1}' | xargs kill
+}
+
 #Change prompt when inside version contol directories.
 VCPROMPT="vcprompt"
 if [ $(uname -o) == "Cygwin" ]; then
