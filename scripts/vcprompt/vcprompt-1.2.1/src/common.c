@@ -92,6 +92,7 @@ void
 free_context(vccontext_t *context)
 {
     free(context->rel_path);
+    free(context->vc_dir_name);
     free(context);
 }
 
@@ -237,4 +238,19 @@ get_till_eol(char *dest, const char *src, int nchars)
         nchars = newline - src;
     strncpy(dest, src, nchars);
     dest[nchars] = '\0';
+}
+
+char *
+str_rev(char *str)
+{
+    char *p1, *p2;
+    if (! str || ! *str)
+        return str;
+    for (p1 = str, p2 = str + strlen(str) - 1; p2 > p1; ++p1, --p2)
+    {
+        *p1 ^= *p2;
+        *p2 ^= *p1;
+        *p1 ^= *p2;
+    }
+    return str;
 }

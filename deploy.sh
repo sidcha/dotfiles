@@ -1,16 +1,17 @@
 #!/bin/bash
 DIR=$PWD
-echo "Seting up siddhart's customizations"
 
-echo "Asking vimrc to source external customization file.."
-echo ":source $DIR/runcon/vimrc" > ~/.vimrc
-
-echo "Asking bashrc to source external customization file.."
-echo "source $DIR/runcon/bashrc" > ~/.bashrc
+echo "Adding simlinks for dotFiles.."
+ln -f -s customizer/runcon/vimrc ~/.vimrc
+ln -f -s customizer/runcon/bashrc ~/.bashrc
+ln -f -s customizer/runcon/screenrc ~/.screenrc
 
 mkdir -p ~/bin
 echo "Adding vcprompt executable to local bin"
-#cp scripts/vcprompt ~/bin/vcprompt
+cd $DIR/scripts/vcprompt/vcprompt-1.2.1
+make
+cp vcprompt* ~/bin/
+cd -
 
 echo "Resourcing bashrc"
 . ~/.bashrc

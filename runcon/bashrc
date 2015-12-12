@@ -51,11 +51,12 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+#PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+PS1='\u@\h:\w\$ '
 
 #use local bin if one exists
 if [ -d ~/bin ]; then
-	export PATH=$PATH:/home/siddharth/bin
+	export PATH=$PATH:$HOME/bin
 fi
 
 #Start Screen at terminal session
@@ -90,17 +91,26 @@ up() { cd $(eval printf '../'%.0s {1..$1}); }
 # Genrerate random passwords
 randpwd() { (head -c 32 /dev/urandom | sha256sum | base64 | head -c 16 && echo""); }
 
-edit() { gedit $1 & }
+edit() { sublime $1 & }
+
+# Kill all detached screens only.
+killscreens () {
+	screen -ls | grep Detached | cut -d. -f1 | awk '{print $1}' | xargs kill
+}
 
 #Change prompt when inside version contol directories.
-PS1_BACK=$PS1
-if [ -f ~/bin/vcprompt ]; then
+VCPROMPT="vcprompt"
+if [ $(uname -o) == "Cygwin" ]; then
+	VCPROMPT="vcprompt.exe"
+fi
+export PS1_BACK=$PS1
+if [ -f ~/bin/$VCPROMPT ]; then
 	update_prompt() {
-		GIT_PROMPT=$(vcprompt)
-		if [ -z "$GIT_PROMPT" ]; then
+		PRMT=$($VCPROMPT)
+		if [ -z "${PRMT// }" ]; then
 			export PS1=$PS1_BACK
 		else
-			export PS1='$(vcprompt -f [%n:%b%u%m]~%w$) ' 
+			export PS1='$($VCPROMPT -f [%d@%n:%b%u%m]~%w$) '
 		fi
 	}
 	PROMPT_COMMAND=update_prompt
@@ -119,6 +129,7 @@ alias open='gnome-open'
 stty stop ""
 
 #PATHs
+export EDITOR="vim"
 export WORK="/home/siddharth/work/project/git/dataloggerRF"
 export PATH=$PATH:"/opt/microchip/xc32/v1.34/bin"
 export PATH=$PATH:"/opt/microchip/xc16/v1.25/bin"

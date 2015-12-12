@@ -5,5 +5,8 @@ if [ "$BOX_NAME" = "WORK" ]; then
 else
 	cat ~/customizer/scripts/ascii.art
 fi
-shuf -n 1 ~/customizer/scripts/quote.list | fold -w 75 -s
+
+FILE=$(ls ~/customizer/scripts/*.list |sort -R |tail -1)
+
+shuf -n 1 $FILE | fold -w 75 -s
 echo ""
