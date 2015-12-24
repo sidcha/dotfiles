@@ -3,7 +3,8 @@
 if [ "$BOX_NAME" = "WORK" ]; then
 	echo ""
 else
-	cat ~/customizer/scripts/ascii.art
+	#cat ~/customizer/scripts/ascii.art
+	date
 fi
 
 FILE=$(ls ~/customizer/scripts/*.list |sort -R |tail -1)

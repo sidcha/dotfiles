@@ -11,6 +11,15 @@ nonblock on
 vbell off
 msgwait 3
 
+# Full-screen programs use a terminal feature called "alternate screen", which has a separate screen
+# buffer and (often) minor behavior changes to adapt to such interfaces. The program enters the
+# 'alternate' screen when started, and goes back to 'normal' when exiting.
+
+# Since Screen itself acts as a terminal emulator, it has to emulate the alt-screen feature as well.
+# All other terminal emulators enable this feature by default, but Screen has it hidden behind the
+# altscreen option for some historical reasons.
+altscreen on
+
 bind = resize =
 bind + resize +1
 bind - resize -1
@@ -25,6 +34,7 @@ bind 6 select 6
 bind 7 select 7
 bind 8 select 8
 bind 9 select 9
+bind x remove
 # make life easier, f1-f10 selects screens 0-9
 #bindkey -k k1 select 1
 #bindkey -k k2 select 2
@@ -56,8 +66,8 @@ bind 9 select 9
 #bindkey -k k; title  # bind F10 to rename current screen window
 #bindkey -k F1 prev   # bind F11 to move to previous window
 #bindkey -k F2 next   # bind F12 to move to next window
-bindkey "^[Od" prev  # change window with ctrl-left
-bindkey "^[Oc" next  # change window with ctrl-right
+#bindkey "^[Od" prev  # change window with ctrl-left
+#bindkey "^[Oc" next  # change window with ctrl-right
 
 # add CPU idle/sustem/user/interrupt stats
 #backtick 100 5 5 tail -1 /var/tmp/vermaden-stats-top

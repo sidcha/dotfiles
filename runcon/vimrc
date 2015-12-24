@@ -67,6 +67,18 @@ set autochdir
 :command W w
 :command Q q
 
+" Map Ctrl-Backspace to delete the previous word in insert mode.
+:imap <c-s-l> <C-O>daw
+:imap <c-s-e> <c-o>dd
+
+" Alt + Shift + Up/Down to move a line up/down.
+:imap <A-s-up> <Esc>ddkP<Esc>a
+:imap <A-s-down> <Esc>ddp<Esc>a
+
+" Ctrl + Shift + Up/Down to copy a line and paste it up/down.
+:imap <c-s-up> <Esc>yyP<Esc>a
+:imap <c-s-down> <Esc>yyjP<Esc>a
+
 " Specify a tags file
 set tags=tags;
 
@@ -98,11 +110,11 @@ hi statusline guibg=DarkGrey ctermfg=8 guifg=White ctermbg=15
 " Formats the statusline
 set statusline=%f                           " file name
 set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
-set statusline+=%{&ff}] "file format
-set statusline+=%y      "filetype
-set statusline+=%h      "help file flag
-set statusline+=%m      "modified flag
-set statusline+=%r      "read only flag
+set statusline+=%{&ff}]                     "file format
+set statusline+=%y                          "filetype
+set statusline+=%h                          "help file flag
+set statusline+=%m                          "modified flag
+set statusline+=%r                          "read only flag
 
 set statusline+=\ %=                        " align left
 set statusline+=Line:%l/%L[%p%%]            " line X of Y [percent of file]
