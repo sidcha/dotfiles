@@ -98,6 +98,10 @@ killscreens () {
 	screen -ls | grep Detached | cut -d. -f1 | awk '{print $1}' | xargs kill
 }
 
+ascii () {
+	man ascii | grep --color=never -B3 -A1 '[A-F0-9]:'
+}
+
 #Change prompt when inside version contol directories.
 VCPROMPT="vcprompt"
 if [ $(uname -o) == "Cygwin" ]; then
