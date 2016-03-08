@@ -18,6 +18,7 @@ ln -f -s customizer/runcon/screenrc ~/.screenrc
 mkdir -p ~/bin
 echo "Adding vcprompt executable to local bin"
 cd scripts/vcprompt/vcprompt-1.2.1
+make -f Makefile.in
 make
 cp vcprompt* ~/bin/
 cd $DIR
