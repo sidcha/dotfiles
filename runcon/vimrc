@@ -1,11 +1,12 @@
 " Enable pathogen plugin management plugin
-execute pathogen#infect()
+"execute pathogen#infect()
 "--- Install pathogen with
 " mkdir -p ~/.vim/autoload ~/.vim/bundle && \
 " curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 
 " Indent automatically depending on filetype
-filetype plugin indent on
+"filetype plugin indent on
+
 set autoindent
 
 " Do not wrap text by default.
@@ -42,11 +43,11 @@ set backspace=indent,eol,start
 " Stop certain movements from always going to the first character of a line.
 " While this behaviour deviates from that of Vi, it does what most users
 " coming from other editors would expect.
-set nostartofline
+"set nostartofline
 
 " Instead of failing a command because of unsaved changes, instead raise a
 " dialogue asking if you wish to save changed files.
-set confirm
+"set confirm
 
 " Enable use of the mouse for all modes
 set mouse=a
@@ -91,37 +92,37 @@ nnoremap <silent> <PageDown> <C-D><C-D>
 vnoremap <silent> <PageDown> <C-D><C-D>
 inoremap <silent> <PageDown> <C-\><C-O><C-D><C-\><C-O><C-D>
 
-function! InsertStatuslineColor(mode)
-  if a:mode == 'i'
-    hi statusline guibg=Cyan ctermfg=6 guifg=Black ctermbg=0
-  elseif a:mode == 'r'
-    hi statusline guibg=Purple ctermfg=5 guifg=Black ctermbg=0
-  else
-    hi statusline guibg=DarkRed ctermfg=1 guifg=Black ctermbg=0
-  endif
-endfunction
-
-au InsertEnter * call InsertStatuslineColor(v:insertmode)
-au InsertLeave * hi statusline guibg=DarkGrey ctermfg=8 guifg=White ctermbg=15
-
-" default the statusline to green when entering Vim
-hi statusline guibg=DarkGrey ctermfg=8 guifg=White ctermbg=15
-
-" Formats the statusline
-set statusline=%f                           " file name
-set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
-set statusline+=%{&ff}]                     "file format
-set statusline+=%y                          "filetype
-set statusline+=%h                          "help file flag
-set statusline+=%m                          "modified flag
-set statusline+=%r                          "read only flag
-
-set statusline+=\ %=                        " align left
-set statusline+=Line:%l/%L[%p%%]            " line X of Y [percent of file]
-set statusline+=\ Col:%c                    " current column
-set statusline+=\ Buf:%n                    " Buffer number
-set statusline+=\ [%b][0x%B]\               " ASCII and byte code under cursor
-
-" Switch between tabs using ctrl -> and ctrl <-
-nnoremap <C-Left> :tabprevious<CR>
-nnoremap <C-Right> :tabnext<CR>
+"function! InsertStatuslineColor(mode)
+"  if a:mode == 'i'
+"    hi statusline guibg=Cyan ctermfg=6 guifg=Black ctermbg=0
+"  elseif a:mode == 'r'
+"    hi statusline guibg=Purple ctermfg=5 guifg=Black ctermbg=0
+"  else
+"    hi statusline guibg=DarkRed ctermfg=1 guifg=Black ctermbg=0
+"  endif
+"endfunction
+"
+"au InsertEnter * call InsertStatuslineColor(v:insertmode)
+"au InsertLeave * hi statusline guibg=DarkGrey ctermfg=8 guifg=White ctermbg=15
+"
+"" default the statusline to green when entering Vim
+"hi statusline guibg=DarkGrey ctermfg=8 guifg=White ctermbg=15
+"
+"" Formats the statusline
+"set statusline=%f                           " file name
+"set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
+"set statusline+=%{&ff}]                     "file format
+"set statusline+=%y                          "filetype
+"set statusline+=%h                          "help file flag
+"set statusline+=%m                          "modified flag
+"set statusline+=%r                          "read only flag
+"
+"set statusline+=\ %=                        " align left
+"set statusline+=Line:%l/%L[%p%%]            " line X of Y [percent of file]
+"set statusline+=\ Col:%c                    " current column
+"set statusline+=\ Buf:%n                    " Buffer number
+"set statusline+=\ [%b][0x%B]\               " ASCII and byte code under cursor
+"
+"" Switch between tabs using ctrl -> and ctrl <-
+"nnoremap <C-Left> :tabprevious<CR>
+"nnoremap <C-Right> :tabnext<CR>
