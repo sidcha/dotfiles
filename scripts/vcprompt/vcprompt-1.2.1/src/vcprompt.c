@@ -84,7 +84,6 @@ parse_args(int argc, char** argv, options_t *options)
                 "  %p  show patch name (MQ, guilt, ...)\n"
                 "  %u  indicate unknown (untracked) files\n"
                 "  %m  indicate uncommitted changes (modified/added/removed)\n"
-                "  %w  show the relative path from repo root\n"
                 "  %%  show '%'\n"
                 );
                 printf("Environment Variables:\n"

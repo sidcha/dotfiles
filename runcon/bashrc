@@ -130,6 +130,7 @@ alias sl='ls'
 alias open='gnome-open'
 alias pl='perl'
 alias gst='git status'
+alias create='create.pl'
 
 # remove stty ^S binding
 stty stop ""

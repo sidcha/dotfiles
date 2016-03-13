@@ -15,6 +15,8 @@ ln -f -s customizer/runcon/vimrc ~/.vimrc
 ln -f -s customizer/runcon/bashrc ~/.bashrc
 ln -f -s customizer/runcon/screenrc ~/.screenrc
 
+cp scripts/create.pl ~/bin/
+
 mkdir -p ~/bin
 echo "Adding vcprompt executable to local bin"
 cd scripts/vcprompt/vcprompt-1.2.1
