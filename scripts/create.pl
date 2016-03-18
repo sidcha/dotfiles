@@ -47,8 +47,26 @@ use strict;\n\n
 END
 
 my $argc = @ARGV;
-die ("Usage: $0 <file>\n") unless($argc == 1);
 
+sub dieUsage {
+	print "Create utility currenly supports only c, h, sh, and pl file extentions\n".
+		"Usage:\n".
+		"$0 -f <ext> <file> [or]\n".
+		"$0 <file.ext>";
+	die "\n";
+}
+
+my ($file, $fext, $fname);
+my $rcFile = "$ENV{'HOME'}/.createrc";
+my $opt = shift;
+if ($argc == 3) {
+	&dieUsage unless ($opt eq "-f");
+	($fext, $file) = @ARGV;
+} elsif ($argc == 1) {
+	$file = $opt;
+	($fname, $fext) = ($file =~ /(.*)\.(.*)/);
+} else {
+	&dieUsage;
 my $file = shift;
 die ("Error: File already exists!\n") if -e $file;
 my ($fname, $fext) = ($file =~ /(.*)\.(.*)/);
@@ -57,8 +75,8 @@ die ("Error: Unsupported file extention\n") unless($fext =~ /(c|h|pl|sh)/);
 my %fields;
 my $dateStr = localtime();
 my ($license, $author);
-if (-e  $ENV{"HOME"}."/.createrc") {
-	open (my $rc, "<", $ENV{"HOME"} . "/.createrc") 
+if (-e $rcFile) {
+	open (my $rc, "<", $rcFile) 
 		or die ("Error reading from " . $ENV{"HOME"} . "/.createrc\n");
 	my %fields = ( 'Author', '', 'License', '' );
 	while(<$rc>) {
