@@ -34,9 +34,6 @@ nG -> move to nth line of the file
 :n -> move to nth line of the file
 fc -> move forward to c
 Fc -> move back to c
-H  -> move to top of screen
-M  -> move to middle of screen
-L  -> move to botton of screen
 
 v          -> select
 SHIFT + v  -> select row(s)
@@ -69,7 +66,7 @@ n  -> number of line to repeat operation over
 
 Postfix Operator:
 w  -> to start of next word
-e  -> to end of current work
+e  -> to end of current word
 $  -> to end of current line
 fX -> till occrance of next X
 
