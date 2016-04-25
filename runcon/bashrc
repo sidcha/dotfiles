@@ -52,7 +52,7 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
 fi
 
 #PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-PS1='\u@\h:\w\$ '
+PS1='[\u@\h \W]\$ '
 
 #use local bin if one exists
 if [ -d ~/bin ]; then
@@ -143,3 +143,7 @@ export PATH=$PATH:"/opt/microchip/xc16/v1.25/bin"
 
 sh ~/customizer/scripts/greet.sh
 
+echo "** Pending Tasks **"
+task list
+echo "*******************"
+bind '"\t":menu-complete'

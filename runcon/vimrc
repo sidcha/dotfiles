@@ -83,6 +83,10 @@ set pastetoggle=<F11>
 " Specify a tags file
 set tags=tags;
 
+" Insert date with <F5> in insert and command mode.
+:nnoremap <F5> "=strftime("%c")<CR>P
+:inoremap <F5> <C-R>=strftime("%c")<CR>
+
 " Page up and page down to retain cursor position
 nnoremap <silent> <PageUp> <C-U><C-U>
 vnoremap <silent> <PageUp> <C-U><C-U>

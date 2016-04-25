@@ -11,6 +11,8 @@ nonblock on
 vbell off
 msgwait 3
 
+defscrollback 10000
+
 # Full-screen programs use a terminal feature called "alternate screen", which has a separate screen
 # buffer and (often) minor behavior changes to adapt to such interfaces. The program enters the
 # 'alternate' screen when started, and goes back to 'normal' when exiting.
