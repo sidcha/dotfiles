@@ -91,6 +91,10 @@ up() { cd $(eval printf '../'%.0s {1..$1}); }
 # Genrerate random passwords
 randpwd() { (head -c 32 /dev/urandom | sha256sum | base64 | head -c 16 && echo""); }
 
+get() {
+	fc -lnr -$1 -$1 | sed -e 's/^\s*//'
+}
+
 edit() { sublime $1 & }
 
 # Kill all detached screens only.
@@ -134,12 +138,11 @@ alias create='create.pl'
 
 # remove stty ^S binding
 stty stop ""
-
-#PATHs
 export EDITOR="vim"
-export WORK="/home/siddharth/work/project/git/dataloggerRF"
-export PATH=$PATH:"/opt/microchip/xc32/v1.34/bin"
-export PATH=$PATH:"/opt/microchip/xc16/v1.25/bin"
+
+if [ -f ~/.env ]; then
+	source ~/.env
+fi
 
 sh ~/customizer/scripts/greet.sh
 
