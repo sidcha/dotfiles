@@ -1,0 +1,7 @@
+# To look at which proc has bound on to which port.
+lsof -sTCP -iTCP:LISTEN
+
+# Listens on ProxyPort forwards connections from proxyPort
+# to destPort (should be already listening) and vice versa.
+socat -v TCP-LISTEN:<ProxyPort>,fork TCP:localhost:<destPort>
+
