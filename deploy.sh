@@ -14,16 +14,17 @@ echo "Adding simlinks for dotFiles.."
 ln -f -s customizer/runcon/vimrc ~/.vimrc
 ln -f -s customizer/runcon/bashrc ~/.bashrc
 ln -f -s customizer/runcon/screenrc ~/.screenrc
+ln -f -s customizer/runcon/Xresources ~/.Xresources
 
 cp scripts/create.pl ~/bin/
 
 mkdir -p ~/bin
-echo "Adding vcprompt executable to local bin"
-cd scripts/vcprompt/vcprompt-1.2.1
-make -f Makefile.in
-make
-cp vcprompt* ~/bin/
-cd $DIR
+#echo "Adding vcprompt executable to local bin"
+#cd scripts/vcprompt/vcprompt-1.2.1
+#make -f Makefile.in
+#make
+#cp vcprompt* ~/bin/
+#cd $DIR
 
 echo "Resourcing bashrc"
 . ~/.bashrc

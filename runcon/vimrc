@@ -5,7 +5,7 @@
 " curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 
 " Indent automatically depending on filetype
-"filetype plugin indent on
+filetype plugin indent on
 
 set autoindent
 

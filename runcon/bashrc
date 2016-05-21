@@ -146,7 +146,7 @@ fi
 
 sh ~/customizer/scripts/greet.sh
 
-echo "** Pending Tasks **"
-task list
-echo "*******************"
-bind '"\t":menu-complete'
+#echo "** Pending Tasks **"
+#task list
+#echo "*******************"
+#bind '"\t":menu-complete'
