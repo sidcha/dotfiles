@@ -111,18 +111,18 @@ VCPROMPT="vcprompt"
 if [ $(uname -o) == "Cygwin" ]; then
 	VCPROMPT="vcprompt.exe"
 fi
-export PS1_BACK=$PS1
-if [ -f ~/bin/$VCPROMPT ]; then
-	update_prompt() {
-		PRMT=$($VCPROMPT)
-		if [ -z "${PRMT// }" ]; then
-			export PS1=$PS1_BACK
-		else
-			export PS1='$($VCPROMPT -f [%d@%n:%b%u%m]~%w$) '
-		fi
-	}
-	PROMPT_COMMAND=update_prompt
-fi
+#export PS1_BACK=$PS1
+#if [ -f ~/bin/$VCPROMPT ]; then
+#	update_prompt() {
+#		PRMT=$($VCPROMPT)
+#		if [ -z "${PRMT// }" ]; then
+#			export PS1=$PS1_BACK
+#		else
+#			export PS1='$($VCPROMPT -f [%d@%n:%b%u%m]~%w$) '
+#		fi
+#	}
+#	PROMPT_COMMAND=update_prompt
+#fi
 
 # Aliases that makes life simple.
 alias ll='ls -alF'
@@ -146,7 +146,3 @@ fi
 
 sh ~/customizer/scripts/greet.sh
 
-#echo "** Pending Tasks **"
-#task list
-#echo "*******************"
-#bind '"\t":menu-complete'
