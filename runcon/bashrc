@@ -36,7 +36,7 @@ if [ -x /usr/bin/dircolors ]; then
     alias ls='ls --color=auto'
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
-
+    alias gcc='gcc -Wall'
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
@@ -144,5 +144,5 @@ if [ -f ~/.env ]; then
 	source ~/.env
 fi
 
-sh ~/customizer/scripts/greet.sh
+sh $CFG_SCRIPT_DIR/scripts/greet.sh
 
