@@ -12,6 +12,7 @@ my $fmt_sh =<< "END";
 \#
 \# File: %s
 \# Author: %s
+\# Email: %s
 \# Date: %s\n\n
 END
 
@@ -20,6 +21,7 @@ my $fmt_csrc =<< "END";
  *
  * File: %s
  * Author: %s
+ * Email: %s
  * Date: %s
  */\n\n
 END
@@ -29,6 +31,7 @@ my $fmt_chdr =<< "END";
  *
  * File: %s
  * Author: %s
+ * Email: %s
  * Date: %s
  */\n\n
 \#ifndef %4\$s_H_
@@ -42,6 +45,7 @@ my $fmt_pl =<< "END";
 \#
 \# File: %s
 \# Author: %s
+\# Email: %s
 \# Date: %s\n
 use strict;\n\n
 END
@@ -61,20 +65,25 @@ my $rcFile = "$ENV{'HOME'}/.createrc";
 my $opt = shift;
 if ($argc == 3) {
 	&dieUsage unless ($opt eq "-f");
-	($fext, $file) = @ARGV;
+	($fext, $fname) = @ARGV;
+	$file = $fname;
 } elsif ($argc == 1) {
 	$file = $opt;
 	($fname, $fext) = ($file =~ /(.*)\.(.*)/);
 } else {
 	&dieUsage;
-my $file = shift;
+}
+
+print "$file: $fname <=> $fext\n";
+
 die ("Error: File already exists!\n") if -e $file;
-my ($fname, $fext) = ($file =~ /(.*)\.(.*)/);
 die ("Error: Unsupported file extention\n") unless($fext =~ /(c|h|pl|sh)/);
 
 my %fields;
 my $dateStr = localtime();
-my ($license, $author);
+my $license = "";
+my $author = "";
+my $email = "";
 if (-e $rcFile) {
 	open (my $rc, "<", $rcFile) 
 		or die ("Error reading from " . $ENV{"HOME"} . "/.createrc\n");
@@ -82,12 +91,18 @@ if (-e $rcFile) {
 	while(<$rc>) {
 		chomp;
 		my ($field, $value) = split /:/, $_;
-		next unless(/^(Author|License)/);
+		chomp $field if defined $field; chomp $value if defined $value;
+		next unless(/(Author|License|Email)/);
 		$fields{$field} = $value;
 	}
 	$author  = $fields{'Author'};
 	$license = $fields{'License'};
+	$email = $fields{'Email'};
 	close ($rc);
+} else {
+	print "Count not find .createrc in home directory\n\nExaple:\n";
+	print "Author: Siddharth Chandrasekaran\n";
+	print "License: Your licence text goes here\n\n";
 }
 
 $license =~ s/(.{0,60}(?:\s|$))/$1\n/g;
@@ -97,23 +112,24 @@ my $out;
 open(my $f, ">", $file) or die ("Error: Unable to create file $file\n");
 if ($fext eq "c") {
 	$license =~ s/\n/\n \* /gi;
-	$out = sprintf($fmt_csrc, $license, $file, $author, $dateStr);
+	$out = sprintf($fmt_csrc, $license, $file, $email, $author, $dateStr);
 } elsif ($fext eq "h") {
 	$license =~ s/\n/\n \* /gi;
 	my $tmp = $fname;
 	$tmp =~ s/(.*)/\U$1/;
-	$out = sprintf($fmt_chdr, $license, $file, $author, $dateStr, $tmp);
+	$out = sprintf($fmt_chdr, $license, $file, $author, $email, $dateStr, $tmp);
 } elsif ($fext eq "sh") {
 	chmod 0755, $f;
 	$license =~ s/\n/\n\# /gi;
-	$out = sprintf($fmt_sh, $license, $file, $author, $dateStr);
+	$out = sprintf($fmt_sh, $license, $file, $author, $email, $dateStr);
 } elsif ($fext eq "pl") {
 	chmod 0755, $f;
 	$license =~ s/\n/\n\# /gi;
-	$out = sprintf($fmt_pl, $license, $file, $author, $dateStr);
+	$out = sprintf($fmt_pl, $license, $file, $author, $email, $dateStr);
 } else {
 	die ("Error: Unsupported file extension.\n");
 }
+
 print $f $out;
-print "New file $file created!\n"
+print "New file $file created!\n";
 

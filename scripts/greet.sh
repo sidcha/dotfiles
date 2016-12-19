@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cols=`tput cols`
-if [ "$cols" > "80" ]; then
+if [ "$cols" -eq "80" ]; then
 	cols=80;
 fi
 
