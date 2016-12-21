@@ -1,5 +1,141 @@
-
-Ref:
 http://xmodulo.com/how-to-create-encrypted-disk-partition-on-linux.html
 
+****** How_to_create_an_encrypted_disk_partition_on_Linux ******
+
+Suppose you have a portable USB drive to use with your Linux system. If you are
+security conscious, you may want to encrypt your USB drive, so that no one else
+tamper with content in your USB drive. For that, you can use dm-crypt and LUKS,
+which together provide transparent encryption of block devices by using device
+mapper subsystem.
+
+To encrypt a partition using dm-crypt+LUKS on Linux, install the following.
+On Ubuntu, Mint or Debian:
+
+$ sudo apt-get install cryptsetup
+
+On CentOS, Fedora or RHEL:
+
+$ sudo yum install cryptsetup
+
+Using fdisk, create a new partition to encrypt as follows. In this example, I
+assume that /dev/sdb is mapped to your hard drive to encrypt.
+
+[data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=][http:/
+/farm3.staticflickr.com/2891/9441576446_c404f8b859.jpg]
+
+A newly created partition to use with LUKS is mapped to /dev/sdb1. Initialize
+this partition by using cryptsetup command. This command will overwrite the
+partition with random data, and prompt you for an initial passphrase to use.
+
+$ sudo cryptsetup --verbose --verify-passphrase luksFormat /dev/sdb1
+
+You can check LUKS configuration of the partition by running the following
+command, which will dump LUKS header information.
+
+$ sudo cryptsetup luksDump /dev/sdb1
+LUKS header information for /dev/sdb1
+
+Version:       	1
+Cipher name:   	aes
+Cipher mode:   	cbc-essiv:sha256
+Hash spec:     	sha1
+Payload offset:	4096
+MK bits:       	256
+MK digest:     	18 1d 6d 3e e9 44 2a fe bf 67 78 8f aa 02 7f 91 2a f4 f2 17
+MK salt:       	26 cc 29 9f 0b 7d ea ff 44 9f fe 34 91 40 6e 9b
+               	af 1e bd 8f d0 d2 1c 3a 70 30 35 5f 2d 49 9a 95
+MK iterations: 	222875
+UUID:          	5acc17e0-80be-40ba-beae-626e47b57379
+
+Key Slot 0: ENABLED
+	Iterations:         	891733
+	Salt:               	26 20 29 39 a5 1d 02 7b ca 8c bd 18 bc 29 64 7e
+	                      	28 dc 06 65 78 0e 16 95 1a 67 14 66 12 2d a3 c1
+	Key material offset:	8
+	AF stripes:            	4000
+Key Slot 1: DISABLED
+Key Slot 2: DISABLED
+Key Slot 3: DISABLED
+Key Slot 4: DISABLED
+Key Slot 5: DISABLED
+Key Slot 6: DISABLED
+Key Slot 7: DISABLED
+
+Next, open the LUKS partition as follows.
+
+$ sudo cryptsetup luksOpen /dev/sdb1 sdb1
+
+The above command will ask you to enter a passphrase. Once the LUKS partition
+is successfully opened with a correct passphrase, the encrypted partition will
+be mapped to /dev/mapper/sdb1. To check if this block device is created
+successfully, use this command:
+
+$ sudo fdisk -l
+Disk /dev/mapper/sdb1: 1067 MB, 1067156992 bytes
+255 heads, 63 sectors/track, 129 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x7b0402f6
+
+Finally, you can create a new filesystem on /dev/mapper/sdb1, and mount it on
+your Linux system:
+
+$ sudo mkfs.ext3 /dev/mapper/sdb1
+$ sudo mount /dev/mapper/sdb1 /mnt
+
+
+**** Mount LUKS-Encrypted Hard Drive Automatically on Boot ****
+
+If you want to have your LUKS-encrypted partition mounted automatically upon
+boot, follow this procedure.
+
+First, create a randomly generated key file used to open the encrypted
+partition during boot sequence. Make this key file readable by the root only.
+
+$ sudo dd if=/dev/urandom of=/root/key.sdb1 bs=1024 count=4
+$ sudo chmod 400 /root/key.sdb1
+
+Add the key file to LUKS configuration:
+
+$ sudo cryptsetup luksAddKey /dev/sdb1 /root/key.sdb1
+
+Verify that the key file has been successfully added:
+
+$ sudo cryptsetup luksDump /dev/sdb1
+Key Slot 0: ENABLED
+	Iterations:         	891733
+	Salt:               	26 20 29 39 a5 1d 02 7b ca 8c bd 18 bc 29 64 7e
+	                      	28 dc 06 65 78 0e 16 95 1a 67 14 66 12 2d a3 c1
+	Key material offset:	8
+	AF stripes:            	4000
+Key Slot 1: ENABLED
+	Iterations:         	404242
+	Salt:               	9d b9 05 d4 06 be 8c db 74 bd cb 59 de 9a 95 8a
+	                      	91 8c 09 5d 91 5f 0a e6 b5 86 3c 81 73 22 e1 db
+	Key material offset:	264
+	AF stripes:            	4000
+
+As you can see above, the key slot 1 has been occupied with the key file.
+Next, obtain the UUID of the encrypted block device.
+
+$ sudo cryptsetup luksUUID /dev/sdb1
+5acc17e0-80be-40ba-beae-626e47b57379
+
+Now, edit /etc/crypttab to add the following entry.
+
+$ sudo vi /etc/crypttab
+sdb1 /dev/disk/by-uuid/5acc17e0-80be-40ba-beae-626e47b57379 /root/key.sdb1 luks
+
+The format of the entry in /etc/crypttab is as follows.
+<name of encrypted block device> /dev/disk/by-uuid/<UUID of block device>
+<location of key file> luks
+Finally, create a mount point, and edit /etc/fstab to add mount point
+information:
+
+$ sudo mkdir /mnt_sdb1
+$ sudo vi /etc/fstab
+/dev/mapper/sdb1        /mnt_sdb1    ext3
+
+Reboot now. The encrypted partition should be auto-mounted upon boot up.
 
