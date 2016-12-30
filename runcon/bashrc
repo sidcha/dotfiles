@@ -135,6 +135,7 @@ alias open='gnome-open'
 alias pl='perl'
 alias gst='git status'
 alias create='create.pl'
+alias cim='vim'
 
 # remove stty ^S binding
 stty stop ""
@@ -144,5 +145,6 @@ if [ -f ~/.env ]; then
 	source ~/.env
 fi
 
+export PATH
 sh $CFG_SCRIPT_DIR/scripts/greet.sh
 

@@ -20,9 +20,12 @@ ssh pi@IP
 Now you can also:
 
 access the Internet from the PI through your Ubuntu's Wifi connection
-open a VNC to get rid of the display as well: http://raspberrypi.stackexchange.com/questions/14611/how-to-set-up-raspberry-pi-without-a-monitor/54393#54393
+open a VNC to get rid of the display as well:
+http://raspberrypi.stackexchange.com/questions/14611/how-to-set-up-raspberry-pi-without-a-monitor/54393#54393
 
-This is similar to: http://stackoverflow.com/a/35529971/895245 but with several details tweaked and more concise. See also: http://www.interlockroc.org/2012/12/06/raspberry-pi-macgyver/
+This is similar to: http://stackoverflow.com/a/35529971/895245 but with several
+details tweaked and more concise. See also:
+http://www.interlockroc.org/2012/12/06/raspberry-pi-macgyver/
 
 *** Get GUI on host ***
 

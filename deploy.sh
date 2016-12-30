@@ -2,27 +2,27 @@
 
 DIR=`git rev-parse --show-toplevel`
 
-if [ ! -d ~/.vim ]; then
-	echo "Unable to find a .vim directory. Perhaps you haven't installed?"
-else
-	if [ ! -f ~/.vim/autoload/pathogen.vim ]; then
-		echo "Downloading pathogen for vim"
-		mkdir -p ~/.vim/autoload ~/.vim/bundle 
-		curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
-	fi
-
-	if [ ! -d ~/.vim/bundle ]; then
-		echo "Fectching vim plugins.."
-		mkdir -p ~/.vim/bundle
-		cd ~/.vim/bundle
-		while IFS='' read -r line || [[ -n "$line" ]]; do
-			echo -n "Cloning from $line... "
-			git clone $line > /dev/null
-			echo "Done."
-		done < $DIR/other/vim-plugin-git-url.list
-		cd - > /dev/null
-	fi
+mkdir -p ~/.vim ~/.vim/autoload ~/.vim/bundle 
+if [ ! -f ~/.vim/autoload/pathogen.vim ]; then
+	echo "Downloading pathogen for vim"
+	curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 fi
+
+echo "Fectching new vim plugins.."
+cd ~/.vim/bundle
+while IFS='' read -r line || [[ -n "$line" ]]; do
+	dir_name=`perl -e '$_=shift; chomp; s/.*\/(.*)\.git$/\1/; print;' $line`
+	if [ ! -d $dir_name ]; then
+		echo -n "Cloning plugin $dir_name."
+		git clone $line
+	fi
+done < $DIR/other/vim-plugin.list
+cd - > /dev/null
+
+while IFS='' read -r line || [[ -n "$line" ]]; do
+	echo "Attempting to install $line"
+	sudo apt install -y $line
+done < $DIR/other/software.list
 
 if [ ! -f ~/.env ]; then
 	echo "export CFG_SCRIPT_DIR=$DIR" > ~/.env
