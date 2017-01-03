@@ -8,7 +8,7 @@ setenv LC_CTYPE en_US.UTF-8
 defutf8 on
 setenv DISPLAY ':0'
 nonblock on
-vbell off
+vbell on
 msgwait 3
 
 defscrollback 10000

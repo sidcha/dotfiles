@@ -145,6 +145,5 @@ if [ -f ~/.env ]; then
 	source ~/.env
 fi
 
-export PATH
 sh $CFG_SCRIPT_DIR/scripts/greet.sh
 
