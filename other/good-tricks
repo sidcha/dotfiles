@@ -1,0 +1,1 @@
+convert  `locate tux |grep 128` -gravity center -extent 1920x128 -depth 8 ppm:- |perl -e '<>;<>;<>;while (read STDIN,$d,3) { ($a,$b,$c)=split //,$d; print "$c$b$a\x00";} ' > /dev/fb0

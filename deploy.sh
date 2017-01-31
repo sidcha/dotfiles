@@ -33,6 +33,8 @@ ln -f -s $DIR/runcon/vimrc ~/.vimrc
 ln -f -s $DIR/runcon/bashrc ~/.bashrc
 ln -f -s $DIR/runcon/screenrc ~/.screenrc
 ln -f -s $DIR/runcon/Xresources ~/.Xresources
+ln -f -s $DIR/runcon/Xinit ~/.Xinit
+ln -f -s $DIR/runcon/Xmodmap ~/.Xmodmap
 echo "Done."
 
 echo -n "Adding custom scripts... "

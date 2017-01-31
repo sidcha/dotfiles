@@ -145,5 +145,6 @@ if [ -f ~/.env ]; then
 	source ~/.env
 fi
 
-sh $CFG_SCRIPT_DIR/scripts/greet.sh
+#sh $CFG_SCRIPT_DIR/scripts/greet.sh
+
 
