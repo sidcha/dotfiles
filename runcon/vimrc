@@ -1,13 +1,11 @@
-" Enable pathogen plugin management plugin
-"execute pathogen#infect()
-"--- Install pathogen with
-" mkdir -p ~/.vim/autoload ~/.vim/bundle && \
-" curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
-
 " Indent automatically depending on filetype
 filetype plugin indent on
 
+set nocompatible
+set backspace=2
 set autoindent
+set cindent
+set visualbell
 
 " Do not wrap text by default.
 set nowrap
@@ -45,11 +43,11 @@ set path=.,/usr/include,/usr/local/include
 " Stop certain movements from always going to the first character of a line.
 " While this behaviour deviates from that of Vi, it does what most users
 " coming from other editors would expect.
-"set nostartofline
+set nostartofline
 
 " Instead of failing a command because of unsaved changes, instead raise a
 " dialogue asking if you wish to save changed files.
-"set confirm
+set confirm
 
 " Enable use of the mouse for all modes
 set mouse=a
@@ -58,36 +56,18 @@ set mouse=a
 " "press <Enter> to continue"
 " set cmdheight=2
 
-" Use <F11> to toggle between 'paste' and 'nopaste'
-set pastetoggle=<F11>
-
-" Change vim's CWD to the direcotry of the file
-"set autochdir
-
 " To help solve the :Wq annoyance
 :command WQ wq
 :command Wq wq
 :command W w
 :command Q q
 
-" Map Ctrl-Backspace to delete the previous word in insert mode.
-:imap <c-s-l> <C-O>daw
-:imap <c-s-e> <c-o>dd
-
 " Alt + Shift + Up/Down to move a line up/down.
 :imap <A-s-up> <Esc>ddkP<Esc>a
 :imap <A-s-down> <Esc>ddp<Esc>a
 
-" Ctrl + Shift + Up/Down to copy a line and paste it up/down.
-:imap <c-s-up> <Esc>yyP<Esc>a
-:imap <c-s-down> <Esc>yyjP<Esc>a
-
 " Specify a tags file
 set tags=tags;
-
-" Insert date with <F5> in insert and command mode.
-:nnoremap <F5> "=strftime("%c")<CR>P
-:inoremap <F5> <C-R>=strftime("%c")<CR>
 
 " Page up and page down to retain cursor position
 nnoremap <silent> <PageUp> <C-U><C-U>
@@ -98,37 +78,14 @@ nnoremap <silent> <PageDown> <C-D><C-D>
 vnoremap <silent> <PageDown> <C-D><C-D>
 inoremap <silent> <PageDown> <C-\><C-O><C-D><C-\><C-O><C-D>
 
-"function! InsertStatuslineColor(mode)
-"  if a:mode == 'i'
-"    hi statusline guibg=Cyan ctermfg=6 guifg=Black ctermbg=0
-"  elseif a:mode == 'r'
-"    hi statusline guibg=Purple ctermfg=5 guifg=Black ctermbg=0
-"  else
-"    hi statusline guibg=DarkRed ctermfg=1 guifg=Black ctermbg=0
-"  endif
-"endfunction
-"
-"au InsertEnter * call InsertStatuslineColor(v:insertmode)
-"au InsertLeave * hi statusline guibg=DarkGrey ctermfg=8 guifg=White ctermbg=15
-"
-"" default the statusline to green when entering Vim
-"hi statusline guibg=DarkGrey ctermfg=8 guifg=White ctermbg=15
-"
-"" Formats the statusline
-"set statusline=%f                           " file name
-"set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
-"set statusline+=%{&ff}]                     "file format
-"set statusline+=%y                          "filetype
-"set statusline+=%h                          "help file flag
-"set statusline+=%m                          "modified flag
-"set statusline+=%r                          "read only flag
-"
-"set statusline+=\ %=                        " align left
-"set statusline+=Line:%l/%L[%p%%]            " line X of Y [percent of file]
-"set statusline+=\ Col:%c                    " current column
-"set statusline+=\ Buf:%n                    " Buffer number
-"set statusline+=\ [%b][0x%B]\               " ASCII and byte code under cursor
-"
-"" Switch between tabs using ctrl -> and ctrl <-
-"nnoremap <C-Left> :tabprevious<CR>
-"nnoremap <C-Right> :tabnext<CR>
+" Fix horrible MatchParen colors. Stop making it look like the cursor... "
+" This line must come after the colorscheme line! "
+hi MatchParen cterm=bold ctermbg=none ctermfg=red gui=bold guifg=red guibg=red
+
+" Highlight color settings are reset if you change the colorscheme. "
+" So hit <F2> if you need to reload MatchParen colors after a change. "
+map <F2> :hi MatchParen cterm=bold ctermbg=none ctermfg=red gui=bold guifg=red guibg=red<CR>
+
+set statusline=\ %f%m%r%h%w\ %=%({%{&ff}\|%{(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\")}%k\|%Y}%)\ %([%l,%v][%o,%p%%]\ %)
+set laststatus=2
+

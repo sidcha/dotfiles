@@ -100,7 +100,7 @@ if (-e $rcFile) {
 	$email = $fields{'Email'};
 	close ($rc);
 } else {
-	print "Count not find .createrc in home directory\n\nExaple:\n";
+	print "Could not find .createrc in home directory\n\nExaple:\n";
 	print "Author: Siddharth Chandrasekaran\n";
 	print "License: Your licence text goes here\n\n";
 }

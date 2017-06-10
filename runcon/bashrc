@@ -52,7 +52,9 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
 fi
 
 #PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-PS1='[\u@\h \W]\$ '
+#PS1='\[\e]0;\u@\h: \W\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$'
+
+PS1='[\[\033[01;32m\]\u@\h\[\033[00m\]: \[\033[01;34m\]\W\[\033[00m\]]\$ '
 
 #use local bin if one exists
 if [ -d ~/bin ]; then
@@ -146,5 +148,11 @@ if [ -f ~/.env ]; then
 fi
 
 #sh $CFG_SCRIPT_DIR/scripts/greet.sh
+if [ -f /home/ubuntu/.rvm/scripts/rvm ]; then
+	source /home/ubuntu/.rvm/scripts/rvm
 
+	# Add RVM to PATH for scripting. Make sure this is the last PATH
+	# variable change.
+	export PATH="$PATH:$HOME/.rvm/bin"
+fi
 

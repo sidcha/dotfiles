@@ -1,5 +1,16 @@
 http://xmodulo.com/how-to-create-encrypted-disk-partition-on-linux.html
 
+Mount an encrypted volume
+-------------------------
+
+sudo blkid
+
+cryptsetup luksOpen /dev/sda2/ crypt_sda2
+
+mount /dev/mapper/crypt_sda2 /mnt/t0
+
+
+
 ****** How_to_create_an_encrypted_disk_partition_on_Linux ******
 
 Suppose you have a portable USB drive to use with your Linux system. If you are
