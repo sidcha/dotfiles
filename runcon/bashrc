@@ -138,6 +138,7 @@ alias pl='perl'
 alias gst='git status'
 alias create='create.pl'
 alias cim='vim'
+alias iface='ifconfig -s | sed 1d | cut -d" " -f1'
 
 # remove stty ^S binding
 stty stop ""
