@@ -19,10 +19,9 @@ DIR=`git rev-parse --show-toplevel`
 #done < $DIR/other/vim-plugin.list
 #cd - > /dev/null
 
-while IFS='' read -r line || [[ -n "$line" ]]; do
-	echo "Attempting to install $line"
-	sudo apt install -y $line
-done < $DIR/other/software.list
+if [ `uname -o` == 'Cygwin' ]; then
+	CYGWIN=true
+fi
 
 if [ ! -f ~/.env ]; then
 	echo "export CFG_SCRIPT_DIR=$DIR" > ~/.env
@@ -35,6 +34,7 @@ ln -f -s $DIR/runcon/screenrc ~/.screenrc
 ln -f -s $DIR/runcon/Xresources ~/.Xresources
 ln -f -s $DIR/runcon/Xinitrc ~/.Xinitrc
 ln -f -s $DIR/runcon/Xmodmap ~/.Xmodmap
+ln -f -s $DIR/runcon/minttyrc ~/.minttyrc
 echo "Done."
 
 echo -n "Adding custom scripts... "
@@ -46,5 +46,6 @@ echo -n "Resourcing bashrc... "
 . ~/.bashrc > /dev/null
 echo "Done."
 
-echo "All Done"
+echo -e "\nFollowing are your favorite tools make sure you install them!"
+cat $DIR/other/software.list
 
