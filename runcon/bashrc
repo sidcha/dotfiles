@@ -153,8 +153,8 @@ if [ -f ~/.env ]; then
 fi
 
 #sh $CFG_SCRIPT_DIR/scripts/greet.sh
-if [ -f /home/ubuntu/.rvm/scripts/rvm ]; then
-	source /home/ubuntu/.rvm/scripts/rvm
+if [ -f ~/.rvm/scripts/rvm ]; then
+	source ~/.rvm/scripts/rvm
 
 	# Add RVM to PATH for scripting. Make sure this is the last PATH
 	# variable change.
