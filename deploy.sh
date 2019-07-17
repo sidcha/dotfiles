@@ -19,10 +19,6 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 done < $DIR/other/vim-plugin.list
 cd - > /dev/null
 
-if [ `uname -o` == 'Cygwin' ]; then
-	CYGWIN=true
-fi
-
 if [ ! -f ~/.env ]; then
 	echo "export CFG_SCRIPT_DIR=$DIR" > ~/.env
 fi
