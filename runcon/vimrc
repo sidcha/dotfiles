@@ -1,11 +1,7 @@
+execute pathogen#infect()
+
 " Indent automatically depending on filetype
 filetype plugin indent on
-
-set nocompatible
-set backspace=2
-set autoindent
-set cindent
-set visualbell
 
 " Do not wrap text by default.
 set nowrap
@@ -18,10 +14,6 @@ syntax on
 
 " Change colorscheme from default to delek
 colorscheme desert
-
-" Use arduio syntax file for sketches.
-au BufRead,BufNewFile *.pde set filetype=arduino
-au BufRead,BufNewFile *.ino set filetype=arduino
 
 " Show partial commands in the last line of the screen
 set showcmd
@@ -38,8 +30,6 @@ set smartcase
 " Allow backspacing over autoindent, line breaks and start of insert action
 set backspace=indent,eol,start
 
-set path=.,/usr/include,/usr/local/include
-
 " Stop certain movements from always going to the first character of a line.
 " While this behaviour deviates from that of Vi, it does what most users
 " coming from other editors would expect.
@@ -49,42 +39,15 @@ set nostartofline
 " dialogue asking if you wish to save changed files.
 set confirm
 
-" Enable use of the mouse for all modes
-"set mouse=a
-
-" Set the command window height to 2 lines, to avoid many cases of having to
-" "press <Enter> to continue"
-" set cmdheight=2
-
 " To help solve the :Wq annoyance
 :command WQ wq
 :command Wq wq
 :command W w
 :command Q q
 
-" Alt + Shift + Up/Down to move a line up/down.
-:imap <A-s-up> <Esc>ddkP<Esc>a
-:imap <A-s-down> <Esc>ddp<Esc>a
-
-" Specify a tags file
-set tags=tags;
-
-" Page up and page down to retain cursor position
-nnoremap <silent> <PageUp> <C-U><C-U>
-vnoremap <silent> <PageUp> <C-U><C-U>
-inoremap <silent> <PageUp> <C-\><C-O><C-U><C-\><C-O><C-U>
-
-nnoremap <silent> <PageDown> <C-D><C-D>
-vnoremap <silent> <PageDown> <C-D><C-D>
-inoremap <silent> <PageDown> <C-\><C-O><C-D><C-\><C-O><C-D>
-
 " Fix horrible MatchParen colors. Stop making it look like the cursor... "
 " This line must come after the colorscheme line! "
 hi MatchParen cterm=bold ctermbg=none ctermfg=red gui=bold guifg=red guibg=red
-
-" Highlight color settings are reset if you change the colorscheme. "
-" So hit <F2> if you need to reload MatchParen colors after a change. "
-map <F2> :hi MatchParen cterm=bold ctermbg=none ctermfg=red gui=bold guifg=red guibg=red<CR>
 
 set statusline=\ %f%m%r%h%w\ %=%({%{&ff}\|%{(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\")}%k\|%Y}%)\ %([%l,%v][%o,%p%%]\ %)
 set laststatus=2
