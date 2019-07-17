@@ -1,6 +1,6 @@
 #!/bin/bash
 
-die {
+die () {
 	echo $1
 	exit 1
 }
@@ -8,6 +8,4 @@ die {
 git clone https://github.com/cbsiddharth/dotfiles.git $HOME/.files \
 		|| die "Could not clone the repository"
 
-cd $HOME/.file && ./deploy.sh
-
-echo "Installed successfully."
+cd $HOME/.files && ./deploy.sh && echo -e "\n\nInstalled successfully."
