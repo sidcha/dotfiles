@@ -91,6 +91,8 @@ extract () {
 	fi
 }
 
+termtitle() { printf "\033]0;$*\007"; }
+
 # move up 3 levels in direcotries with up 3
 up() { cd $(eval printf '../'%.0s {1..$1}); }
 

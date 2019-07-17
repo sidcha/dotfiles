@@ -35,6 +35,7 @@ ln -f -s $DIR/runcon/Xresources ~/.Xresources
 ln -f -s $DIR/runcon/Xinitrc ~/.Xinitrc
 ln -f -s $DIR/runcon/Xmodmap ~/.Xmodmap
 ln -f -s $DIR/runcon/minttyrc ~/.minttyrc
+ln -f -s $DIR/runcon/tmux.conf ~/.tmux.conf
 echo "Done."
 
 echo -n "Adding custom scripts... "
@@ -43,7 +44,7 @@ cp -f -r scripts/* ~/bin/
 echo "Done."
 
 echo -n "Resourcing bashrc... "
-. ~/.bashrc > /dev/null
+source ~/.bashrc
 echo "Done."
 
 echo -e "\nFollowing are your favorite tools make sure you install them!"
