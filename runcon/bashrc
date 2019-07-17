@@ -133,9 +133,9 @@ fi
 #fi
 
 # Aliases that makes life simple.
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
+alias ll='ls -alFG'
+alias la='ls -AG'
+alias l='ls -CFG'
 alias byebye='sudo shutdown -P now'
 alias py='python3.4'
 alias sl='ls'
@@ -152,14 +152,5 @@ export EDITOR="vim"
 
 if [ -f ~/.env ]; then
 	source ~/.env
-fi
-
-#sh $CFG_SCRIPT_DIR/scripts/greet.sh
-if [ -f ~/.rvm/scripts/rvm ]; then
-	source ~/.rvm/scripts/rvm
-
-	# Add RVM to PATH for scripting. Make sure this is the last PATH
-	# variable change.
-	export PATH="$PATH:$HOME/.rvm/bin"
 fi
 
