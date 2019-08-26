@@ -19,6 +19,16 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 done < $DIR/other/vim-plugin.list
 cd - > /dev/null
 
+mkdir -p ~/.vim/ftplugin
+
+cat >> ~/.vim/ftplugin/python.vim << EOF
+setlocal shiftwidth=4 softtabstop=4 expandtab
+EOF
+
+cat >> ~/.vim/ftplugin/html.vim << EOF
+setlocal shiftwidth=4 softtabstop=4 expandtab
+EOF
+
 if [ ! -f ~/.env ]; then
 	echo "export CFG_SCRIPT_DIR=$DIR" > ~/.env
 fi
@@ -36,6 +46,7 @@ echo "Done."
 
 git config --global init.templatedir "$DIR/git_template"
 git config --global alias.ctags '!.git/hooks/ctags'
+git config --global alias.last 'last = diff HEAD^ HEAD'
 git config --global user.name 'Siddharth Chandrasekaran'
 
 echo -n "Adding custom scripts... "
