@@ -46,7 +46,7 @@ echo "Done."
 
 git config --global init.templatedir "$DIR/git_template"
 git config --global alias.ctags '!.git/hooks/ctags'
-git config --global alias.last 'last = diff HEAD^ HEAD'
+git config --global alias.last 'diff HEAD^ HEAD'
 git config --global user.name 'Siddharth Chandrasekaran'
 
 echo -n "Adding custom scripts... "
