@@ -118,7 +118,7 @@ ascii () {
 alias ll='ls -alFG'
 alias la='ls -AG'
 alias l='ls -CFG'
-alias ls='ls -G'
+alias ls='ls --color=auto'
 alias byebye='sudo shutdown -P now'
 alias py='python3.4'
 alias sl='ls'
@@ -129,6 +129,7 @@ alias create='create.pl'
 alias cim='vim'
 alias iface='ifconfig -s | sed 1d | cut -d" " -f1'
 alias rm_lines='perl -ne '"'"'`rm -rf $_`'"'"' '
+alias ggrep='git grep -n'
 
 # remove stty ^S binding
 stty stop ""
