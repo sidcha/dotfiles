@@ -110,9 +110,14 @@ killscreens () {
 	screen -ls | grep Detached | cut -d. -f1 | awk '{print $1}' | xargs kill
 }
 
-ascii () {
+ascii() {
 	man ascii | grep --color=never -B3 -A1 '[A-F0-9]:'
 }
+
+gdiff() {
+	diff -u $@ | colordiff | less -FXR
+}
+
 
 # Aliases that makes life simple.
 alias ll='ls -alFG'
