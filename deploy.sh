@@ -47,6 +47,11 @@ echo "Done."
 git config --global init.templatedir "$DIR/git_template"
 git config --global alias.ctags '!.git/hooks/ctags'
 git config --global alias.last 'diff HEAD^ HEAD'
+# For github PRs
+git config --global alias.pr '!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f'
+git config --global alias.pr-clean '!git for-each-ref refs/heads/pr/* --format="%(refname)" | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done'
+# For stash/bitbucket
+git config --global alias.spr '!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull-requests/$1/from:pr/$1 && git checkout pr/$1; }; f'
 
 echo -n "Adding custom scripts... "
 mkdir -p ~/bin
