@@ -19,15 +19,6 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 done < $DIR/other/vim-plugin.list
 cd - > /dev/null
 
-mkdir -p ~/.vim/ftplugin
-
-cat >> ~/.vim/ftplugin/python.vim << EOF
-setlocal shiftwidth=4 softtabstop=4 expandtab
-EOF
-
-cat >> ~/.vim/ftplugin/html.vim << EOF
-setlocal shiftwidth=4 softtabstop=4 expandtab
-EOF
 
 if [ ! -f ~/.env ]; then
 	echo "export CFG_SCRIPT_DIR=$DIR" > ~/.env
@@ -35,6 +26,7 @@ fi
 
 echo -n "Adding simlinks for dotFiles... "
 ln -f -s $DIR/runcon/vimrc ~/.vimrc
+ln -f -s $DIR/runcom/vim_ftplugin ~/.vim/ftplugin
 ln -f -s $DIR/runcon/bashrc ~/.bashrc
 ln -f -s $DIR/runcon/screenrc ~/.screenrc
 ln -f -s $DIR/runcon/Xresources ~/.Xresources
