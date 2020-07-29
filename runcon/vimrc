@@ -72,6 +72,23 @@ let g:netrw_winsize = 20
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 
+" Removes trailing spaces
+function TrimWhiteSpace()
+  %s/\s*$//
+  ''
+endfunction
+
+" Map TrimWhiteSpace() to various places
+autocmd FileWritePre * call TrimWhiteSpace()
+autocmd FileAppendPre * call TrimWhiteSpace()
+autocmd FilterWritePre * call TrimWhiteSpace()
+autocmd BufWritePre * call TrimWhiteSpace()
+map <F2> :call TrimWhiteSpace()<CR>
+map! <F2> :call TrimWhiteSpace()<CR>
+
+" chars for showing white space in vim when in :list mode.
+set list listchars=tab:»·,trail:·
+
 " Spell Check Usage:
 " ]s, [s -- for next, previous
 " z= -- for suggestions
@@ -108,7 +125,7 @@ function FirstInPost (...) range
     " like To, From, Newgroups, ...
     if str == 'Subject: '
       execute cur
-      :start!
+      :start! " enter edit mode
       break
     endif
     " We have reached the end of the headers.
@@ -123,7 +140,7 @@ function FirstInPost (...) range
         let cur = cur + 1
       endif
       execute cur
-      :start
+      ":start " enter edit mode
       break
     endif
     let cur = cur + 1

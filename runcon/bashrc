@@ -137,6 +137,9 @@ alias ggrep='git grep -n'
 
 # remove stty ^S binding
 stty stop ""
+stty discard undef
+stty flush undef
+
 export EDITOR="vim"
 
 if [ -f ~/.env ]; then

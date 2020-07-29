@@ -34,6 +34,8 @@ ln -f -s $DIR/runcon/Xinitrc ~/.Xinitrc
 ln -f -s $DIR/runcon/Xmodmap ~/.Xmodmap
 ln -f -s $DIR/runcon/minttyrc ~/.minttyrc
 ln -f -s $DIR/runcon/tmux.conf ~/.tmux.conf
+ln -f -s $DIR/runcon/mbsyncrc ~/.mbsyncrc
+ln -f -s $DIR/runcon/msmtprc ~/.msmtprc
 echo "Done."
 
 git config --global init.templatedir "$DIR/git_template"

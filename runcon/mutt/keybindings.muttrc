@@ -1,0 +1,103 @@
+# Use :exec what-key to see what key is being pressed 
+
+set editor=vim
+
+# Navigation
+# ----------------------------------------------------
+
+bind generic             z         noop
+bind index,pager,attach  g         noop
+bind index,pager         d         noop
+bind index,pager         c         noop
+bind generic,pager       t         noop
+
+bind pager		gg		top
+bind pager		G		bottom
+bind pager		k		previous-line
+bind pager		<up>		previous-line
+bind pager		<down>		next-line
+bind pager		j		next-line
+bind pager		<Left>		exit
+bind pager		h		exit
+bind pager		<Right>		next-line
+bind pager		]		previous-entry
+bind pager		[		next-entry
+
+bind index		<Left>		noop
+bind index		gg		first-entry
+bind index		G		last-entry
+bind index		j		next-entry
+bind index		k		previous-entry
+bind index		<Right>		select-entry
+bind index		[		previous-thread
+bind index		]		next-thread
+bind index		.		limit
+
+bind generic,index,pager \Cf		next-page
+bind generic,index,pager \Cb		previous-page
+bind generic,index,pager \Cd		half-down
+bind generic,index,pager \Cu		half-up
+
+bind generic		zt		current-top
+bind generic		zz		current-middle
+bind generic		zb		current-bottom
+bind index		za		collapse-thread
+bind index		zA		collapse-all
+bind index		<Backtab>	previous-new-then-unread
+bind index,pager	N		search-opposite
+
+bind pager,attach	H		display-toggle-weed
+bind pager		l		view-attachments
+bind attach,compose	l		view-attach
+bind attach		h		exit
+bind compose		l		view-attach
+
+# Actions
+# ----------------------------------------------------
+
+bind  index,pager	a		group-reply
+bind  index,pager	dd		delete-message
+bind  index,pager	dat		delete-thread
+bind  generic		tt		tag-entry
+bind  index		tat		tag-thread
+bind  pager		tt		tag-message
+macro pager		tat		"<exit><mark-message>q<enter><tag-thread>'q<display-message>"    "tag-thread"
+
+# Command Line
+# ----------------------------------------------------
+
+bind editor		\Cp		history-up
+bind editor		\Cn		history-down
+bind index		<Return>	display-message
+bind index		<Enter>		display-message
+
+# Relative mailbox bindings
+# ----------------------------------------------------
+
+macro index		\Ci		"<change-folder> =inbox"<enter>		"goto Folder: Inbox"
+macro index		\Cs		"<change-folder> =sent"<enter>		"goto Folder: Sent"
+macro index		\Ct		"<change-folder> =trash"<enter>		"goto Folder: Trash"
+macro index		\Ca		"<change-folder> =archive"<enter>	"goto Folder: Archive"
+macro index,pager	\\		"<change-folder>?"			"open Folder"
+
+# Sidebar keybindings
+# ----------------------------------------------------
+
+# setting "stty discard undef" or "stty flush undef" in bashrc is needed
+# to use Ctrl+o as it is used for flow control by ther terminal.
+bind index,pager	\Cp	sidebar-prev	# Ctrl+p - Previous Mailbox
+bind index,pager	\Cn	sidebar-next	# Ctrl+n - Next Mailbox
+bind index,pager	\Co	sidebar-open	# Ctrl+o - Open Highlighted Mailbox
+
+# mbox key-bindings
+
+folder-hook 'ej_siddharth'		'source ~/Mail/config/accounts/ej_siddharth.muttrc'
+folder-hook 'gmail_sidcha.lists'	'source ~/Mail/config/accounts/gmail_sidcha.lists.muttrc'
+folder-hook 'vmware'			'source ~/Mail/config/accounts/gmail_sidcha.vmware.muttrc'
+
+macro index <f2> '<sync-mailbox><enter-command>source ~/Mail/config/accounts/ej_siddharth.muttrc<enter><change-folder>!<enter>'
+macro index <f3> '<sync-mailbox><enter-command>source ~/Mail/config/accounts/gmail_sidcha.lists.muttrc<enter><change-folder>!<enter>'
+macro index <f4> '<sync-mailbox><enter-command>source ~/Mail/config/accounts/gmail_sidcha.lists.muttrc<enter><change-folder>!<enter>'
+
+macro index A ":set confirmappend=no delete=yes\n<tag-prefix><save-message>=archive\n<sync-mailbox>:set confirmappend=yes delete=ask-yes\n"
+#macro index A ":set confirmappend=no delete=yes\n<save-message>=archive\n<sync-mailbox>:set confirmappend=yes delete=ask-yes\n"

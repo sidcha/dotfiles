@@ -1,0 +1,83 @@
+Create Both
+Expunge Both
+Remove Both
+Sync All
+SyncState *
+
+# IMAPAccount sidcha.vmware@gmail.com
+# ...
+
+IMAPAccount gmail_sidcha.vmware
+Host imap.gmail.com
+User sidcha.vmware@gmail.com
+PassCmd "security find-internet-password -s imap.gmail.com -a sidcha.vmware@gmail.com -w"
+SSLType IMAPS
+AuthMechs LOGIN
+# Throttle mbsync so we don't go over gmail's quota: OVERQUOTA error would
+# eventually be returned otherwise. For more details see:
+# https://sourceforge.net/p/isync/mailman/message/35458365/
+# PipelineDepth 50
+
+IMAPStore gmail_sidcha.vmware-remote
+Account gmail_sidcha.vmware
+
+MaildirStore gmail_sidcha.vmware-local
+Path ~/Mail/mailbox/gmail_sidcha.vmware/
+Inbox ~/Mail/mailbox/gmail_sidcha.vmware/inbox
+
+Channel gmail_sidcha.vmware-inbox
+Master :gmail_sidcha.vmware-remote:
+Slave :gmail_sidcha.vmware-local:
+Patterns "INBOX"
+
+Channel gmail_sidcha.vmware-sent
+Master :gmail_sidcha.vmware-remote:"[Gmail]/Sent Mail"
+Slave :gmail_sidcha.vmware-local:sent
+
+Channel gmail_sidcha.vmware-trash
+Master :gmail_sidcha.vmware-remote:"[Gmail]/Trash"
+Slave :gmail_sidcha.vmware-local:trash
+
+Group gmail_sidcha.vmware
+Channel gmail_sidcha.vmware-inbox
+Channel gmail_sidcha.vmware-sent
+Channel gmail_sidcha.vmware-trash
+
+# IMAPAccount EmbedJournal.com
+# ...
+
+IMAPAccount ej_siddharth
+Host imap.zoho.com
+User siddharth@embedjournal.com
+PassCmd "security find-internet-password -s smtp.zoho.com -a siddharth@embedjournal.com -w"
+SSLType IMAPS
+AuthMechs LOGIN
+
+IMAPStore ej_siddharth-remote
+Account ej_siddharth
+
+MaildirStore ej_siddharth-local
+Path ~/Mail/mailbox/ej_siddharth/
+Inbox ~/Mail/mailbox/ej_siddharth/inbox
+
+Channel ej_siddharth-inbox
+Master :ej_siddharth-remote:"Inbox"
+Slave :ej_siddharth-local:inbox
+
+Channel ej_siddharth-archive
+Master :ej_siddharth-remote:"Archive"
+Slave :ej_siddharth-local:archive
+
+Channel ej_siddharth-sent
+Master :ej_siddharth-remote:"Sent"
+Slave :ej_siddharth-local:sent
+
+Channel ej_siddharth-trash
+Master :ej_siddharth-remote:"Trash"
+Slave :ej_siddharth-local:trash
+
+Group ej_siddharth
+Channel ej_siddharth-inbox
+Channel ej_siddharth-archive
+Channel ej_siddharth-sent
+Channel ej_siddharth-trash
