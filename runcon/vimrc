@@ -6,7 +6,7 @@ filetype plugin indent on
 " Do not wrap text by default.
 set nowrap
 
-" Turn on line numbering. Turn it off with "set nonu" 
+" Turn on line numbering. Turn it off with "set nonu"
 set number
 
 set tags^=./.git/tags
@@ -85,9 +85,6 @@ autocmd FilterWritePre * call TrimWhiteSpace()
 autocmd BufWritePre * call TrimWhiteSpace()
 map <F2> :call TrimWhiteSpace()<CR>
 map! <F2> :call TrimWhiteSpace()<CR>
-
-" chars for showing white space in vim when in :list mode.
-set list listchars=tab:»·,trail:·
 
 " Spell Check Usage:
 " ]s, [s -- for next, previous
