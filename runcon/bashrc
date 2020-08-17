@@ -115,9 +115,11 @@ ascii() {
 }
 
 gdiff() {
-	diff -u $@ | colordiff | less -FXR
+	diff -Naurp $@ | perl -pe '
+		if (/^\+\+\+ /) { $f="b" } else { $f="a" }
+		s!^(---|\+\+\+)\s+(\S*?/)?(\S+)\s.*$!\1 $f/\3!;
+	' | colordiff | less -FXR
 }
-
 
 # Aliases that makes life simple.
 alias ll='ls -alFG'

@@ -59,4 +59,3 @@ echo "Done."
 echo -e "\nFollowing are your favorite tools make sure you install them!"
 cat $DIR/other/software.list
 
-

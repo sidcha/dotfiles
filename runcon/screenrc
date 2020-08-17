@@ -11,6 +11,8 @@ nonblock on
 vbell on
 msgwait 3
 
+escape ^Bb
+
 defscrollback 10000
 
 # Full-screen programs use a terminal feature called "alternate screen", which has a separate screen
