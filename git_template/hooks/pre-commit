@@ -1,0 +1,26 @@
+#!/bin/sh
+
+if [[ $WORK_EMAIL == "" ]]; then
+	exit 0; # no work email configured allow everything!
+fi;
+
+PWD=`pwd`
+EMAIL=$(git config user.email)
+
+if [[ $PWD == *"/$USER/work/"* ]]; then
+	if [[ $EMAIL != $WORK_EMAIL ]]; then
+		echo "email not configured to office email in work directory";
+		echo "run:"
+		echo '   git config user.email "$WORK_EMAIL"'
+		echo ''
+		exit 1; # abstruct the commit
+	fi;
+else
+	if [[ $EMAIL == $WORK_EMAIL ]]; then
+		echo "office email in non-work commit";
+		echo "run:"
+		echo '   git config user.email "$PERSONAL_EMAIL"'
+		echo ''
+		exit 1; # abstruct the commit
+	fi;
+fi;
