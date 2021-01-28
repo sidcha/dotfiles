@@ -49,6 +49,14 @@ git config --global alias.pr-clean '!git for-each-ref refs/heads/pr/* --format="
 # For stash/bitbucket
 git config --global alias.spr '!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull-requests/$1/from:pr/$1 && git checkout pr/$1; }; f'
 
+
+touch ~/.ssh/config
+if ! grep -qe 'Include .*/\.files/config/ssh_config' ~/.ssh/config; then
+	echo "Adding default ssh_config."
+	echo -e "Include $DIR/config/ssh_config\n" | cat - ~/.ssh/config > ~/.ssh/config.tmp && \
+		mv ~/.ssh/config.tmp ~/.ssh/config
+fi
+
 echo -n "Adding custom scripts... "
 mkdir -p ~/bin
 cp -f -r scripts/* ~/bin/
