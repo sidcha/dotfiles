@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [[ $WORK_EMAIL == "" ]]; then
 	exit 0; # no work email configured allow everything!
@@ -7,7 +7,7 @@ fi;
 PWD=`pwd`
 EMAIL=$(git config user.email)
 
-if [[ $PWD == *"/$USER/work/"* ]]; then
+if [[ $PWD == $HOME/work/* ]]; then
 	if [[ $EMAIL != $WORK_EMAIL ]]; then
 		echo "email not configured to office email in work directory";
 		echo "run:"

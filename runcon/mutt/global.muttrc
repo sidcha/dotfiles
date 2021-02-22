@@ -1,85 +1,13 @@
 set sendmail = "/usr/local/bin/msmtp"
-set use_from = yes
-set envelope_from = yes
-set wait_key = no        # shut up, mutt
-set delete               # don't ask, just do
-unset confirmappend      # don't ask, just do!
-set quit                 # don't ask, just do!!
-unset mark_old           # read/new is good enough for me
-set beep_new             # bell on new mails
-set pipe_decode          # strip headers and eval mimes when piping
-set thorough_search      # strip headers and eval mimes before searching
-set send_charset = "us-ascii:utf-8"
-set edit_headers = yes		# show headers in the email compose
-set autoedit = yes 		# go directly to email.
-set strict_threads = yes
-
-# Reading
-set pager_index_lines = 8
-set pager="builtin" # use less or builtin
-set pager_context=5
-
-# Composing
-set fcc_attach
-unset mime_forward
-set forward_quote
-set include
-set forward_format = "FW: %s"
-
-# Headers infos
-ignore *                               # first, ignore all headers
-unignore from: to: cc: date: subject:  # then, show only these
-hdr_order from: to: cc: date: subject: # and in this order<Paste>
-
-# Prevent pager from moving to to the next message when you are at the end 
-# of a message and invoke the <next-page> function
-set pager_stop = yes 	
-
-# http://joeclark.org/ffaq.html
-#set text_flowed=yes
-# following setting doesn't work with text_flowed format.
-bind editor '> ' quote-char  # default is '>' which looks ugly.
-
-set smileys="(>From )|(:[-^]?[][)(><|/DPp])"
-set wrap = 120             # Softwrap emails at 120
-set move = no              # Don't move read mail to All Mail
-set help = no              # Don't show help bar
-set sleep_time = 0         # Don't wait to switch mailboxes
-set sort = reverse-threads # Read top-down mail instead of bottom-up
-set copy = yes             # Keep a copy of sent mails
-
-macro index F "!mbsync -a^M" "Update through mbsync"
-bind index,pager B sidebar-toggle-visible
-
-# Adress book handling
 set alias_file = ~/Mail/alias_file
-set sort_alias=alias
-set reverse_alias=yes
 source $alias_file
-
-# Text view first
-set pager_stop="yes"
-set smart_wrap="yes"
-alternative_order text/plain
-auto_view text/html
-
-# Sidebar settings
-#set sidebar_visible
-set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
-set sidebar_width = 25                  # Plenty of space
-set sidebar_divider_char = '│'          # Pretty line-drawing character
-set mail_check_stats
-set sidebar_short_path                  # Shorten mailbox names
-set sidebar_delim_chars="/"             # Delete everything up to the last / character
-set sidebar_folder_indent               # Indent folders whose names we've shortened
-set sidebar_relative_shortpath_indent
-set sidebar_indent_string="  "          # Indent with two spaces
 
 # email headers
 set header_cache=~/Mail/cache/headers
 set message_cachedir=~/Mail/cache/bodies
 
 # Other config files
+source ~/Mail/config/common.muttrc
 source ~/Mail/config/keybindings.muttrc
 source ~/Mail/config/colors.muttrc
 
