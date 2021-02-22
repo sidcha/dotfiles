@@ -1,9 +1,56 @@
+Create Both
+Expunge Both
+Remove Both
+Sync All
+SyncState *
+
+# IMAPAccount sidcha91@gmail.com
+# ...
+
+IMAPAccount gmail_sidcha91
+Host imap.gmail.com
+User sidcha91@gmail.com
+PassCmd "security find-internet-password -s imap.gmail.com -a sidcha91@gmail.com -w"
+SSLType IMAPS
+AuthMechs LOGIN
+# Throttle mbsync so we don't go over gmail's quota: OVERQUOTA error would
+# eventually be returned otherwise. For more details see:
+# https://sourceforge.net/p/isync/mailman/message/35458365/
+# PipelineDepth 50
+
+IMAPStore gmail_sidcha91-remote
+Account gmail_sidcha91
+
+MaildirStore gmail_sidcha91-local
+Path ~/Mail/mailbox/gmail_sidcha91/
+Inbox ~/Mail/mailbox/gmail_sidcha91/inbox
+
+Channel gmail_sidcha91-inbox
+Master :gmail_sidcha91-remote:
+Slave :gmail_sidcha91-local:
+Patterns "INBOX"
+
+Channel gmail_sidcha91-sent
+Master :gmail_sidcha91-remote:"[Gmail]/Sent Mail"
+Slave :gmail_sidcha91-local:sent
+
+Channel gmail_sidcha91-trash
+Master :gmail_sidcha91-remote:"[Gmail]/Trash"
+Slave :gmail_sidcha91-local:trash
+
+Group gmail_sidcha91
+Channel gmail_sidcha91-inbox
+Channel gmail_sidcha91-sent
+Channel gmail_sidcha91-trash
+
 # IMAPAccount EmbedJournal.com
 # ...
 
 IMAPAccount ej_siddharth
 Host imap.zoho.com
 User siddharth@embedjournal.com
+# set Keychain password with:
+# security add-internet-password -l siddharth@embedjournal.com -s smtp.zoho.com -r smtp -a siddharth@embedjournal.com -w "abc123"
 PassCmd "security find-internet-password -s smtp.zoho.com -a siddharth@embedjournal.com -w"
 SSLType IMAPS
 AuthMechs LOGIN
