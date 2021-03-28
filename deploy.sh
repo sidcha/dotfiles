@@ -2,7 +2,7 @@
 
 DIR=`git rev-parse --show-toplevel`
 
-mkdir -p ~/.vim ~/.vim/autoload ~/.vim/bundle ~/.vim/spell
+mkdir -p ~/.vim ~/.vim/autoload ~/.vim/bundle ~/.vim/spell ~/.vim/syntax
 if [ ! -f ~/.vim/autoload/pathogen.vim ]; then
 	echo "Downloading pathogen for vim"
 	curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
@@ -20,6 +20,11 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 done < $DIR/other/vim-plugin.list
 cd - > /dev/null
 
+cat > ~/.vim/syntax/c.vim < ---
+syn match       cType "\<[a-zA-Z_][a-zA-Z0-9_]*_[t]\>"
+syn keyword     cType i8 u8 i16 u16 i32 u32 i64 u64
+syn keyword     cStatement fallthrough
+---
 
 if [ ! -f ~/.env ]; then
 	echo "export CFG_SCRIPT_DIR=$DIR" > ~/.env
@@ -40,6 +45,7 @@ ln -f -s $DIR/runcon/msmtprc ~/.msmtprc
 echo "Done."
 
 git config --global init.templatedir "$DIR/git_template"
+git config --global rebase.autoSquash true
 git config --global alias.ctags '!.git/hooks/ctags'
 git config --global alias.last 'diff HEAD^ HEAD'
 git config --global alias.su 'submodule update --recursive'
