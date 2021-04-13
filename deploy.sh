@@ -1,6 +1,7 @@
 #!/bin/bash
 
-DIR=`git rev-parse --show-toplevel`
+DIR=$(realpath "$(dirname "$(readlink -f "$0")")")
+pushd ${DIR} 2>&1 > /dev/null
 
 mkdir -p ~/.vim ~/.vim/autoload ~/.vim/bundle ~/.vim/spell ~/.vim/syntax
 if [ ! -f ~/.vim/autoload/pathogen.vim ]; then
@@ -54,7 +55,7 @@ git config --global alias.pr '!f() { git fetch -fu ${2:-$(git remote |grep ^upst
 git config --global alias.pr-clean '!git for-each-ref refs/heads/pr/* --format="%(refname)" | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done'
 # For stash/bitbucket
 git config --global alias.spr '!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull-requests/$1/from:pr/$1 && git checkout pr/$1; }; f'
-
+git config --global alias.fixup '!f() { git commit --all --fixup=$1; }; f'
 
 touch ~/.ssh/config
 if ! grep -qe 'Include .*/\.files/config/ssh_config' ~/.ssh/config; then
