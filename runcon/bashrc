@@ -138,7 +138,7 @@ alias create='create.pl'
 alias cim='vim'
 alias iface='ifconfig -s | sed 1d | cut -d" " -f1'
 alias rm_lines='perl -ne '"'"'`rm -rf $_`'"'"' '
-alias ggrep='git grep -n'
+alias gg='git grep -n'
 alias syslog='sudo tail -f /var/log/kern.log | perl -pe '"'"'s/.*kernel: \[\d+\.\d+\] //;'"'"''
 
 # git format patch numbered
