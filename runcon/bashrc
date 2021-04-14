@@ -57,7 +57,10 @@ fi
 #PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 #PS1='\[\e]0;\u@\h: \W\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$'
 
-PS1='[ \[\033[01;32m\]\u@\h\[\033[00m\]: \[\033[01;34m\]\W\[\033[00m\]$(__git_ps1) ]\$ '
+name="\h"
+[ -f ~/.name ] && name=$(cat ~/.name)
+
+PS1='[ \[\033[01;32m\]\u@${name}\[\033[00m\]: \[\033[01;34m\]\W\[\033[00m\]$(__git_ps1) ]\$ '
 
 #use local bin if one exists
 if [ -d ~/bin ]; then
