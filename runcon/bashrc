@@ -37,7 +37,7 @@ fi
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls -G'
+    alias ls='ls --color=auto'
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
     alias gcc='gcc -Wall'
@@ -123,7 +123,7 @@ gdiff() {
 
 # Aliases that makes life simple.
 alias ll='ls -alFG'
-alias ls='ls -G'
+#alias ls='ls -G'
 #alias la='ls -AG'
 #alias l='ls -CFG'
 alias byebye='sudo shutdown -P now'
@@ -138,7 +138,13 @@ alias create='create.pl'
 alias cim='vim'
 alias iface='ifconfig -s | sed 1d | cut -d" " -f1'
 alias rm_lines='perl -ne '"'"'`rm -rf $_`'"'"' '
-alias ggrep='git grep -n'
+alias gg='git grep -n'
+alias syslog='sudo tail -f /var/log/kern.log | perl -pe '"'"'s/.*kernel: \[\d+\.\d+\] //;'"'"''
+
+# git format patch numbered
+alias gfp_num='git format-patch --numbered --numbered-files'
+# get commit message from git-format-patch files.
+alias gfp_cmsg='perl -ne '"'"'last if (/^---$/); $p=1 if (s/^Subject: (\[.+\] )?//); print if $p'"'"''
 
 # remove stty ^S binding
 stty stop ""
