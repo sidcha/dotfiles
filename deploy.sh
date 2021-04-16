@@ -21,9 +21,11 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 done < $DIR/other/vim-plugin.list
 cd - > /dev/null
 
+
 cat > ~/.vim/syntax/c.vim < ---
 syn match       cType "\<[a-zA-Z_][a-zA-Z0-9_]*_[t]\>"
 syn keyword     cType i8 u8 i16 u16 i32 u32 i64 u64
+syn keyword     cType __i8 __u8 __i16 __u16 __i32 __u32 __i64 __u64
 syn keyword     cStatement fallthrough
 ---
 
@@ -45,6 +47,7 @@ ln -f -s $DIR/runcon/mbsyncrc ~/.mbsyncrc
 ln -f -s $DIR/runcon/msmtprc ~/.msmtprc
 echo "Done."
 
+git config --global user.name "Siddharth Chandrasekaran"
 git config --global init.templatedir "$DIR/git_template"
 git config --global rebase.autoSquash true
 git config --global alias.ctags '!.git/hooks/ctags'
