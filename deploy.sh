@@ -17,25 +17,22 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 	if [ ! -d $dir_name ]; then
 		echo -n "Cloning plugin $dir_name."
 		git clone $line
+	else
+		git -C $dir_name pull origin master
 	fi
 done < $DIR/other/vim-plugin.list
 cd - > /dev/null
-
-
-cat > ~/.vim/syntax/c.vim < ---
-syn match       cType "\<[a-zA-Z_][a-zA-Z0-9_]*_[t]\>"
-syn keyword     cType i8 u8 i16 u16 i32 u32 i64 u64
-syn keyword     cType __i8 __u8 __i16 __u16 __i32 __u32 __i64 __u64
-syn keyword     cStatement fallthrough
----
 
 if [ ! -f ~/.env ]; then
 	echo "export CFG_SCRIPT_DIR=$DIR" > ~/.env
 fi
 
+rm -rf ~/.vim/syntax ~/.vim/ftplugin
+
 echo -n "Adding simlinks for dotFiles... "
-ln -f -s $DIR/runcon/vimrc ~/.vimrc
-ln -f -s $DIR/runcom/vim_ftplugin ~/.vim/ftplugin
+ln -f -s $DIR/runcon/vim/vimrc ~/.vimrc
+ln -f -s $DIR/runcon/vim/ftplugin ~/.vim/ftplugin
+ln -f -s $DIR/runcon/vim/syntax ~/.vim/syntax
 ln -f -s $DIR/runcon/bashrc ~/.bashrc
 ln -f -s $DIR/runcon/screenrc ~/.screenrc
 ln -f -s $DIR/runcon/Xresources ~/.Xresources
