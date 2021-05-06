@@ -123,6 +123,11 @@ gdiff() {
 	' | colordiff | less -FXR
 }
 
+dissac() {
+	OD=${OBJDUMP:-objdump}
+	${OD} -M Intel -D $1 | c++filt | less
+}
+
 # Aliases that makes life simple.
 if [[ "$(uname)" == "Linux" ]]; then
 	alias ls='ls --color=auto'

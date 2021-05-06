@@ -9,6 +9,9 @@ set nowrap
 " Turn on line numbering. Turn it off with "set nonu"
 set number
 
+" Set left-margin to one char width (looks better with :se nonu)
+set foldcolumn=1
+
 set tags^=./.git/tags
 
 " Set syntax on
@@ -60,7 +63,11 @@ set confirm
 " This line must come after the colorscheme line! "
 hi MatchParen cterm=bold ctermbg=none ctermfg=red gui=bold guifg=red guibg=red
 
-set statusline=\ %f%m%r%h%w\ %=%({%{&ff}\|%{(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\")}%k\|%Y}%)\ %([%l,%v][%o,%p%%]\ %)
+" Section wise status line
+set statusline=\ %f%m%r%h%w "" file name and flags
+set statusline+=\ %=%({%{&ff}\|%{(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\")}%k\|%Y}%) "" Type|Enc|Fmt
+set statusline+=\ [TS:%{&ts}\|SW:%{&sw}\|ET:%{&et}] "" File WS settings [tabstop|shiftwidth|expandtabs]
+set statusline+=\ %([%l,%v][%o,%p%%]\ %) "" File stats [line,chars][offset,percentage]
 set laststatus=2
 
 " Hit enter in the file browser to open the selected
@@ -97,7 +104,7 @@ set spelllang=en_us
 set spellfile=$HOME/.vim/spell/en.utf-8.add
 
 " Set wraps when composing emails
-au BufRead,BufNewFile *.mail setlocal textwidth=80
+au BufRead,BufNewFile *.mail *patch *.txt setlocal textwidth=72
 
 " Tip: Place the cursor in the optimal position, editing email messages.
 " Author: Davide Alberani
@@ -168,3 +175,14 @@ endif
 
 " Go to middle of a line
 map gm :call cursor(0, virtcol('$')/2)<CR>
+
+" Color the line grey
+highlight LineNr ctermfg=grey
+
+" Physical Page-Up and Page-Down work as Ctrl-U/Ctrl-D
+nnoremap <silent> <PageUp> <C-U>
+vnoremap <silent> <PageUp> <C-U>
+inoremap <silent> <PageUp> <C-\><C-O><C-U>
+nnoremap <silent> <PageDown> <C-D>
+vnoremap <silent> <PageDown> <C-D>
+inoremap <silent> <PageDown> <C-\><C-O><C-D>
