@@ -79,7 +79,7 @@ echo "Done."
 cat <<----
 
 Following are your favorite tools make sure you install them!"
-cat $DIR/other/software.list
+$(cat $DIR/other/software.list)
 
 Also install parcellite and set the following:
 	- Use copy (Ctrl-C)
