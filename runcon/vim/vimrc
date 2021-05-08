@@ -20,11 +20,20 @@ syntax on
 " Automatically save before commands like :next and :make
 set autowrite
 
-" Change colorscheme from default to delek
-colorscheme desert
+" seoul256 (dark):
+"   Range:   233 (darkest) ~ 239 (lightest)
+"   Default: 237
+let g:seoul256_background = 234
 
-" Uncomment the following to have Vim jump to the last position when
-" reopening a file
+" seoul256 (light):
+"   Range:   252 (darkest) ~ 256 (lightest)
+"   Default: 253
+let g:seoul256_light_background = 253
+
+" https://github.com/junegunn/seoul256.vim
+colorschem seoul256
+
+" jump to the last position when reopening a file
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
@@ -61,7 +70,7 @@ set confirm
 
 " Fix horrible MatchParen colors. Stop making it look like the cursor... "
 " This line must come after the colorscheme line! "
-hi MatchParen cterm=bold ctermbg=none ctermfg=red gui=bold guifg=red guibg=red
+"hi MatchParen cterm=bold ctermbg=none ctermfg=red gui=bold guifg=red guibg=red
 
 " Section wise status line
 set statusline=\ %f%m%r%h%w "" file name and flags
@@ -69,6 +78,7 @@ set statusline+=\ %=%({%{&ff}\|%{(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &
 set statusline+=\ [TS:%{&ts}\|SW:%{&sw}\|ET:%{&et}] "" File WS settings [tabstop|shiftwidth|expandtabs]
 set statusline+=\ %([%l,%v][%o,%p%%]\ %) "" File stats [line,chars][offset,percentage]
 set laststatus=2
+hi StatusLine ctermbg=250 ctermfg=236
 
 " Hit enter in the file browser to open the selected
 " file with :vsplit to the right of the browser.
@@ -106,60 +116,6 @@ set spellfile=$HOME/.vim/spell/en.utf-8.add
 " Set wraps when composing emails
 au BufRead,BufNewFile *.mail *patch *.txt setlocal textwidth=72
 
-" Tip: Place the cursor in the optimal position, editing email messages.
-" Author: Davide Alberani
-" Version: 0.1
-" Date: 24 May 2006
-" Description: if you use Vim to edit your emails, having to manually
-" move the cursor to the right position can be quite annoying.
-" This command will place the cursor (and enter insert mode)
-" in the more logical place: at the Subject header if it's
-" empty or at the first line of the body (also taking
-" care of the attribution, to handle replies messages).
-" Usage: I like to call the Fip command by setting the command that is used
-" by my mail reader (mutt) to execute Vim. E.g. in my muttrc I have:
-" set editor="vim -c ':Fip'"
-" Obviously you can prefer to call it using an autocmd:
-" " Modify according to your needs and put this in your vimrc:
-" au BufRead mutt* :Fip
-" Hints: read the comments in the code and modify it according to your needs.
-" Keywords: email, vim, edit, reply, attribution, subject, cursor, place.
-
-" Function used to identify where to place the cursor, editing an email.
-function FirstInPost (...) range
-  let cur = a:firstline
-  while cur <= a:lastline
-    let str = getline(cur)
-    " Found an _empty_ subject in the headers.
-    " NOTE: you can put similar checks to handle other empty headers
-    " like To, From, Newgroups, ...
-    if str == 'Subject: '
-      execute cur
-      :start! " enter edit mode
-      break
-    endif
-    " We have reached the end of the headers.
-    if str == ''
-      let cur = cur + 1
-      " If the first line of the body is an attribution, put
-      " the cursor _after_ that line, otherwise the cursor is
-      " leaved right after the headers (assuming we're writing
-      " a new mail, and not editing a reply).
-      " NOTE: modify the regexp to match your mail client's attribution!
-      if strlen(matchstr(getline(cur), '^On.*wrote:.*')) > 0
-        let cur = cur + 1
-      endif
-      execute cur
-      ":start " enter edit mode
-      break
-    endif
-    let cur = cur + 1
-  endwhile
-endfunction
-
-" Command to be called.
-com Fip :set tw=0<Bar>:%call FirstInPost()
-
 " Tell vim to remember certain things when we exit
 "  '10  :  marks will be remembered for up to 10 previously edited files
 "  "100 :  will save up to 100 lines for each register
@@ -176,9 +132,6 @@ endif
 " Go to middle of a line
 map gm :call cursor(0, virtcol('$')/2)<CR>
 
-" Color the line grey
-highlight LineNr ctermfg=grey
-
 " Physical Page-Up and Page-Down work as Ctrl-U/Ctrl-D
 nnoremap <silent> <PageUp> <C-U>
 vnoremap <silent> <PageUp> <C-U>
@@ -186,3 +139,7 @@ inoremap <silent> <PageUp> <C-\><C-O><C-U>
 nnoremap <silent> <PageDown> <C-D>
 vnoremap <silent> <PageDown> <C-D>
 inoremap <silent> <PageDown> <C-\><C-O><C-D>
+
+" Create swp files in /tmp/
+set backupdir=/tmp//,.
+set directory=/tmp//,.

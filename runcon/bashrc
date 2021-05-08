@@ -163,6 +163,7 @@ stty flush undef
 
 export EDITOR="vim"
 
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 [ -f /usr/share/git-core/contrib/completion/git-prompt.sh ] && . /usr/share/git-core/contrib/completion/git-prompt.sh
 [ -f /usr/share/bash-completion/completions/git ] && source /usr/share/bash-completion/completions/git
 [ -f ~/.env ] && source ~/.env

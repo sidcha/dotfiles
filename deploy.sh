@@ -76,6 +76,12 @@ echo -n "Resourcing bashrc... "
 source ~/.bashrc
 echo "Done."
 
+if [[ ! -d "$HOME/.fzf" ]]; then
+	echo "Setting up fzf..."
+	git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
+	~/.fzf/install
+fi
+
 cat <<----
 
 Following are your favorite tools make sure you install them!"
