@@ -3,6 +3,12 @@
 DIR=$(realpath "$(dirname "$(readlink -f "$0")")")
 pushd ${DIR} 2>&1 > /dev/null
 
+if [[ -z "$(git diff --quiet --exit-code || echo +)" ]]; then
+	git pull origin master
+else
+	echo "Working tree is dirty! Will not git pull"
+fi
+
 mkdir -p ~/.vim ~/.vim/autoload ~/.vim/bundle ~/.vim/spell ~/.vim/syntax
 if [ ! -f ~/.vim/autoload/pathogen.vim ]; then
 	echo "Downloading pathogen for vim"
