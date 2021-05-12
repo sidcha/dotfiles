@@ -98,11 +98,7 @@ function TrimWhiteSpace()
   ''
 endfunction
 
-" Map TrimWhiteSpace() to various places
-"autocmd FileWritePre * call TrimWhiteSpace()
-"autocmd FileAppendPre * call TrimWhiteSpace()
-"autocmd FilterWritePre * call TrimWhiteSpace()
-"autocmd BufWritePre * call TrimWhiteSpace()
+" Function key maps
 map <F2> :call TrimWhiteSpace()<CR>
 map! <F2> :call TrimWhiteSpace()<CR>
 
@@ -112,6 +108,7 @@ map! <F2> :call TrimWhiteSpace()<CR>
 " zg, gw -- for good, wrong words.
 set spelllang=en_us
 set spellfile=$HOME/.vim/spell/en.utf-8.add
+map <F5> :setlocal spell! spelllang=en_us<CR>
 
 " Set wraps when composing emails
 au BufRead,BufNewFile *.mail *patch *.txt setlocal textwidth=72
@@ -143,3 +140,24 @@ inoremap <silent> <PageDown> <C-\><C-O><C-D>
 " Create swp files in /tmp/
 set backupdir=/tmp//,.
 set directory=/tmp//,.
+
+" With syntax on kernel doc is unreadable
+au FileType rst setlocal syntax=off
+
+" Disable command line history browser
+map q: <Nop>
+
+" Disable EX mode
+nnoremap Q <nop>
+
+" allow buffers to be hidden if you've modified a buffer.
+set hidden
+
+" Move to the next buffer with \ + ]
+nmap <leader>] :bnext<CR>
+
+" Move to the previous buffer with \ + [
+nmap <leader>[ :bprevious<CR>
+
+" Close the current buffer and move to the previous one with \ + q
+nmap <leader>q :bp <BAR> bd #<CR>
