@@ -59,6 +59,7 @@ git config --global alias.su 'submodule update --recursive'
 git config --global sendemail.confirm always
 git config --global alias.r 'rebase -i HEAD~$1'
 git config --global am.threeWay true
+git config --global core.excludesfile ~/.gitignore
 # For github PRs
 git config --global alias.pr '!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f'
 git config --global alias.pr-clean '!git for-each-ref refs/heads/pr/* --format="%(refname)" | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done'

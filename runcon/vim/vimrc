@@ -100,7 +100,7 @@ endfunction
 
 " Function key maps
 map <F2> :call TrimWhiteSpace()<CR>
-map! <F2> :call TrimWhiteSpace()<CR>
+map <F3> :set number!<CR>
 
 " Spell Check Usage:
 " ]s, [s -- for next, previous
