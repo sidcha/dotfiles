@@ -1,11 +1,11 @@
 #!/bin/bash
 
-die () {
-	echo $1
-	exit 1
-}
+if [ ! -d ~/.files ]; then
+	echo "Cloning https://github.com/sidcha/dotfiles.git"
+	git clone https://github.com/sidcha/dotfiles.git $HOME/.files
+else
+	echo "Updating ~/.files"
+	git -C ~/.files pull origin master
+fi
 
-git clone https://github.com/cbsiddharth/dotfiles.git $HOME/.files \
-		|| die "Could not clone the repository"
-
-cd $HOME/.files && ./deploy.sh && echo -e "\n\nInstalled successfully."
+~/.files/deploy.sh && echo -e "\n\nInstalled successfully."

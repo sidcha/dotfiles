@@ -18,7 +18,6 @@ HISTIGNORE='ls:history:ll'
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
 
-
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -34,127 +33,15 @@ if ! shopt -oq posix; then
 	fi
 fi
 
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-    export CLICOLOR=1
-fi
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
-
-#PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-#PS1='\[\e]0;\u@\h: \W\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$'
-
-name="\h"
+name="$(hostname)"
 [ -f ~/.name ] && name=$(cat ~/.name)
 
 PS1='[ \[\033[01;32m\]\u@${name}\[\033[00m\]: \[\033[01;34m\]\W\[\033[00m\]$(__git_ps1) ]\$ '
 
-#use local bin if one exists
+# use local bin if one exists
 if [ -d ~/bin ]; then
 	export PATH=$PATH:$HOME/bin
 fi
-
-#Start Screen at terminal session
-#screen -R -d
-
-# ectrat any archive files
-extract () {
-	if [ -f $1 ] ; then
-		case $1 in
-			*.tar.bz2)   tar xvjf $1    ;;
-			*.tar.gz)    tar xvzf $1    ;;
-			*.bz2)       bunzip2 $1     ;;
-			*.rar)       unrar x $1     ;;
-			*.gz)        gunzip $1      ;;
-			*.tar)       tar xvf $1     ;;
-			*.tbz2)      tar xvjf $1    ;;
-			*.tar.gz)    tar xvzf $1    ;;
-			*.tgz)       tar xvzf $1    ;;
-			*.zip)       unzip $1       ;;
-			*.Z)         uncompress $1  ;;
-			*.7z)        7z x $1        ;;
-			*)           echo "don't know how to extract '$1'..." ;;
-			esac
-		else
-			echo "'$1' is not a valid file!"
-	fi
-}
-
-termtitle() { printf "\033]0;$*\007"; }
-
-# move up 3 levels in direcotries with up 3
-up() { cd $(eval printf '../'%.0s {1..$1}); }
-
-# Genrerate random passwords
-randpwd() { (head -c 32 /dev/urandom | sha256sum | base64 | head -c 16 && echo""); }
-
-get() {
-	fc -lnr -$1 -$1 | sed -e 's/^\s*//'
-}
-
-edit() { sublime $1 & }
-
-# Kill all detached screens only.
-killscreens () {
-	screen -ls | grep Detached | cut -d. -f1 | awk '{print $1}' | xargs kill
-}
-
-ascii() {
-	man ascii | grep --color=never -B3 -A1 '[A-F0-9]:'
-}
-
-gdiff() {
-	diff -Naurp $@ | perl -pe '
-		if (/^\+\+\+ /) { $f="b" } else { $f="a" }
-		s!^(---|\+\+\+)\s+(\S*?/)?(\S+)\s.*$!\1 $f/\3!;
-	' | colordiff | less -FXR
-}
-
-dissac() {
-	OD=${OBJDUMP:-objdump}
-	${OD} -M Intel -D $1 | c++filt | less
-}
-
-# Aliases that makes life simple.
-if [[ "$(uname)" == "Linux" ]]; then
-	alias ls='ls --color=auto'
-else
-	alias ls='ls -G'
-fi
-alias ll='ls -la'
-alias gcc='gcc -Wall'
-alias byebye='sudo shutdown -P now'
-alias py='python3.4'
-alias sl='ls'
-alias pl='perl'
-alias gst='git status'
-alias gdf='git diff'
-alias gdfc='git diff --cached'
-alias gl='git log'
-alias create='create.pl'
-alias cim='vim'
-alias iface='ifconfig -s | sed 1d | cut -d" " -f1'
-alias rm_lines='perl -ne '"'"'`rm -rf $_`'"'"' '
-alias gg='git grep -n'
-alias syslog='sudo tail -f /var/log/kern.log | perl -pe '"'"'s/.*kernel: \[\d+\.\d+\] //;'"'"''
-
-# git format patch numbered
-alias gfp_num='git format-patch --numbered --numbered-files'
-# get commit message from git-format-patch files.
-alias gfp_cmsg='perl -ne '"'"'last if (/^---$/); $p=1 if (s/^Subject: (\[.+\] )?//); print if $p'"'"''
 
 # remove stty ^S binding
 stty stop ""
@@ -163,7 +50,22 @@ stty flush undef
 
 export EDITOR="vim"
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-[ -f /usr/share/git-core/contrib/completion/git-prompt.sh ] && . /usr/share/git-core/contrib/completion/git-prompt.sh
-[ -f /usr/share/bash-completion/completions/git ] && source /usr/share/bash-completion/completions/git
-[ -f ~/.env ] && source ~/.env
+source_if_exits() {
+	[ -f $1 ] && source $1
+}
+
+if [[ "$(uname)" == "Linux" ]]; then
+	source_if_exits /usr/share/git-core/contrib/completion/git-prompt.sh
+else
+	source_if_exits /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh
+fi
+source_if_exits ~/.fzf.bash
+source_if_exits ~/.files/runcon/shell_functions.sh
+source_if_exits ~/.files/runcon/shell_alias.sh
+source_if_exits ~/.env # Box secific stuffs.
+
+# Dedup $PATH as it gets really messy!
+case ":$PATH:" in
+	*":$new_entry:"*) :;;
+	*) PATH="$new_entry:$PATH";;
+esac

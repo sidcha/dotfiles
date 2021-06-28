@@ -1,5 +1,35 @@
 #!/bin/bash
 
+clone_repo() {
+	base=$1
+	url=$2
+	repo_name=$(echo $url | perl -pe 's/.*\/(.*)$/\1/')
+	dir_name=$(echo $repo_name | perl -pe 's/\.git$//')
+	if [ ! -d $base/$dir_name ]; then
+		echo "Cloning $repo_name to $base/$dir_name"
+		git clone https://github.com/sidcha/$repo_name $base/$dir_name > /dev/null
+		if [ $? -ne 0 ]; then
+			echo "Could not find a fork; tracking upstream master"
+			git clone $line $base/$dir_name > /dev/null
+		fi
+		git -C $base/$dir_name remote add upstream $line
+	else
+		git -C $base/$dir_name pull origin master
+	fi
+}
+
+foreach_line() {
+	list=$1; shift;
+	while IFS='' read -r line || [[ -n "$line" ]]; do
+		"$@" $line
+	done < $list
+}
+
+#
+# Note: This script should be re-runnable. ie., don't do any
+# appends to files here.
+#
+
 DIR=$(realpath "$(dirname "$(readlink -f "$0")")")
 pushd ${DIR} 2>&1 > /dev/null
 
@@ -15,24 +45,10 @@ if [ ! -f ~/.vim/autoload/pathogen.vim ]; then
 	curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 fi
 
-touch ~/.vim/spell/en.utf-8.add
 echo "Fectching new vim plugins.."
-cd ~/.vim/bundle
-while IFS='' read -r line || [[ -n "$line" ]]; do
-	dir_name=`perl -e '$_=shift; chomp; s/.*\/(.*)\.git$/\1/; print;' $line`
-	if [ ! -d $dir_name ]; then
-		echo -n "Cloning plugin $dir_name."
-		git clone $line
-	else
-		git -C $dir_name pull origin master
-	fi
-done < $DIR/other/vim-plugin.list
-cd - > /dev/null
+foreach_line $DIR/other/vim-plugin.list clone_repo ~/.vim/bundle
 
-if [ ! -f ~/.env ]; then
-	echo "export CFG_SCRIPT_DIR=$DIR" > ~/.env
-fi
-
+touch ~/.vim/spell/en.utf-8.add
 rm -rf ~/.vim/syntax ~/.vim/ftplugin
 
 echo -n "Adding simlinks for dotFiles... "
@@ -48,8 +64,10 @@ ln -f -s $DIR/runcon/minttyrc ~/.minttyrc
 ln -f -s $DIR/runcon/tmux.conf ~/.tmux.conf
 ln -f -s $DIR/runcon/mbsyncrc ~/.mbsyncrc
 ln -f -s $DIR/runcon/msmtprc ~/.msmtprc
+ln -f -s $DIR/runcon/zshrc ~/.zshrc
 echo "Done."
 
+git config --global include.path $DIR/config/gitconfig
 git config --global user.name "Siddharth Chandrasekaran"
 git config --global init.templatedir "$DIR/git_template"
 git config --global rebase.autoSquash true
@@ -65,9 +83,11 @@ git config --global alias.ll 'log --format=%h --abbrev=12 --oneline'
 git config --global alias.l '!f() { git log --format=%h --abbrev=12 --oneline origin/master..HEAD | tac | nl | tac | perl -pe "s/([0-9a-f]{12})/\\e[1;31m\\1\\e[m/"; }; f'
 git config --global alias.fixup '!f() { h="$(git rev-list --reverse origin/master..HEAD | sed -n -e ${1}p)"; git commit --fixup=$h; }; f'
 git config --global alias.rb '!f() { count=${1:-"$(git rev-list --reverse origin/master..HEAD | wc -l)"}; git rebase -i --autosquash HEAD~${count}; }; f'
+
 # For github PRs
 git config --global alias.pr '!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f'
 git config --global alias.pr-clean '!git for-each-ref refs/heads/pr/* --format="%(refname)" | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done'
+
 # For stash/bitbucket
 git config --global alias.spr '!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull-requests/$1/from:pr/$1 && git checkout pr/$1; }; f'
 
@@ -83,15 +103,19 @@ mkdir -p ~/bin
 cp -f -r scripts/* ~/bin/
 echo "Done."
 
-echo -n "Resourcing bashrc... "
-source ~/.bashrc
-echo "Done."
-
 if [[ ! -d "$HOME/.fzf" ]]; then
 	echo "Setting up fzf..."
 	git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
 	~/.fzf/install
 fi
+
+if [ ! -f ~/.env ]; then
+	echo "export CFG_SCRIPT_DIR=$DIR" > ~/.env
+fi
+
+echo -n "Resourcing bashrc... "
+source ~/.bashrc
+echo "Done."
 
 cat <<----
 
@@ -103,4 +127,3 @@ Also install parcellite and set the following:
 	- Use Primary (Selection)
 	- Sync clipboards
 ---
-

@@ -1,0 +1,32 @@
+name="$(hostname)"
+[ -f ~/.name ] && name="$(cat ~/.name)"
+setopt prompt_subst
+PROMPT='[ %F{green}%n@$name%F{reset_color}: %F{blue}%c%F{reset_color}$(__git_ps1) ]$ '
+
+# remove stty ^S binding
+stty stop ""
+stty discard undef
+stty flush undef
+
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+export MANPATH="/usr/local/man:$MANPATH"
+export LANG=en_US.UTF-8
+export EDITOR='vim'
+
+source_if_exits() {
+	[ -f $1 ] && source $1
+}
+
+if [[ "$(uname)" == "Linux" ]]; then
+	source_if_exits /usr/share/git-core/contrib/completion/git-prompt.sh
+else
+	source_if_exits /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh
+fi
+
+setopt BEEP NO_AUTOLIST BASH_AUTOLIST NO_AUTO_MENU
+autoload -Uz compinit && compinit
+
+source_if_exits ~/.fzf.zsh
+source_if_exits ~/.files/runcon/shell_functions.sh
+source_if_exits ~/.files/runcon/shell_alias.sh
+source_if_exits ~/.env

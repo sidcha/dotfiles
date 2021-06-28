@@ -1,0 +1,5 @@
+# vim: ft=gitconfig
+
+[sendemail.linux]
+        tocmd ="$(pwd)/scripts/get_maintainer.pl --nogit --nogit-fallback --norolestats --nol"
+        cccmd ="$(pwd)/scripts/get_maintainer.pl --nogit --nogit-fallback --norolestats --nom"

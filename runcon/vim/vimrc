@@ -148,16 +148,20 @@ au FileType rst setlocal syntax=off
 map q: <Nop>
 
 " Disable EX mode
-nnoremap Q <nop>
+nnoremap Q <Nop>
 
 " allow buffers to be hidden if you've modified a buffer.
 set hidden
 
+" Buffer workflow
 " Move to the next buffer with \ + ]
-nmap <leader>] :bnext<CR>
-
 " Move to the previous buffer with \ + [
-nmap <leader>[ :bprevious<CR>
-
 " Close the current buffer and move to the previous one with \ + q
+nmap <leader>] :bnext<CR>
+nmap <leader>[ :bprevious<CR>
 nmap <leader>q :bp <BAR> bd #<CR>
+
+" Set modlines so commet lines can set vim config
+" Eg., vim: set ts=4
+set modeline
+set modelines=5
