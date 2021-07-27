@@ -1,6 +1,7 @@
 name="$(hostname)"
 [ -f ~/.name ] && name="$(cat ~/.name)"
 setopt prompt_subst
+setopt interactivecomments
 PROMPT='[ %F{green}%n@$name%F{reset_color}: %F{blue}%c%F{reset_color}$(__git_ps1) ]$ '
 
 # remove stty ^S binding

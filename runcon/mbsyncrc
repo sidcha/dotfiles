@@ -4,13 +4,15 @@ Remove Both
 Sync All
 SyncState *
 
-# IMAPAccount sidcha91@gmail.com
+# IMAPAccount sidcha.dev@gmail.com
 # ...
 
-IMAPAccount gmail_sidcha91
+IMAPAccount gmail_sidcha.dev
 Host imap.gmail.com
-User sidcha91@gmail.com
-PassCmd "security find-internet-password -s imap.gmail.com -a sidcha91@gmail.com -w"
+User sidcha.dev@gmail.com
+# set Keychain password with:
+# security add-internet-password -l sidcha.dev@gmail.com -s smtp.gmail.com -r smtp -a sidcha.dev@gmail.com -w "abc123"
+PassCmd "security find-internet-password -s smtp.gmail.com -a sidcha.dev@gmail.com -w"
 SSLType IMAPS
 AuthMechs LOGIN
 # Throttle mbsync so we don't go over gmail's quota: OVERQUOTA error would
@@ -18,68 +20,32 @@ AuthMechs LOGIN
 # https://sourceforge.net/p/isync/mailman/message/35458365/
 # PipelineDepth 50
 
-IMAPStore gmail_sidcha91-remote
-Account gmail_sidcha91
+IMAPStore gmail_sidcha.dev-remote
+Account gmail_sidcha.dev
 
-MaildirStore gmail_sidcha91-local
-Path ~/Mail/mailbox/gmail_sidcha91/
-Inbox ~/Mail/mailbox/gmail_sidcha91/inbox
+MaildirStore gmail_sidcha.dev-local
+Path ~/Mail/mailbox/gmail_sidcha.dev/
+Inbox ~/Mail/mailbox/gmail_sidcha.dev/inbox
 
-Channel gmail_sidcha91-inbox
-Master :gmail_sidcha91-remote:
-Slave :gmail_sidcha91-local:
+Channel gmail_sidcha.dev-inbox
+Far :gmail_sidcha.dev-remote:
+Near :gmail_sidcha.dev-local:
 Patterns "INBOX"
 
-Channel gmail_sidcha91-sent
-Master :gmail_sidcha91-remote:"[Gmail]/Sent Mail"
-Slave :gmail_sidcha91-local:sent
+Channel gmail_sidcha.dev-archive
+Far :gmail_sidcha.dev-remote:"[Gmail]/All Mail"
+Near :gmail_sidcha.dev-local:archive
 
-Channel gmail_sidcha91-trash
-Master :gmail_sidcha91-remote:"[Gmail]/Trash"
-Slave :gmail_sidcha91-local:trash
+Channel gmail_sidcha.dev-sent
+Far :gmail_sidcha.dev-remote:"[Gmail]/Sent Mail"
+Near :gmail_sidcha.dev-local:sent
 
-Group gmail_sidcha91
-Channel gmail_sidcha91-inbox
-Channel gmail_sidcha91-sent
-Channel gmail_sidcha91-trash
+Channel gmail_sidcha.dev-trash
+Far :gmail_sidcha.dev-remote:"[Gmail]/Trash"
+Near :gmail_sidcha.dev-local:trash
 
-# IMAPAccount EmbedJournal.com
-# ...
-
-IMAPAccount ej_siddharth
-Host imap.zoho.com
-User siddharth@embedjournal.com
-# set Keychain password with:
-# security add-internet-password -l siddharth@embedjournal.com -s smtp.zoho.com -r smtp -a siddharth@embedjournal.com -w "abc123"
-PassCmd "security find-internet-password -s smtp.zoho.com -a siddharth@embedjournal.com -w"
-SSLType IMAPS
-AuthMechs LOGIN
-
-IMAPStore ej_siddharth-remote
-Account ej_siddharth
-
-MaildirStore ej_siddharth-local
-Path ~/Mail/mailbox/ej_siddharth/
-Inbox ~/Mail/mailbox/ej_siddharth/inbox
-
-Channel ej_siddharth-inbox
-Master :ej_siddharth-remote:"Inbox"
-Slave :ej_siddharth-local:inbox
-
-Channel ej_siddharth-archive
-Master :ej_siddharth-remote:"Archive"
-Slave :ej_siddharth-local:archive
-
-Channel ej_siddharth-sent
-Master :ej_siddharth-remote:"Sent"
-Slave :ej_siddharth-local:sent
-
-Channel ej_siddharth-trash
-Master :ej_siddharth-remote:"Trash"
-Slave :ej_siddharth-local:trash
-
-Group ej_siddharth
-Channel ej_siddharth-inbox
-Channel ej_siddharth-archive
-Channel ej_siddharth-sent
-Channel ej_siddharth-trash
+Group gmail_sidcha.dev
+Channel gmail_sidcha.dev-inbox
+Channel gmail_sidcha.dev-archive
+Channel gmail_sidcha.dev-sent
+Channel gmail_sidcha.dev-trash

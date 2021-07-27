@@ -12,4 +12,4 @@ source ~/Mail/config/keybindings.muttrc
 source ~/Mail/config/colors.muttrc
 
 # default email
-source ~/Mail/config/accounts/ej_siddharth.muttrc
+source ~/Mail/config/accounts/gmail_sidcha.dev.muttrc

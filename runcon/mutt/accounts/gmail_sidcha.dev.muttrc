@@ -1,0 +1,11 @@
+set my_account_dir = ~/Mail/mailbox/gmail_sidcha.dev
+set folder = "$my_account_dir"
+set spoolfile = "$my_account_dir/inbox"
+set postponed = "$my_account_dir/drafts"
+unset record
+
+set from = "sidcha.dev@gmail.com"
+set realname = "Siddharth Chandrasekaran"
+
+unmailboxes *
+mailboxes =inbox =sent =list-linux-kernel =list-linux-kernel-follow =list-todo =list-zephyr
