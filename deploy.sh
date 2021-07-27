@@ -50,6 +50,7 @@ foreach_line $DIR/other/vim-plugin.list clone_repo ~/.vim/bundle
 
 touch ~/.vim/spell/en.utf-8.add
 rm -rf ~/.vim/syntax ~/.vim/ftplugin
+mkdir -p ~/.config/nvim/
 
 echo -n "Adding simlinks for dotFiles... "
 ln -f -s $DIR/runcon/vim/vimrc ~/.vimrc
@@ -65,6 +66,7 @@ ln -f -s $DIR/runcon/tmux.conf ~/.tmux.conf
 ln -f -s $DIR/runcon/mbsyncrc ~/.mbsyncrc
 ln -f -s $DIR/runcon/msmtprc ~/.msmtprc
 ln -f -s $DIR/runcon/zshrc ~/.zshrc
+ln -f -s $DIR/runcon/neovim_init ~/.config/nvim/init.vim
 echo "Done."
 
 git config --global include.path $DIR/config/gitconfig
@@ -80,9 +82,19 @@ git config --global alias.ctags '!.git/hooks/ctags'
 git config --global alias.last 'diff HEAD^ HEAD'
 git config --global alias.su 'submodule update --recursive'
 git config --global alias.ll 'log --format=%h --abbrev=12 --oneline'
-git config --global alias.l '!f() { git log --format=%h --abbrev=12 --oneline origin/master..HEAD | tac | nl | tac | perl -pe "s/([0-9a-f]{12})/\\e[1;31m\\1\\e[m/"; }; f'
-git config --global alias.fixup '!f() { h="$(git rev-list --reverse origin/master..HEAD | sed -n -e ${1}p)"; git commit --fixup=$h; }; f'
-git config --global alias.rb '!f() { count=${1:-"$(git rev-list --reverse origin/master..HEAD | wc -l)"}; git rebase -i --autosquash HEAD~${count}; }; f'
+
+# Very opinionated patchset workflow.
+#   - git l     - lists commits made on this branch with patch numbers
+#   - git sh    - show commit with patch numebrs from `git l`
+#   - git fixip - fixup commit with patch numbers from `git l`
+#   - git rb    - rebase interactively autosquashing patches only on this branch.
+git config --global alias.l '!f() { base=${base:-origin/master}; git log --format=%h --abbrev=12 --oneline ${base}..HEAD | tac | nl | tac | perl -pe "s/([0-9a-f]{12})/\\e[1;31m\\1\\e[m/"; }; f'
+git config --global alias.sh '!f() { base=${base:-origin/master}; sha="$(git rev-list --reverse ${base}..HEAD | sed -n -e ${1}p)"; git show $sha; }; f'
+git config --global alias.fixup '!f() { base=${base:-origin/master}; sha="$(git rev-list --reverse ${base}..HEAD | sed -n -e ${1}p)"; git commit --fixup=$sha; }; f'
+git config --global alias.rb '!f() { base=${base:-origin/master}; count=${1:-"$(git rev-list --reverse ${base}..HEAD | wc -l)"}; git rebase -i --autosquash HEAD~${count}; }; f'
+
+# A Perl Compatible RE find and replace
+git config --global alias.rp '!f() { find=${1}; shift; replace=${1}; shift; files="$*"; if test -z "${files}"; then files="$(git grep --perl-regexp -n "${find}" | perl -pe "s/:\d+:.*//" | uniq | tr "\n" " ")"; fi; if test -n "${files}"; then perl -i -pe "s/${find}/${replace}/g" $files; fi; }; f'
 
 # For github PRs
 git config --global alias.pr '!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f'
