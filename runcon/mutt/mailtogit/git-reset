@@ -1,0 +1,3 @@
+cd ~/work/linux-kvm
+git reset --hard origin
+rm -f ~/incoming/*

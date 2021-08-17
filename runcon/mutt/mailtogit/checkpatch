@@ -1,0 +1,2 @@
+cd ~/work/linux-kvm
+scripts/checkpatch.pl ~/incoming/*

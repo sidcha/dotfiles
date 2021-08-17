@@ -1,0 +1,3 @@
+cd ~/work/linux-kvm
+git am --abort
+rm -f ~/incoming/*

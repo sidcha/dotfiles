@@ -1,0 +1,2 @@
+cd ~/work/linux-kvm
+git am -s ~/incoming/*.mbox
