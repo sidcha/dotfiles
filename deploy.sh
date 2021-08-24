@@ -92,7 +92,7 @@ git config --global alias.ll 'log --format=%h --abbrev=12 --oneline'
 git config --global alias.l '!f() { base=${base:-origin/master}; git log --format=%h --abbrev=12 --oneline ${base}..HEAD | tac | nl | tac | perl -pe "s/([0-9a-f]{12})/\\e[1;31m\\1\\e[m/"; }; f'
 git config --global alias.sh '!f() { base=${base:-origin/master}; sha="$(git rev-list --reverse ${base}..HEAD | sed -n -e ${1}p)"; git show $sha; }; f'
 git config --global alias.fixup '!f() { base=${base:-origin/master}; if [ ${#1} -gt 5 ]; then sha="${1}"; else sha="$(git rev-list --reverse ${base}..HEAD | sed -n -e ${1}p)"; fi; git commit --fixup=$sha; }; f'
-git config --global alias.rb '!f() { base=${base:-origin/master}; count=${1:-"$(git rev-list --reverse ${base}..HEAD | wc -l)"}; git rebase -i --autosquash HEAD~${count}; }; f'
+git config --global alias.rb '!f() { base=${base:-origin/master}; count=${1:-"$(git rev-list --reverse ${base}..HEAD | wc -l | xargs)"}; git rebase -i --autosquash HEAD~${count}; }; f'
 
 # A Perl Compatible RE find and replace
 git config --global alias.rp '!f() { find=${1}; shift; replace=${1}; shift; files="$*"; if test -z "${files}"; then files="$(git grep --perl-regexp -n "${find}" | perl -pe "s/:\d+:.*//" | uniq | tr "\n" " ")"; fi; if test -n "${files}"; then perl -i -pe "s/${find}/${replace}/g" $files; fi; }; f'
