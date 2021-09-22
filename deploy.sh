@@ -76,7 +76,9 @@ git config --global init.templatedir "$DIR/git_template"
 git config --global rebase.autoSquash true
 git config --global sendemail.confirm always
 git config --global am.threeWay true
+git config --global color.ui auto
 git config --global core.excludesfile ~/.gitignore
+git config --global core.pager "less -FMRiX"
 
 # Git alias
 git config --global alias.ctags '!.git/hooks/ctags'
