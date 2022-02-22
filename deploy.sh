@@ -86,18 +86,27 @@ git config --global alias.last 'diff HEAD^ HEAD'
 git config --global alias.su 'submodule update --recursive'
 git config --global alias.ll 'log --format=%h --abbrev=12 --oneline'
 
-# Very opinionated patchset workflow. All of these will play well with a
-# environment variable called "base" to act as a starting base commit.
+# The patchset workflow:
+#   All of the below git aliases operate on patch numbers (like the one git-format-patch
+#   would give your patch). Some of them can take any git-ref too;
 #
-#   - git l     - lists commits made on this branch with patch numbers
-#   - git sh    - show commit with patch numebrs (or SHA) from `git l`
-#   - git fixup - fixup commit with patch numbers (or SHA) from `git l`
-#   - git rb    - rebase interactively autosquashing patches only on this branch.
+#   To see the all the patches made on current branch over beyond $base, run `git l`.
+#   $base is set to origin/master by default. It can overridden by setting it in shell.
 #
-git config --global alias.l '!f() { base=${base:-origin/master}; git log --format=%h --abbrev=12 --oneline ${base}..HEAD | tac | nl | tac | perl -pe "s/([0-9a-f]{12})/\\e[1;31m\\1\\e[m/"; }; f'
-git config --global alias.sh '!f() { base=${base:-origin/master}; if [ ${#1} -gt 5 ]; then sha="${1}"; else sha="$(git rev-list --reverse ${base}..HEAD | sed -n -e ${1}p)"; fi; git show $sha; }; f'
+#   Aliases:
+#     * git l - lists commits made on this branch with patch numbers
+#     * git sh - show commit with patch number (or ref)
+#     * git fixip - fixup commit with patch number
+#     * git rb - rebase interactively autosquashing commits made on this branch
+#     * git reword - reowrd the commit message of patch number
+#     * git amend-to - merge the staged changes into the given patch number (or ref)
+#
+git config --global alias.l '!f() { base=${base:-origin/master}; git log --format=%h --abbrev=12 --oneline ${base}..HEAD | tac | nl | tac | perl -pe "s/([0-9a-f]{12})/\\e[1;31m\\1\\e[m/" | less -XFR; }; f'
+git config --global alias.sh '!f() { base=${base:-origin/master}; sha="$(git rev-list --reverse ${base}..HEAD | sed -n -e ${1}p)"; git show $sha; }; f'
 git config --global alias.fixup '!f() { base=${base:-origin/master}; if [ ${#1} -gt 5 ]; then sha="${1}"; else sha="$(git rev-list --reverse ${base}..HEAD | sed -n -e ${1}p)"; fi; git commit --fixup=$sha; }; f'
 git config --global alias.rb '!f() { base=${base:-origin/master}; count=${1:-"$(git rev-list --reverse ${base}..HEAD | wc -l | xargs)"}; git rebase -i --autosquash HEAD~${count}; }; f'
+git config --global alias.reword '!f() { base=${base:-origin/master}; sha="$(git rev-list --reverse ${base}..HEAD | sed -n -e ${1}p)"; git commit --fixup reword:${sha}; GIT_EDITOR=true git rebase -i --autosquash ${sha}^; }; f'
+git config --global alias.amend-to '!f() { base=${base:-origin/master}; if [ ${#1} -gt 5 ]; then sha="${1}"; else sha="$(git rev-list --reverse ${base}..HEAD | sed -n -e ${1}p)"; fi; git commit --fixup=${sha} && GIT_EDITOR=true git rebase -i --autosquash ${sha}^; }; f'
 
 # A Perl Compatible RE find and replace
 git config --global alias.rp '!f() { find=${1}; shift; replace=${1}; shift; files="$*"; if test -z "${files}"; then files="$(git grep --perl-regexp -n "${find}" | perl -pe "s/:\d+:.*//" | uniq | tr "\n" " ")"; fi; if test -n "${files}"; then perl -i -pe "s/${find}/${replace}/g" $files; fi; }; f'
