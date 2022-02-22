@@ -10,7 +10,7 @@ set nowrap
 set number
 
 " Set left-margin to one char width (looks better with :se nonu)
-set foldcolumn=1
+"set foldcolumn=1
 
 " Set syntax on
 syntax on
@@ -102,6 +102,13 @@ map <F3> :set number!<CR>
 
 " Set wraps when composing emails
 au BufRead,BufNewFile *.mail *patch *.txt setlocal textwidth=72
+
+" Resource tmux.conf file after saving it
+autocmd bufwritepost .tmux.conf execute ':!tmux source-file %'
+autocmd bufwritepost .tmux.local.conf execute ':!tmux source-file %'
+
+" If a file is already open, open it in RO mode.
+autocmd SwapExists * let v:swapchoice = "o"
 
 " Tell vim to remember certain things when we exit
 "  '10  :  marks will be remembered for up to 10 previously edited files

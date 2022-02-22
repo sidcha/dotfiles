@@ -34,3 +34,6 @@ alias gfp_num='git format-patch --numbered --numbered-files'
 # get commit message from git-format-patch files.
 alias gfp_cmsg=' perl -ne '\'' last if (/^---$/); $p=1 if (s/^Subject: (\[.+\] )?//); print if $p '\'' '
 
+if [[ -x "$(which rg 2>/dev/null)" ]]; then
+	alias grep='rg --line-number --no-heading'
+fi
