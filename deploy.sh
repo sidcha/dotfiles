@@ -30,7 +30,7 @@ foreach_line() {
 # appends to files here.
 #
 
-DIR=$(realpath "$(dirname "$(readlink -f "$0")")")
+DIR=$(realpath "$(dirname "$0")")
 pushd ${DIR} 2>&1 > /dev/null
 
 if [[ -z "$(git diff --quiet --exit-code || echo +)" ]]; then
@@ -124,11 +124,6 @@ if ! grep -qe 'Include .*/\.files/config/ssh_config' ~/.ssh/config; then
 	echo -e "Include $DIR/config/ssh_config\n" | cat - ~/.ssh/config > ~/.ssh/config.tmp && \
 		mv ~/.ssh/config.tmp ~/.ssh/config
 fi
-
-echo -n "Adding custom scripts... "
-mkdir -p ~/bin
-cp -f -r scripts/* ~/bin/
-echo "Done."
 
 if [[ ! -d "$HOME/.fzf" ]]; then
 	echo "Setting up fzf..."
