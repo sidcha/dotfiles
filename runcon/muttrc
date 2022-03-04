@@ -1,0 +1,26 @@
+set from = "sidcha.dev@gmail.com"
+set realname = "Siddharth Chandrasekaran"
+
+# Note:
+# Use the following to set app password.
+# security add-internet-password -l sidcha.dev@gmail.com -s smtp.gmail.com -r smtp -a sidcha.dev@gmail.com -w "gmail-app-password"
+
+# Imap settings
+set imap_user = "sidcha.dev@gmail.com"
+set imap_pass = "`security find-internet-password -s smtp.gmail.com -a sidcha.dev@gmail.com -w`"
+
+# Smtp settings
+set smtp_url = "smtps://sidcha.dev@smtp.gmail.com"
+set smtp_pass = "`security find-internet-password -s smtp.gmail.com -a sidcha.dev@gmail.com -w`"
+set smtp_authenticators = 'gssapi:login'
+
+# Remote gmail folders
+set folder = "imaps://imap.gmail.com/"
+set spoolfile = "+INBOX"
+set postponed = "+[Gmail]/Drafts"
+set record = "+[Gmail]/Sent Mail"
+set trash = "+[Gmail]/Trash"
+
+source ~/.files/runcon/mutt/keybindings.muttrc
+source ~/.files/runcon/mutt/colors.muttrc
+source ~/.files/runcon/mutt/common.muttrc

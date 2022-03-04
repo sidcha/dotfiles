@@ -55,6 +55,7 @@ bind compose		l		view-attach
 # Actions
 # ----------------------------------------------------
 
+bind  index,pager	B		sidebar-toggle-visible
 bind  index,pager	a		group-reply
 bind  index,pager	dd		delete-message
 bind  index,pager	dat		delete-thread
@@ -74,11 +75,12 @@ bind index		<Enter>		display-message
 # Relative mailbox bindings
 # ----------------------------------------------------
 
-macro index		\Ci		"<change-folder> =inbox"<enter>		"goto Folder: Inbox"
-macro index		\Cs		"<change-folder> =sent"<enter>		"goto Folder: Sent"
-macro index		\Ct		"<change-folder> =trash"<enter>		"goto Folder: Trash"
-macro index		\Ca		"<change-folder> =archive"<enter>	"goto Folder: Archive"
-macro index,pager	\\		"<change-folder>?"			"open Folder"
+macro index,pager y "<save-message>=[Gmail]/All<tab><enter><enter>" "Archive"
+macro index,pager d "<save-message>=[Gmail]/Trash<enter><enter>" "Trash"
+macro index gi "<change-folder>=INBOX<enter>" "Go to inbox"
+macro index ga "<change-folder>=[Gmail]/All<tab><enter>" "Go to all mail"
+macro index gs "<change-folder>=[Gmail]/Sent<tab><enter>" "Go to sent"
+macro index gd "<change-folder>=[Gmail]/Drafts<enter>" "Go to drafts"
 
 # Sidebar keybindings
 # ----------------------------------------------------
@@ -89,15 +91,3 @@ bind index,pager	\Cp	sidebar-prev	# Ctrl+p - Previous Mailbox
 bind index,pager	\Cn	sidebar-next	# Ctrl+n - Next Mailbox
 bind index,pager	\Co	sidebar-open	# Ctrl+o - Open Highlighted Mailbox
 
-# mbox key-bindings
-
-folder-hook 'ej_siddharth'		'source ~/Mail/config/accounts/ej_siddharth.muttrc'
-folder-hook 'gmail_sidcha.lists'	'source ~/Mail/config/accounts/gmail_sidcha.lists.muttrc'
-folder-hook 'vmware'			'source ~/Mail/config/accounts/gmail_sidcha.vmware.muttrc'
-
-macro index <f2> '<sync-mailbox><enter-command>source ~/Mail/config/accounts/ej_siddharth.muttrc<enter><change-folder>!<enter>'
-macro index <f3> '<sync-mailbox><enter-command>source ~/Mail/config/accounts/gmail_sidcha.lists.muttrc<enter><change-folder>!<enter>'
-macro index <f4> '<sync-mailbox><enter-command>source ~/Mail/config/accounts/gmail_sidcha.lists.muttrc<enter><change-folder>!<enter>'
-
-macro index A ":set confirmappend=no delete=yes\n<tag-prefix><save-message>=archive\n<sync-mailbox>:set confirmappend=yes delete=ask-yes\n"
-#macro index A ":set confirmappend=no delete=yes\n<save-message>=archive\n<sync-mailbox>:set confirmappend=yes delete=ask-yes\n"
