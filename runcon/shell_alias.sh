@@ -29,6 +29,10 @@ alias rm_lines=' perl -ne '\'' system("rm -rf $_"); '\'' '
 alias gg='git grep --line-number --perl-regexp'
 alias syslog='sudo tail -f /var/log/kern.log | perl -pe '\'' s/.*kernel: \[\d+\.\d+\] //; '\'' '
 
+# Switch between https and ssh git remotes
+alias git-ssh="git remote set-url origin $(git remote get-url origin | sed 's|^https://\([^/]*\)/\(.*\).git|git@\1\:\2.git|')"
+alias git-https="git remote set-url origin $(git remote get-url origin | sed 's|^git@\(.*\):/*\(.*\).git|https://\1/\2.git|')"
+
 # git format patch numbered
 alias gfp_num='git format-patch --numbered --numbered-files'
 # get commit message from git-format-patch files.
