@@ -20,15 +20,15 @@ bind pager		j		next-line
 bind pager		<Left>		exit
 bind pager		h		exit
 bind pager		<Right>		next-line
-bind pager		]		previous-entry
-bind pager		[		next-entry
+bind pager		[		previous-entry
+bind pager		]		next-entry
 
 bind index		<Left>		noop
 bind index		gg		first-entry
 bind index		G		last-entry
 bind index		j		next-entry
 bind index		k		previous-entry
-bind index		<Right>		select-entry
+bind index		<Right>		display-message
 bind index		[		previous-thread
 bind index		]		next-thread
 bind index		.		limit

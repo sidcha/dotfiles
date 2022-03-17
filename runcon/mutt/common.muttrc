@@ -44,7 +44,7 @@ set wrap = 120             # Softwrap emails at 120
 set move = no              # Don't move read mail to All Mail
 set help = no              # Don't show help bar
 set sleep_time = 0         # Don't wait to switch mailboxes
-set sort = reverse-threads # Read top-down mail instead of bottom-up
+#set sort = reverse-threads # Read top-down mail instead of bottom-up
 set copy = yes             # Keep a copy of sent mails
 
 # Adress book handling
