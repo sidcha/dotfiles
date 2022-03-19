@@ -14,7 +14,14 @@ clone_repo() {
 		fi
 		git -C $base/$dir_name remote add upstream $line
 	else
-		git -C $base/$dir_name pull origin master
+		echo "Processing $repo_name to $base/$dir_name"
+		git -C $base/$dir_name pull upstream master
+
+		# when we have a ssh clone of .files, also update the forks :)
+		if [[ ! -z "$(git remote get-url origin | grep -o -e '^git@github.com')" ]]; then
+			git -C $base/$dir_name remote set-url origin "$(echo https://github.com/sidcha/$repo_name | perl -pe 's|^https://([^/]+)/(.*)(\.git)?|git@\1:\2.git|')"
+			git -C $base/$dir_name push origin master
+		fi
 	fi
 }
 
@@ -34,7 +41,7 @@ DIR=$(realpath "$(dirname "$0")")
 pushd ${DIR} 2>&1 > /dev/null
 
 if [[ -z "$(git diff --quiet --exit-code || echo +)" ]]; then
-	git pull origin master
+	git pull origin master --rebase
 else
 	echo "Working tree is dirty! Will not git pull"
 fi
