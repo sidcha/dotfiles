@@ -7,7 +7,8 @@ filetype plugin indent on
 set nowrap
 
 " Turn on line numbering. Turn it off with "set nonu"
-set number
+"set number
+set rnu
 
 " Set left-margin to one char width (looks better with :se nonu)
 "set foldcolumn=1
@@ -74,7 +75,7 @@ set confirm
 set statusline=\ %f%m%r%h%w "" file name and flags
 set statusline+=\ %=%({%{&ff}\|%{(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\")}%k\|%Y}%) "" Type|Enc|Fmt
 set statusline+=\ [TS:%{&ts}\|SW:%{&sw}\|ET:%{&et}] "" File WS settings [tabstop|shiftwidth|expandtabs]
-set statusline+=\ %([%l,%v][%o,%p%%]\ %) "" File stats [line,chars][offset,percentage]
+set statusline+=\ %([%l,%v][%p%%]\ %) "" File stats [line,chars][percentage]
 set laststatus=2
 hi StatusLine ctermbg=250 ctermfg=236
 
@@ -98,7 +99,8 @@ endfunction
 
 " Function key maps
 map <F2> :call TrimWhiteSpace()<CR>
-map <F3> :set number!<CR>
+map <F3> :set rnu!<CR>
+map <F4> :set wrap!<CR>
 
 " Set wraps when composing emails
 au BufRead,BufNewFile *.mail *patch *.txt setlocal textwidth=72
