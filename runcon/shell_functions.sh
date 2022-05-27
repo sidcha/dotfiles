@@ -54,5 +54,5 @@ gdiff() {
 
 dissac() {
 	OD=${OBJDUMP:-objdump}
-	${OD} -M Intel -D $1 | c++filt | less
+	${OD} -M Intel -D $1 | c++filt | less -FXR
 }

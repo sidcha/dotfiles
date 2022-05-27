@@ -53,7 +53,7 @@ if [ ! -f ~/.vim/autoload/pathogen.vim ]; then
 fi
 
 echo "Fectching new vim plugins.."
-rm -rf ~/.vim/bundle/file-file/
+rm -rf ~/.vim/bundle/file-line/
 foreach_line $DIR/other/vim-plugin.list clone_repo ~/.vim/bundle
 
 touch ~/.vim/spell/en.utf-8.add

@@ -7,8 +7,7 @@ filetype plugin indent on
 set nowrap
 
 " Turn on line numbering. Turn it off with "set nonu"
-"set number
-set rnu
+set nu rnu
 
 " Set left-margin to one char width (looks better with :se nonu)
 "set foldcolumn=1
@@ -99,7 +98,7 @@ endfunction
 
 " Function key maps
 map <F2> :call TrimWhiteSpace()<CR>
-map <F3> :set rnu!<CR>
+map <F3> :set nu! rnu!<CR>
 map <F4> :set wrap!<CR>
 
 " Set wraps when composing emails
