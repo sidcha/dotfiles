@@ -1,6 +1,6 @@
 # Set this to share connection between terminals
-ControlMaster auto
-ControlPath /tmp/ssh_mux_%h_%p_%r
+# ControlMaster auto
+# ControlPath /tmp/ssh_mux_%h_%p_%r
 
 Host *
     ServerAliveInterval 300

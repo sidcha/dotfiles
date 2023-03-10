@@ -135,6 +135,12 @@ nnoremap <silent> <PageDown> <C-D>
 vnoremap <silent> <PageDown> <C-D>
 inoremap <silent> <PageDown> <C-\><C-O><C-D>
 
+" Remap vertical selection to <c-q>
+:nnoremap <c-q> <c-v>
+
+" Disable EX mode
+nnoremap Q <Nop>
+
 " Create swp files in /tmp/
 set backupdir=/tmp//,.
 set directory=/tmp//,.
@@ -144,9 +150,6 @@ au FileType rst setlocal syntax=off
 
 " Disable command line history browser
 map q: <Nop>
-
-" Disable EX mode
-nnoremap Q <Nop>
 
 " Set modlines so commet lines can set vim config
 " Eg., vim: set ts=4
@@ -166,7 +169,6 @@ set tags=./tags,tags;
 " look for tag file inside .git/ directory. Prepend to tags variable as this
 " file might always be the most recent version (updated via git-hooks)
 set tags^=./.git/tags
-
 
 " Buffer Workflow:
 " ----------------

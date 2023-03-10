@@ -43,9 +43,10 @@ if [ -d ~/bin ]; then
 	export PATH=$PATH:$HOME/bin
 fi
 
-# remove stty ^S binding
-stty stop ""
-#stty discard undef
+# remove some stty binding
+stty stop undef    # ^S
+stty start undef   # ^Q
+stty discard undef
 stty flush undef
 
 export EDITOR="vim"
@@ -75,3 +76,8 @@ case ":$PATH:" in
 	*":$new_entry:"*) :;;
 	*) PATH="$new_entry:$PATH";;
 esac
+
+# Remove leading : as that seems to trigger build scripts that
+# look for :: in path, which inturn is interpreted as CWD by bash
+# zsh which is no-good!
+export PATH="$(echo $PATH | perl -pe 's/^://')"
