@@ -26,7 +26,7 @@ alias gdf='git diff'
 alias gdfc='git diff --cached'
 alias iface='ifconfig -s | sed 1d | cut -d" " -f1'
 alias rm_lines=' perl -ne '\'' system("rm -rf $_"); '\'' '
-alias gg='git grep --line-number --perl-regexp'
+alias gg='rg --no-heading --line-number'
 alias syslog='sudo tail -f /var/log/kern.log | perl -pe '\'' s/.*kernel: \[\d+\.\d+\] //; '\'' '
 
 # Switch between https and ssh git remotes

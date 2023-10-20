@@ -91,3 +91,9 @@ bind index,pager	\Cp	sidebar-prev	# Ctrl+p - Previous Mailbox
 bind index,pager	\Cn	sidebar-next	# Ctrl+n - Next Mailbox
 bind index,pager	\Co	sidebar-open	# Ctrl+o - Open Highlighted Mailbox
 
+# Patch workflow
+# ----------------------------------------------------
+
+macro index gA ":unset pipe_decode\n|(umask 0022 && git am -3)\n:set pipe_decode\n"
+macro pager gA ":unset pipe_decode\n|(umask 0022 && git am -3)\n:set pipe_decode\n"
+
