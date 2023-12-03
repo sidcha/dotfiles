@@ -26,6 +26,15 @@ fi
 
 setopt BEEP NO_AUTOLIST BASH_AUTOLIST NO_AUTO_MENU
 autoload -Uz compinit && compinit
+bindkey -e
+
+# Ignore dups in command line history
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_FIND_NO_DUPS
+setopt HIST_SAVE_NO_DUPS
 
 source_if_exits ~/.fzf.zsh
 source_if_exits ~/.files/runcon/shell_functions.sh

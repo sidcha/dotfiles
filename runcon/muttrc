@@ -18,7 +18,7 @@ set smtp_authenticators = 'gssapi:login'
 set folder = "imaps://imap.gmail.com/"
 set spoolfile = "+INBOX"
 set postponed = "+[Gmail]/Drafts"
-set record = "+[Gmail]/Sent Mail"
+#set record = "+[Gmail]/Sent Mail"
 set trash = "+[Gmail]/Trash"
 
 source ~/.files/runcon/mutt/keybindings.muttrc

@@ -110,20 +110,20 @@ git config --global alias.ll 'log --format=%h --abbrev=12 --oneline'
 #     * git reword - reowrd the commit message of patch number
 #     * git amend-to - merge the staged changes into the given patch number (or ref)
 #
-git config --global alias.l '!f() { base=${base:-origin/master}; git log --format=%h --abbrev=12 --oneline ${base}..HEAD | tac | nl | tac | perl -pe "s/([0-9a-f]{12})/\\e[1;31m\\1\\e[m/" | less -XFR; }; f'
-git config --global alias.sh '!f() { base=${base:-origin/master}; sha="$(git rev-list --reverse ${base}..HEAD | sed -n -e ${1}p)"; git show $sha; }; f'
-git config --global alias.fixup '!f() { base=${base:-origin/master}; if [ ${#1} -gt 5 ]; then sha="${1}"; else sha="$(git rev-list --reverse ${base}..HEAD | sed -n -e ${1}p)"; fi; git commit --fixup=$sha; }; f'
-git config --global alias.rb '!f() { base=${base:-origin/master}; count=${1:-"$(git rev-list --reverse ${base}..HEAD | wc -l | xargs)"}; git rebase -i --autosquash HEAD~${count}; }; f'
-git config --global alias.reword '!f() { base=${base:-origin/master}; sha="$(git rev-list --reverse ${base}..HEAD | sed -n -e ${1}p)"; git commit --fixup reword:${sha}; GIT_EDITOR=true git rebase -i --autosquash ${sha}^; }; f'
-git config --global alias.amend-to '!f() { base=${base:-origin/master}; if [ ${#1} -gt 5 ]; then sha="${1}"; else sha="$(git rev-list --reverse ${base}..HEAD | sed -n -e ${1}p)"; fi; git commit --fixup=${sha} && GIT_EDITOR=true git rebase -i --autosquash ${sha}^; }; f'
-git config --global alias.fmtp '!f() { base=${base:-origin/master}; count=${1:-"$(git rev-list --reverse ${base}..HEAD | wc -l | xargs)"}; git format-patch HEAD~${count}; }; f'
+git config --global alias.l        '!f() { base=${base:-$(git config repo.upstream)}; git log --format=%h --abbrev=12 --oneline ${base}..HEAD | tac | nl | tac | perl -pe "s/([0-9a-f]{12})/\\e[1;31m\\1\\e[m/" | less -XFR; }; f'
+git config --global alias.sh       '!f() { base=${base:-$(git config repo.upstream)}; if [ ${#1} -gt 5 ]; then sha="${1}"; else sha="$(git rev-list --reverse ${base}..HEAD | sed -n -e ${1}p)"; fi; git show $sha; }; f'
+git config --global alias.fixup    '!f() { base=${base:-$(git config repo.upstream)}; if [ ${#1} -gt 5 ]; then sha="${1}"; else sha="$(git rev-list --reverse ${base}..HEAD | sed -n -e ${1}p)"; fi; git commit --fixup=$sha; }; f'
+git config --global alias.reword   '!f() { base=${base:-$(git config repo.upstream)}; if [ ${#1} -gt 5 ]; then sha="${1}"; else sha="$(git rev-list --reverse ${base}..HEAD | sed -n -e ${1}p)"; fi; git commit --fixup reword:${sha}; GIT_EDITOR=true git rebase -i --autosquash ${sha}^; }; f'
+git config --global alias.amend-to '!f() { base=${base:-$(git config repo.upstream)}; if [ ${#1} -gt 5 ]; then sha="${1}"; else sha="$(git rev-list --reverse ${base}..HEAD | sed -n -e ${1}p)"; fi; git commit --fixup=${sha} && GIT_EDITOR=true git rebase -i --autosquash ${sha}^; }; f'
+git config --global alias.rb       '!f() { base=${base:-$(git config repo.upstream)}; count=${1:-"$(git rev-list --reverse ${base}..HEAD | wc -l | xargs)"}; git rebase -i --autosquash HEAD~${count}; }; f'
+git config --global alias.pref     '!f() { base=${base:-$(git config repo.upstream)}; sha="$(git rev-list --reverse ${base}..HEAD | sed -n -e ${1}p)"; echo ${sha} }; f'
 
 # A Perl Compatible RE find and replace
 git config --global alias.rp '!f() { find=${1}; shift; replace=${1}; shift; files="$*"; if test -z "${files}"; then files="$(git grep --perl-regexp -n "${find}" | perl -pe "s/:\d+:.*//" | uniq | tr "\n" " ")"; fi; if test -n "${files}"; then perl -i -pe "s/${find}/${replace}/g" $files; fi; }; f'
 
 # For github PRs
-git config --global alias.pr '!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f'
-git config --global alias.pr-clean '!git for-each-ref refs/heads/pr/* --format="%(refname)" | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done'
+git config --global alias.pr '!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull/$1/head:pr-$1 && git checkout pr-$1; }; f'
+git config --global alias.pr-clean '!git for-each-ref refs/heads/pr-* --format="%(refname)" | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done'
 
 # For stash/bitbucket
 git config --global alias.spr '!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull-requests/$1/from:pr/$1 && git checkout pr/$1; }; f'

@@ -7,7 +7,8 @@ filetype plugin indent on
 set nowrap
 
 " Turn on line numbering. Turn it off with "set nonu"
-set nu rnu
+set nu
+set rnu
 
 " Set left-margin to one char width (looks better with :se nonu)
 "set foldcolumn=1
@@ -100,6 +101,8 @@ endfunction
 map <F2> :call TrimWhiteSpace()<CR>
 map <F3> :set nu! rnu!<CR>
 map <F4> :set wrap!<CR>
+map <F5> :setlocal spell! spelllang=en_us<CR>
+map <F6> :Git blame
 
 " Set wraps when composing emails
 au BufRead,BufNewFile *.mail *patch *.txt setlocal textwidth=72
@@ -192,8 +195,20 @@ nmap <leader>q :bp <BAR> bd #<CR>
 "   - zg, gw	for good, wrong words.
 set spelllang=en_us
 set spellfile=$HOME/.vim/spell/en.utf-8.add
+
 map <F5> :setlocal spell! spelllang=en_us<CR>
 
 " File encoding
 set encoding=utf-8  " The encoding displayed.
 set fileencoding=utf-8  " The encoding written to file.
+
+" VimDiff:
+" --------
+if &diff
+	set cursorline
+	map . ]c
+	map , [c
+	"hi DiffAdd    ctermfg=233 ctermbg=LightGreen guifg=#003300 guibg=#DDFFDD gui=none cterm=none
+	"hi DiffChange ctermbg=white  guibg=#ececec gui=none   cterm=none
+	"hi DiffText   ctermfg=233  ctermbg=yellow  guifg=#000033 guibg=#DDDDFF gui=none cterm=none
+endif

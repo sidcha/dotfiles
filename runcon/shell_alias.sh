@@ -30,7 +30,7 @@ alias gg='rg --no-heading --line-number'
 alias syslog='sudo tail -f /var/log/kern.log | perl -pe '\'' s/.*kernel: \[\d+\.\d+\] //; '\'' '
 
 # Switch between https and ssh git remotes
-alias git-ssh=' git remote set-url origin $( git remote get-url origin | perl -pe '\'' s|^https://([^/]+)/(.+)\.git$|git@\1:\2.git| '\'' )'
+alias git-ssh=' git remote set-url origin $( git remote get-url origin | perl -pe '\'' s|^https://([^/]+)/(.+)(\.git)?$|git@\1:\2.git| '\'' )'
 alias git-http='git remote set-url origin $( git remote get-url origin | perl -pe '\'' s|^git@(.*):/?(.+)\.git$|https://\1/\2.git|      '\'' )'
 
 # git format patch numbered
