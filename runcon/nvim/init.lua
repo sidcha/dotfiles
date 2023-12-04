@@ -32,13 +32,38 @@ require('lazy').setup({
     -- Detect tabstop and shiftwidth automatically
     'tpope/vim-sleuth',
 
-    -- open files with file_name:N
+    -- Open files with file_name:N
     'wsdjeg/vim-fetch',
 
     -- Open files at last edit position
     'farmergreg/vim-lastplace',
 
-    -- LSP Configuration & Plugins
+    -- Edit surrounding quitotes/tags
+    -- 'tpope/vim-surround',
+
+    -- Make f key smarter
+    'rhysd/clever-f.vim',
+
+    -- Faster sneak like movement
+    {
+        "ggandor/leap.nvim",
+        keys = {
+            { "s", mode = { "n", "x", "o" }, desc = "Leap forward to" },
+            { "S", mode = { "n", "x", "o" }, desc = "Leap backward to" },
+            { "gs", mode = { "n", "x", "o" }, desc = "Leap from windows" },
+        },
+        config = function(_, opts)
+            local leap = require("leap")
+            for k, v in pairs(opts) do
+                leap.opts[k] = v
+            end
+            leap.add_default_mappings(true)
+            vim.keymap.del({ "x", "o" }, "x")
+            vim.keymap.del({ "x", "o" }, "X")
+        end,
+    },
+
+    --  The configuration is done below.
     {
         'neovim/nvim-lspconfig',
         dependencies = {
