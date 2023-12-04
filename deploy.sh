@@ -58,7 +58,6 @@ foreach_line $DIR/other/vim-plugin.list clone_repo ~/.vim/bundle
 
 touch ~/.vim/spell/en.utf-8.add
 rm -rf ~/.vim/syntax ~/.vim/ftplugin
-mkdir -p ~/.config/nvim/
 
 echo -n "Adding simlinks for dotFiles... "
 ln -f -s $DIR/runcon/vim/vimrc ~/.vimrc
