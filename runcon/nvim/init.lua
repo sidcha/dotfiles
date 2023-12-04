@@ -35,10 +35,11 @@ require('lazy').setup({
     -- open files with file_name:N
     'wsdjeg/vim-fetch',
 
-    -- NOTE: This is where your plugins related to LSP can be installed.
-    --  The configuration is done below. Search for lspconfig to find it below.
+    -- Open files at last edit position
+    'farmergreg/vim-lastplace',
+
+    -- LSP Configuration & Plugins
     {
-        -- LSP Configuration & Plugins
         'neovim/nvim-lspconfig',
         dependencies = {
             -- Automatically install LSPs to stdpath for neovim
@@ -137,22 +138,25 @@ require('lazy').setup({
     },
 
     -- Add indentation guides even on blank lines
-    {
-        'lukas-reineke/indent-blankline.nvim',
-        -- Enable `lukas-reineke/indent-blankline.nvim`
-        -- See `:help ibl`
-        main = 'ibl',
-        opts = {},
-    },
+    -- See `:help ibl`
+    -- { 'lukas-reineke/indent-blankline.nvim', main = 'ibl', opts = {} },
 
     -- "gc" to comment visual regions/lines
     { 'numToStr/Comment.nvim', opts = {} },
 
     -- Fuzzy finder
     {
-        "junegunn/fzf", dir = "~/.fzf", build = "./install --all", name = 'fzf'
+        "junegunn/fzf.vim",
+        dependencies = {
+            "junegunn/fzf", dir = "~/.fzf", build = "./install --all", name = 'fzf'
+        },
+        config = function()
+            vim.cmd [[
+                let g:fzf_vim = {}
+                let g:fzf_vim.preview_window = ['hidden,right,50%,<100(up,40%)', 'ctrl-/']
+            ]]
+        end,
     },
-    "junegunn/fzf.vim",
 
     -- Highlight, edit, and navigate code
     {
@@ -163,6 +167,7 @@ require('lazy').setup({
         build = ':TSUpdate',
     },
 
+    -- Show a tree view of current directory
     {
         "nvim-tree/nvim-tree.lua",
         dependencies = {
@@ -177,5 +182,6 @@ require("_options")
 require("_keymaps")
 require("_fzf")
 require("_treesitter")
+require("_tree")
 require("_lsp")
 require("_cmp")
