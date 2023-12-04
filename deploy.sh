@@ -74,7 +74,7 @@ ln -f -s $DIR/runcon/tmux.conf ~/.tmux.conf
 ln -f -s $DIR/runcon/mbsyncrc ~/.mbsyncrc
 ln -f -s $DIR/runcon/msmtprc ~/.msmtprc
 ln -f -s $DIR/runcon/zshrc ~/.zshrc
-ln -f -s $DIR/runcon/neovim_init ~/.config/nvim/init.vim
+ln -f -s $DIR/runcon/nvim ~/.config/nvim
 ln -f -s $DIR/runcon/zshrc ~/.zshrc
 ln -f -s $DIR/runcon/muttrc ~/.muttrc
 echo "Done."
