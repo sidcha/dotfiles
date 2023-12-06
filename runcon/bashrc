@@ -36,7 +36,7 @@ fi
 name="$(hostname)"
 [ -f ~/.name ] && name=$(cat ~/.name)
 
-PS1='[ \[\033[01;32m\]\u@${name}\[\033[00m\]: \[\033[01;34m\]\W\[\033[00m\]$(__git_ps1) ]\$ '
+PS1='[\[\033[01;32m\]\u@${name}\[\033[00m\]: \[\033[01;34m\]\W\[\033[00m\]$(__git_ps1)]\$ '
 
 # use local bin if one exists
 if [ -d ~/bin ]; then

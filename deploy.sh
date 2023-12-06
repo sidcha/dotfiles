@@ -76,6 +76,7 @@ ln -f -s $DIR/runcon/zshrc ~/.zshrc
 ln -f -s $DIR/runcon/nvim ~/.config/nvim
 ln -f -s $DIR/runcon/zshrc ~/.zshrc
 ln -f -s $DIR/runcon/muttrc ~/.muttrc
+ln -f -s $DIR/runcon/tmux_theme.sh ~/.tmux_theme.sh
 echo "Done."
 
 git config --global include.path $DIR/config/gitconfig
