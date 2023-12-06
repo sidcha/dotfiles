@@ -1,5 +1,17 @@
 -- [[ Basic Keymaps ]]
 
+local nnoremap = function(lhs, rhs)
+    vim.api.nvim_set_keymap('n', lhs, rhs, { noremap = true, silent = true })
+end
+
+local inoremap = function(lhs, rhs)
+    vim.api.nvim_set_keymap('i', lhs, rhs, { noremap = true, silent = true })
+end
+
+local xnoremap = function(lhs, rhs)
+    vim.api.nvim_set_keymap('x', lhs, rhs, { noremap = true, silent = true })
+end
+
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
@@ -14,9 +26,27 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnos
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
-vim.keymap.set('n', '<Bslash>[', ":bnext<CR>", { desc = 'Move to previous open buffer' })
+-- Working with buffers
+vim.keymap.set('n', '<Bslash>[', ":bprevious<CR>", { desc = 'Move to previous open buffer' })
 vim.keymap.set('n', '<Bslash>]', ":bnext<CR>", { desc = 'Move to next open buffer' })
-vim.keymap.set('n', '<Bslash>]', ":bnext<CR>", { desc = 'Move to next open buffer' })
+vim.keymap.set('n', '<Bslash>o', ":%bd|e#|bd#<CR>", { desc = 'Close all [o]ther buffers'})
+
+-- Physical Page-Up and Page-Down work as Ctrl-U/Ctrl-D
+nnoremap('<PageUp>', '<C-U>')
+nnoremap('<PageUp>', '<C-U>')
+inoremap('<PageUp>', '<C-\\><C-O><C-U>')
+xnoremap('<PageDown>', '<C-D>')
+xnoremap('<PageDown>', '<C-D>')
+inoremap('<PageDown>', '<C-\\><C-O><C-D>')
+
+-- Disable EX mode
+nnoremap('Q', '<Nop>')
+
+-- Disable arrow key
+-- for _, key in ipairs({'<Left>', '<Right>', '<Up>', '<Down>'}) do
+--     nnoremap(key, '<Nop>')
+--     xnoremap(key, '<Nop>')
+-- end
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`

@@ -141,10 +141,14 @@ require('lazy').setup({
 
     -- Theme inspired by Atom
     {
-        'navarasu/onedark.nvim',
+        "navarasu/onedark.nvim",
+        lazy = false,
         priority = 1000,
         config = function()
-            vim.cmd.colorscheme 'onedark'
+            require('onedark').setup {
+                style = 'darker'
+            }
+            require('onedark').load()
         end,
     },
 

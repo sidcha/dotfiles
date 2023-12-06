@@ -6,3 +6,4 @@ vim.keymap.set("n", "<leader>b", ":Buffers<CR>", { desc = "Fzf for open buffers"
 vim.keymap.set("n", "<leader>c", ":BCommits<CR>", { desc = "Fzf commits made in this file" })
 vim.keymap.set("n", "<leader>C", ":Commits<CR>", { desc = "Fzf all commits" })
 vim.keymap.set("n", "<leader>/", ":Rg<CR>", { desc = "Fzf for patten in file" })
+vim.keymap.set("n", "<leader>h", ":History<CR>", { desc = "Fzf history of files recently openned" })
