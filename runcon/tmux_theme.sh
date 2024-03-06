@@ -71,10 +71,8 @@ setw "window-status-separator" ""
 set "window-style" "fg=$onedark_off_white,bg=$onedark_black2"
 set "window-active-style" "fg=$onedark_white,bg=$onedark_black2"
 
-set "pane-border-fg" "$onedark_white"
-set "pane-border-bg" "$onedark_black"
-set "pane-active-border-fg" "$onedark_white"
-set "pane-active-border-bg" "$onedark_black"
+set "pane-border-style" "fg=$onedark_white,bg=$onedark_black2"
+set "pane-active-border-style" "fg=$onedark_white,bg=$onedark_black2"
 
 set "display-panes-active-colour" "$onedark_yellow"
 set "display-panes-colour" "$onedark_blue"
@@ -88,7 +86,7 @@ set "@prefix_highlight_copy_mode_attr" "fg=$onedark_black,bg=$onedark_green"
 set "@prefix_highlight_output_prefix" "  "
 
 status_widgets=$(get "@onedark_widgets")
-time_format=$(get "@onedark_time_format" "%R")
+time_format=$(get "@onedark_time_format" "%H:%M")
 date_format=$(get "@onedark_date_format" "%d/%m/%Y")
 
 set "status-right" "#[fg=$onedark_white,bg=$onedark_black,nounderscore,noitalics]${time_format}  ${date_format} #[fg=$onedark_visual_grey,bg=$onedark_black]#[fg=$onedark_visual_grey,bg=$onedark_visual_grey]#[fg=$onedark_white, bg=$onedark_visual_grey]${status_widgets} #[fg=$onedark_green,bg=$onedark_visual_grey,nobold,nounderscore,noitalics]#[fg=$onedark_black,bg=$onedark_green,bold] #h #[fg=$onedark_yellow, bg=$onedark_green]#[fg=$onedark_red,bg=$onedark_yellow]"
