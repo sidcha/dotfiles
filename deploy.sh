@@ -54,7 +54,7 @@ fi
 
 echo "Fectching new vim plugins.."
 rm -rf ~/.vim/bundle/file-line/
-foreach_line $DIR/other/vim-plugin.list clone_repo ~/.vim/bundle
+foreach_line $DIR/runcon/vim/plugin.list clone_repo ~/.vim/bundle
 
 touch ~/.vim/spell/en.utf-8.add
 rm -rf ~/.vim/syntax ~/.vim/ftplugin
