@@ -22,6 +22,9 @@ vim.opt.rtp:prepend(lazypath)
 
 -- [[ Configure plugins ]]
 require('lazy').setup({
+    -- color scheme
+    'shaunsingh/seoul256.nvim',
+
     -- Git related plugins
     'tpope/vim-fugitive',
     'tpope/vim-rhubarb',
@@ -64,21 +67,21 @@ require('lazy').setup({
     },
 
     --  The configuration is done below.
-    {
-        'neovim/nvim-lspconfig',
-        dependencies = {
-            -- Automatically install LSPs to stdpath for neovim
-            'williamboman/mason.nvim',
-            'williamboman/mason-lspconfig.nvim',
+    -- {
+    --     'neovim/nvim-lspconfig',
+    --     dependencies = {
+    --         -- Automatically install LSPs to stdpath for neovim
+    --         'williamboman/mason.nvim',
+    --         'williamboman/mason-lspconfig.nvim',
 
-            -- Useful status updates for LSP
-            -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-            { 'j-hui/fidget.nvim', opts = {} },
+    --         -- Useful status updates for LSP
+    --         -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
+    --         { 'j-hui/fidget.nvim', opts = {} },
 
-            -- Additional lua configuration, makes nvim stuff amazing!
-            'folke/neodev.nvim',
-        },
-    },
+    --         -- Additional lua configuration, makes nvim stuff amazing!
+    --         'folke/neodev.nvim',
+    --     },
+    -- },
 
     -- Autocompletion
     {
@@ -139,19 +142,6 @@ require('lazy').setup({
         },
     },
 
-    -- Theme inspired by Atom
-    {
-        "navarasu/onedark.nvim",
-        lazy = false,
-        priority = 1000,
-        config = function()
-            require('onedark').setup {
-                style = 'darker'
-            }
-            require('onedark').load()
-        end,
-    },
-
     -- Set lualine as statusline
     {
         'nvim-lualine/lualine.nvim',
@@ -159,7 +149,7 @@ require('lazy').setup({
         opts = {
             options = {
                 icons_enabled = false,
-                theme = 'onedark',
+                theme = 'seoul256',
                 component_separators = '|',
                 section_separators = '',
             },
@@ -207,10 +197,15 @@ require('lazy').setup({
     },
 }, {})
 
+-- Load the colorscheme
+vim.g.seoul256_disable_background = true
+require('seoul256')
+
+--require("_commands")
 require("_options")
 require("_keymaps")
 require("_fzf")
 require("_treesitter")
 require("_tree")
-require("_lsp")
+-- require("_lsp")
 require("_cmp")

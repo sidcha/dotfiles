@@ -51,11 +51,11 @@ stty flush undef
 
 export EDITOR="vim"
 
-export SSH_AUTH_SOCK=$HOME/.ssh/.agent.socket
-ssh-add -D 2> /dev/null && ssh-add 2> /dev/null
-if [[ $? -ne 0 ]]; then
-	ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-fi
+#export SSH_AUTH_SOCK=$HOME/.ssh/.agent.socket
+#ssh-add -D 2> /dev/null && ssh-add 2> /dev/null
+#if [[ $? -ne 0 ]]; then
+#	ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+#fi
 
 source_if_exits() {
 	[ -f $1 ] && source $1
