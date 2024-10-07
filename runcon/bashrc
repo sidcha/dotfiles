@@ -85,3 +85,4 @@ export PATH="$(echo $PATH | perl -pe 's/^://')"
 # fzf.vim used this to invoke an external command to fuzzy search files.
 # Let's use ripgrep as its faaast.
 export FZF_DEFAULT_COMMAND='rg --files'
+export MUTT_CONFIG="~/.config/mutt/muttrc";

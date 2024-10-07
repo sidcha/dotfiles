@@ -21,6 +21,6 @@ set postponed = "+[Gmail]/Drafts"
 #set record = "+[Gmail]/Sent Mail"
 set trash = "+[Gmail]/Trash"
 
-source ~/.files/runcon/mutt/keybindings.muttrc
-source ~/.files/runcon/mutt/colors.muttrc
-source ~/.files/runcon/mutt/common.muttrc
+source ~/.config/mutt/keybindings.muttrc
+source ~/.config/mutt/colors.muttrc
+source ~/.config/mutt/common.muttrc

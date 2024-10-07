@@ -69,14 +69,13 @@ ln -f -s $DIR/runcon/Xresources ~/.Xresources
 ln -f -s $DIR/runcon/Xinitrc ~/.Xinitrc
 ln -f -s $DIR/runcon/Xmodmap ~/.Xmodmap
 ln -f -s $DIR/runcon/minttyrc ~/.minttyrc
-ln -f -s $DIR/runcon/tmux.conf ~/.tmux.conf
 ln -f -s $DIR/runcon/mbsyncrc ~/.mbsyncrc
 ln -f -s $DIR/runcon/msmtprc ~/.msmtprc
 ln -f -s $DIR/runcon/zshrc ~/.zshrc
 ln -f -s $DIR/runcon/nvim ~/.config/nvim
+ln -f -s $DIR/runcon/tmux ~/.config/tmux
+ln -f -s $DIR/runcon/mutt ~/.config/mutt
 ln -f -s $DIR/runcon/zshrc ~/.zshrc
-ln -f -s $DIR/runcon/muttrc ~/.muttrc
-ln -f -s $DIR/runcon/tmux_theme.sh ~/.tmux_theme.sh
 echo "Done."
 
 git config --global include.path $DIR/config/gitconfig
