@@ -62,7 +62,7 @@ in
         su = "submodule update --recursive";
       };
       extraConfig = {
-        includeIf."gitdir:~/work/oss/".path = "~/.config/git/oss.config";
+        includeIf."gitdir:~/work/oss/".path = "~/.config/git/personal.config";
         includeIf."gitdir:~/work/".path = "~/.config/git/work.config";
 	rerere.enabled = true;
 	branch.sort = "-commiterdate";
