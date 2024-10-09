@@ -1,18 +1,6 @@
 { config, lib, pkgs, ... }:
 
 {
-  # set static IP for eth0, this IP is assigned for sidcha by IT.
-  networking = {
-    interfaces.eth0.ipv4.addresses = [{
-      address = "10.206.133.93";
-      prefixLength = 24;
-    }];
-    proxy = {
-      default = "http://127.0.0.1:3128";
-      noProxy = "127.0.0.1,localhost,huawei.com,10.206.133.93,10.206.133.54";
-    };
-  };
-
   # Add cntlm to system packages
   environment.systemPackages = [ pkgs.cntlm ];
 

@@ -4,6 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     ./huawei/proxy.nix
+    ./huawei/configuration.nix
     ./home.nix
   ];
 
@@ -24,16 +25,6 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    initrd.luks.devices."nixos".device = "/dev/disk/by-uuid/4deba29b-12ee-439e-b179-70bb97753e43";
-  };
-
-  # Disable the GNOME3/GDM auto-suspend feature that cannot be disabled in GUI!
-  # If no user is logged in, the machine will power down after 20 minutes.
-  systemd.targets = {
-    sleep.enable = false;
-    suspend.enable = false;
-    hibernate.enable = false;
-    hybrid-sleep.enable = false;
   };
 
   # for vscode
@@ -64,11 +55,12 @@
   # Enable sound.
   hardware.pulseaudio.enable = true;
 
+  networking.networkmanager.enable = true;
+
   users.users.sidcha = {
     description = "Siddharth Chandrasekaran";
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keyFiles = [ /etc/nixos/ssh-authorized-keys ];
   };
 
   programs.mtr.enable = true;
@@ -100,20 +92,10 @@
     '';
   };
 
-  networking = {
-    hostName = "hyperion";
-    networkmanager.enable = true;
-    firewall = {
-      allowedTCPPorts = [ 22 ];
-      allowedUDPPorts = [ 51840 ];
-    };
-  };
-
   environment.systemPackages = with pkgs; [
     vim
     wget
     curl
-    wireguard-tools
   ];
 
   # Enable the OpenSSH daemon.
