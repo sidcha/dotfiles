@@ -136,6 +136,10 @@ nnoremap <silent> <PageDown> <C-D>
 vnoremap <silent> <PageDown> <C-D>
 inoremap <silent> <PageDown> <C-\><C-O><C-D>
 
+" Remap Shift + Up/Down to behave like normal Up/Down
+nnoremap <S-Up> <Up>
+nnoremap <S-Down> <Down>
+
 " Remap vertical selection to <c-q>
 :nnoremap <c-q> <c-v>
 

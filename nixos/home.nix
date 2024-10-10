@@ -26,9 +26,6 @@ in
         name = Siddharth Chandrasekaran
 	email = siddharth.chandrasekaran@huawei.com
     '';
-    home.file.".ssh/authorized_keys".text = ''
-      ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHxoX+ThhBg6nnonNJnkXToOf+HdM2lpis5XLgcQ+OOz Huawei MateBook Pro Oct 2024
-    '';
 
     home.packages = with pkgs; [
       # common

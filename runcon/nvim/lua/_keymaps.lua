@@ -39,6 +39,10 @@ xnoremap('<PageDown>', '<C-D>')
 xnoremap('<PageDown>', '<C-D>')
 inoremap('<PageDown>', '<C-\\><C-O><C-D>')
 
+-- Remap Shift + Up/Down to behave like normal Up/Down
+nnoremap('<S-Up>', '<Up>')
+nnoremap('<S-Down>', '<Down>')
+
 -- Disable EX mode
 nnoremap('Q', '<Nop>')
 
