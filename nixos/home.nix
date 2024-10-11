@@ -16,6 +16,7 @@ in
     home.file.".config/nvim".source = ../runcon/nvim;
     home.file.".config/tmux".source = ../runcon/tmux;
     home.file.".config/mutt".source = ../runcon/mutt;
+    home.file.".config/alacritty".source = ../runcon/alacritty;
     home.file.".config/git/personal.config".text = ''
       [user]
         name = Siddharth Chandrasekaran
@@ -39,8 +40,11 @@ in
       git
       tmux
       neovim
+      mutt
 
       # GUI apps
+      alacritty
+      obsidian
       firefox
       vscode
       mattermost-desktop
@@ -62,7 +66,7 @@ in
         includeIf."gitdir:~/work/oss/".path = "~/.config/git/personal.config";
         includeIf."gitdir:~/work/".path = "~/.config/git/work.config";
 	rerere.enabled = true;
-	branch.sort = "-commiterdate";
+	branch.sort = "-committerdate";
         url."https://github.com/".insteadOf = [ "gh:" "github:" ];
         rebase.autoSquash = true;
         sendemail.confirm = "always";

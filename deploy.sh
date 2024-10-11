@@ -73,6 +73,7 @@ ln -f -s $DIR/runcon/mbsyncrc ~/.mbsyncrc
 ln -f -s $DIR/runcon/msmtprc ~/.msmtprc
 ln -f -s $DIR/runcon/zshrc ~/.zshrc
 ln -f -s $DIR/runcon/nvim ~/.config/nvim
+ln -f -s $DIR/runcon/alacritty ~/.config/alacritty
 ln -f -s $DIR/runcon/tmux ~/.config/tmux
 ln -f -s $DIR/runcon/mutt ~/.config/mutt
 ln -f -s $DIR/runcon/zshrc ~/.zshrc
