@@ -47,6 +47,7 @@ in
       obsidian
       firefox
       vscode
+      zotero_7
       mattermost-desktop
     ];
 
