@@ -25,7 +25,7 @@ in
     home.file.".config/git/work.config".text = ''
       [user]
         name = Siddharth Chandrasekaran
-	email = siddharth.chandrasekaran@huawei.com
+        email = siddharth.chandrasekaran@huawei.com
     '';
 
     home.packages = with pkgs; [
@@ -38,6 +38,7 @@ in
       rustup
       ripgrep
       git
+      git-credential-manager
       tmux
       neovim
       mutt
@@ -55,39 +56,40 @@ in
     programs.fzf.enable = true;
     programs.git = {
       enable = true;
-      #userName = "Siddharth Chandrasekaran";
-      #userEmail = "siddharth.chandrasekaran@huawei.com";
       aliases = {
         last = "diff HEAD^ HEAD";
         ll = "log --format=%h --abbrev=12 --oneline";
-	staash = "stash --all";
+        staash = "stash --all";
         su = "submodule update --recursive";
       };
       extraConfig = {
-        includeIf."gitdir:~/work/oss/".path = "~/.config/git/personal.config";
-        includeIf."gitdir:~/work/".path = "~/.config/git/work.config";
-	rerere.enabled = true;
-	branch.sort = "-committerdate";
-        url."https://github.com/".insteadOf = [ "gh:" "github:" ];
-        rebase.autoSquash = true;
-        sendemail.confirm = "always";
         am.threeWay = true;
+        branch.sort = "-committerdate";
         color.ui = "auto";
         core.excludesfile = "~/.gitignore";
+        credential.helper = "manager";
+        credential."https://github.com".username = "sidcha";
+        credential.credentialStore = "cache";
+        includeIf."gitdir:~/work/oss/".path = "~/.config/git/personal.config";
+        includeIf."gitdir:~/work/".path = "~/.config/git/work.config";
+        rebase.autoSquash = true;
+        rerere.enabled = true;
+        sendemail.confirm = "always";
+        url."https://github.com/".insteadOf = [ "gh:" "github:" ];
       };
     };
     programs.vim = {
       enable = true;
       plugins = with pkgs.vimPlugins; [
-	fugitive
+        fugitive
         fzf-vim
         seoul256-vim
         vim-surround 
-	vim-sensible
-	vim-fetch
-	editorconfig-vim
+        vim-sensible
+        vim-fetch
+        editorconfig-vim
         vim-buffergator
-	vim-sneak
+        vim-sneak
       ];
       settings = { ignorecase = true; };
       extraConfig = ''

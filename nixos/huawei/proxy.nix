@@ -12,6 +12,9 @@
     proxy = [
       "proxy.huawei.com:8080"
     ];
+    extraConfig = ''
+      Listen 0.0.0.0:3128
+    '';
     noproxy = [
       "127.0.0.*"
       "localhost"

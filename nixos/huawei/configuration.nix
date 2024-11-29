@@ -18,7 +18,7 @@
       prefixLength = 24;
     }];
     firewall = {
-      allowedTCPPorts = [ 22 ];
+      allowedTCPPorts = [ 22 3218 ];
       allowedUDPPorts = [ 51840 ];
     };
     proxy = {
