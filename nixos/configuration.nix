@@ -65,6 +65,8 @@
     wget
     curl
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+
+    gcc
   ];
 
   programs.mtr.enable = true;

@@ -34,7 +34,6 @@ in
       wireguard-tools
 
       # dev-tools
-      gcc
       rustup
       ripgrep
       git
