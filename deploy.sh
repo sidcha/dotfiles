@@ -60,7 +60,7 @@ touch ~/.vim/spell/en.utf-8.add
 rm -rf ~/.vim/syntax ~/.vim/ftplugin
 
 echo -n "Adding simlinks for dotFiles... "
-ln -f -s $DIR/runcon/vim/vimrc ~/.vimrc
+ln -f -s $DIR/runcon/vim/vimrc ~/.vim/vimrc
 ln -f -s $DIR/runcon/vim/ftplugin ~/.vim/ftplugin
 ln -f -s $DIR/runcon/vim/syntax ~/.vim/syntax
 ln -f -s $DIR/runcon/bashrc ~/.bashrc
