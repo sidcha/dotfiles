@@ -141,6 +141,10 @@ if [[ ! -d "$HOME/.fzf" ]]; then
 	~/.fzf/install
 fi
 
+echo -n "Adding custom fonts..."
+ln -f -s $DIR/runcon/fonts ~/.fonts
+fc-cache -f
+
 if [ ! -f ~/.env ]; then
 	echo "export CFG_SCRIPT_DIR=$DIR" > ~/.env
 fi
