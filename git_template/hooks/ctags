@@ -1,5 +1,6 @@
 #!/bin/sh
 set -e
+exit
 PATH="/usr/local/bin:$PATH"
 dir="`git rev-parse --show-toplevel`"
 trap 'rm -f "$dir/$$.tags"' EXIT

@@ -141,6 +141,9 @@ if [[ ! -d "$HOME/.fzf" ]]; then
 	~/.fzf/install
 fi
 
+wget -O ~/.gdbinit-gef.py -q https://gef.blah.cat/py
+echo source ~/.gdbinit-gef.py >> ~/.gdbinit
+
 echo -n "Adding custom fonts..."
 ln -f -s $DIR/runcon/fonts ~/.fonts
 fc-cache -f
