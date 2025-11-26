@@ -9,8 +9,6 @@ vim.wo.number = true
 vim.wo.relativenumber = true
 
 -- Sync clipboard between OS and Neovim.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
 vim.o.clipboard = 'unnamedplus'
 
 -- Enable break indent
@@ -59,7 +57,6 @@ vim.o.spelllang = 'en_us'
 vim.o.spellfile = vim.fn.expand('~/.vim/spell/en.utf-8.add')
 
 -- File encoding (Neovim always uses UTF-8 for encoding)
--- Set default fileencoding for new buffers
 vim.o.fileencoding = 'utf-8'
 
 -- Swap and backup directories
