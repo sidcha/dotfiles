@@ -86,18 +86,47 @@ mason_lspconfig.setup()
 --
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
+-- Helper function to find compile_commands.json in build/ directory
+local function find_compile_commands()
+    -- Search upward from current buffer's directory
+    local current_dir = vim.fn.expand('%:p:h')
+
+    -- Use vim.fs.root to find a directory containing build/compile_commands.json
+    local root = vim.fs.root(current_dir, function(name, path)
+        local build_dir = vim.fs.joinpath(path, 'build')
+        local compile_commands = vim.fs.joinpath(build_dir, 'compile_commands.json')
+        return vim.fn.filereadable(compile_commands) == 1
+    end)
+
+    if root then
+        return vim.fs.joinpath(root, 'build')
+    end
+
+    return nil
+end
+
 local servers = {
     -- C/C++
     clangd = {
-        cmd = {
-            'clangd',
-            '--background-index',
-            '--clang-tidy',
-            '--header-insertion=iwyu',
-            '--completion-style=detailed',
-            '--function-arg-placeholders',
-            '--fallback-style=llvm',
-        },
+        cmd = function()
+            local base_cmd = {
+                'clangd',
+                '--background-index',
+                '--clang-tidy',
+                '--header-insertion=iwyu',
+                '--completion-style=detailed',
+                '--function-arg-placeholders',
+                '--fallback-style=llvm',
+            }
+
+            -- Try to find compile_commands.json in build/ directory
+            local compile_commands_dir = find_compile_commands()
+            if compile_commands_dir then
+                table.insert(base_cmd, '--compile-commands-dir=' .. compile_commands_dir)
+            end
+
+            return base_cmd
+        end,
         init_options = {
             clangdFileStatus = true,
             usePlaceholders = true,
@@ -200,18 +229,62 @@ mason_lspconfig.setup {
     ensure_installed = ensure_installed,
 }
 
--- Check if setup_handlers exists (it might not if plugins aren't installed yet)
-if mason_lspconfig.setup_handlers then
-    mason_lspconfig.setup_handlers {
-        function(server_name)
-            require('lspconfig')[server_name].setup {
+-- Map of server names to common filetypes (for servers without explicit filetypes)
+local default_filetypes = {
+    clangd = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
+    gopls = { 'go', 'gomod', 'gowork', 'gotmpl' },
+    pyright = { 'python' },
+    rust_analyzer = { 'rust' },
+    ts_ls = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
+    bashls = { 'sh', 'bash' },
+    jsonls = { 'json', 'jsonc' },
+    yamlls = { 'yaml' },
+    lua_ls = { 'lua' },
+}
+
+-- Setup each server with autocmds
+for server_name, server_config in pairs(servers) do
+    local filetypes = server_config.filetypes or default_filetypes[server_name] or {}
+
+    vim.api.nvim_create_autocmd('FileType', {
+        pattern = filetypes,
+        callback = function(args)
+            -- Determine cmd (handle function or table)
+            local cmd
+            if server_config.cmd then
+                if type(server_config.cmd) == 'function' then
+                    cmd = server_config.cmd()
+                else
+                    cmd = server_config.cmd
+                end
+            else
+                cmd = { server_name }
+            end
+
+            -- Build settings (everything except cmd, init_options, filetypes)
+            local settings = {}
+            for key, value in pairs(server_config) do
+                if key ~= 'cmd' and key ~= 'init_options' and key ~= 'filetypes' then
+                    settings[key] = value
+                end
+            end
+
+            -- Find root directory
+            local root_dir = vim.fs.root(args.buf, {'.git', 'Makefile', 'go.mod', 'package.json', 'Cargo.toml', 'pyproject.toml'})
+            if not root_dir then
+                root_dir = vim.fn.getcwd()
+            end
+
+            -- Start LSP client
+            vim.lsp.start({
+                name = server_name,
+                cmd = cmd,
+                root_dir = root_dir,
+                settings = settings,
                 capabilities = capabilities,
+                init_options = server_config.init_options,
                 on_attach = on_attach,
-                settings = servers[server_name],
-                filetypes = (servers[server_name] or {}).filetypes,
-            }
+            })
         end,
-    }
-else
-    vim.notify('Mason-lspconfig setup_handlers not available. Please run :Lazy sync', vim.log.levels.WARN)
+    })
 end

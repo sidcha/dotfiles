@@ -60,7 +60,7 @@ vim.o.spellfile = vim.fn.expand('~/.vim/spell/en.utf-8.add')
 
 -- File encoding (Neovim always uses UTF-8 for encoding)
 -- Set default fileencoding for new buffers
-vim.opt.fileencoding = 'utf-8'
+vim.o.fileencoding = 'utf-8'
 
 -- Swap and backup directories
 vim.o.backupdir = '/tmp//,.'
