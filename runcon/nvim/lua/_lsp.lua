@@ -18,12 +18,13 @@ local on_attach = function(_, bufnr)
     nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
     nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
-    -- nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-    -- nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-    -- nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-    -- nmap('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-    -- nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-    -- nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+    -- LSP navigation using built-in vim.lsp functions
+    nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+    nmap('gr', vim.lsp.buf.references, '[G]oto [R]eferences')
+    nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+    nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+    nmap('<leader>ds', vim.lsp.buf.document_symbol, '[D]ocument [S]ymbols')
+    nmap('<leader>ws', vim.lsp.buf.workspace_symbol, '[W]orkspace [S]ymbols')
 
     -- See `:help K` for why this keymap
     nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
@@ -44,20 +45,38 @@ local on_attach = function(_, bufnr)
 end
 
 -- document existing key chains
-require('which-key').register {
-    ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-    ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-    ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
-    ['<leader>h'] = { name = 'More git', _ = 'which_key_ignore' },
-    ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-    ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-    ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-}
+local wk_ok, wk = pcall(require, 'which-key')
+if wk_ok then
+    wk.add({
+        { "<leader>c", group = "[C]ode" },
+        { "<leader>d", group = "[D]ocument" },
+        { "<leader>r", group = "[R]ename" },
+        { "<leader>w", group = "[W]orkspace" },
+    })
+end
 
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
-require('mason').setup()
-require('mason-lspconfig').setup()
+local mason_ok, mason = pcall(require, 'mason')
+if not mason_ok then
+    vim.notify('Mason not installed. LSP features will not be available.', vim.log.levels.WARN)
+    return
+end
+
+local mason_lspconfig_ok, mason_lspconfig = pcall(require, 'mason-lspconfig')
+if not mason_lspconfig_ok then
+    vim.notify('Mason-lspconfig not installed. LSP features will not be available.', vim.log.levels.WARN)
+    return
+end
+
+local lspconfig_ok, _ = pcall(require, 'lspconfig')
+if not lspconfig_ok then
+    vim.notify('Lspconfig not installed. LSP features will not be available.', vim.log.levels.WARN)
+    return
+end
+
+mason.setup()
+mason_lspconfig.setup()
 
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -68,44 +87,131 @@ require('mason-lspconfig').setup()
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
-    clangd = {},
-    -- gopls = {},
-    -- pyright = {},
-    rust_analyzer = {},
-    -- tsserver = {},
-    -- html = { filetypes = { 'html', 'twig', 'hbs'} },
+    -- C/C++
+    clangd = {
+        cmd = {
+            'clangd',
+            '--background-index',
+            '--clang-tidy',
+            '--header-insertion=iwyu',
+            '--completion-style=detailed',
+            '--function-arg-placeholders',
+            '--fallback-style=llvm',
+        },
+        init_options = {
+            clangdFileStatus = true,
+            usePlaceholders = true,
+            completeUnimported = true,
+            semanticHighlighting = true,
+        },
+    },
 
+    -- Go
+    gopls = {
+        gopls = {
+            analyses = {
+                unusedparams = true,
+            },
+            staticcheck = true,
+        },
+    },
+
+    -- Python
+    pyright = {
+        python = {
+            analysis = {
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
+                diagnosticMode = "workspace",
+            },
+        },
+    },
+
+    -- Rust
+    rust_analyzer = {
+        ['rust-analyzer'] = {
+            checkOnSave = {
+                command = "clippy",
+            },
+            cargo = {
+                allFeatures = true,
+                loadOutDirsFromCheck = true,
+            },
+            procMacro = {
+                enable = true,
+            },
+            diagnostics = {
+                enable = true,
+                experimental = {
+                    enable = true,
+                },
+            },
+        },
+    },
+
+    -- JavaScript/TypeScript
+    ts_ls = {},
+
+    -- Bash
+    bashls = {},
+
+    -- JSON
+    jsonls = {},
+
+    -- YAML
+    yamlls = {},
+
+    -- Lua
     lua_ls = {
         Lua = {
             workspace = { checkThirdParty = false },
             telemetry = { enable = false },
-            -- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-            -- diagnostics = { disable = { 'missing-fields' } },
+            diagnostics = {
+                globals = { 'vim' },
+            },
         },
     },
 }
 
 -- Setup neovim lua configuration
-require('neodev').setup()
+local neodev_ok, neodev = pcall(require, 'neodev')
+if neodev_ok then
+    neodev.setup()
+end
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+local cmp_nvim_lsp_ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
+if cmp_nvim_lsp_ok then
+    capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
+end
 
 -- Ensure the servers above are installed
-local mason_lspconfig = require 'mason-lspconfig'
+-- Note: rust_analyzer should be excluded if you have it installed via rustup
+local ensure_installed = vim.tbl_keys(servers)
+-- Remove rust_analyzer from auto-install if rustup version exists
+if vim.fn.executable('rust-analyzer') == 1 then
+    ensure_installed = vim.tbl_filter(function(server)
+        return server ~= 'rust_analyzer'
+    end, ensure_installed)
+end
 
 mason_lspconfig.setup {
-    ensure_installed = vim.tbl_keys(servers),
+    ensure_installed = ensure_installed,
 }
 
-mason_lspconfig.setup_handlers {
-    function(server_name)
-        require('lspconfig')[server_name].setup {
-            capabilities = capabilities,
-            on_attach = on_attach,
-            settings = servers[server_name],
-            filetypes = (servers[server_name] or {}).filetypes,
-        }
-    end,
-}
+-- Check if setup_handlers exists (it might not if plugins aren't installed yet)
+if mason_lspconfig.setup_handlers then
+    mason_lspconfig.setup_handlers {
+        function(server_name)
+            require('lspconfig')[server_name].setup {
+                capabilities = capabilities,
+                on_attach = on_attach,
+                settings = servers[server_name],
+                filetypes = (servers[server_name] or {}).filetypes,
+            }
+        end,
+    }
+else
+    vim.notify('Mason-lspconfig setup_handlers not available. Please run :Lazy sync', vim.log.levels.WARN)
+end

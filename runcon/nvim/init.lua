@@ -41,6 +41,9 @@ require('lazy').setup({
     -- Open files at last edit position
     'farmergreg/vim-lastplace',
 
+    -- EditorConfig support
+    'editorconfig/editorconfig-vim',
+
     -- Edit surrounding quitotes/tags
     -- 'tpope/vim-surround',
 
@@ -67,21 +70,21 @@ require('lazy').setup({
     },
 
     --  The configuration is done below.
-    -- {
-    --     'neovim/nvim-lspconfig',
-    --     dependencies = {
-    --         -- Automatically install LSPs to stdpath for neovim
-    --         'williamboman/mason.nvim',
-    --         'williamboman/mason-lspconfig.nvim',
+    {
+        'neovim/nvim-lspconfig',
+        dependencies = {
+            -- Automatically install LSPs to stdpath for neovim
+            'williamboman/mason.nvim',
+            'williamboman/mason-lspconfig.nvim',
 
-    --         -- Useful status updates for LSP
-    --         -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-    --         { 'j-hui/fidget.nvim', opts = {} },
+            -- Useful status updates for LSP
+            -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
+            { 'j-hui/fidget.nvim', opts = {} },
 
-    --         -- Additional lua configuration, makes nvim stuff amazing!
-    --         'folke/neodev.nvim',
-    --     },
-    -- },
+            -- Additional lua configuration, makes nvim stuff amazing!
+            'folke/neodev.nvim',
+        },
+    },
 
     -- Autocompletion
     {
@@ -207,5 +210,7 @@ require("_keymaps")
 require("_fzf")
 require("_treesitter")
 require("_tree")
--- require("_lsp")
+require("_whichkey")
+require("_lsp")
 require("_cmp")
+require("_kernel")

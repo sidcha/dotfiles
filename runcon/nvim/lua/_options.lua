@@ -35,3 +35,40 @@ vim.o.completeopt = 'menuone,noselect'
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
+
+-- Do not wrap text by default
+vim.o.wrap = false
+
+-- Automatically save before commands like :next and :make
+vim.o.autowrite = true
+
+-- Show partial commands in the last line of the screen
+vim.o.showcmd = true
+
+-- Stop certain movements from always going to the first character of a line
+vim.o.startofline = false
+
+-- Raise a dialogue asking if you wish to save changed files
+vim.o.confirm = true
+
+-- Allow buffers to be hidden if modified
+vim.o.hidden = true
+
+-- Spell check settings
+vim.o.spelllang = 'en_us'
+vim.o.spellfile = vim.fn.expand('~/.vim/spell/en.utf-8.add')
+
+-- File encoding (Neovim always uses UTF-8 for encoding)
+-- Set default fileencoding for new buffers
+vim.opt.fileencoding = 'utf-8'
+
+-- Swap and backup directories
+vim.o.backupdir = '/tmp//,.'
+vim.o.directory = '/tmp//,.'
+
+-- Set modelines
+vim.o.modeline = true
+vim.o.modelines = 5
+
+-- Set tags files
+vim.o.tags = './.git/tags,./tags,tags;'
