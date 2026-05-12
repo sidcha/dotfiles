@@ -3,28 +3,32 @@
 return {
   {
     'nvim-treesitter/nvim-treesitter',
+    -- nvim-treesitter switched the default branch from 'master' to 'main' in
+    -- late 2024. The 'main' rewrite removed configs.setup(), highlight,
+    -- incremental_selection, and bundled textobjects — none of which can be
+    -- recreated from the new API alone. Stay on 'master' until we migrate.
+    branch = 'master',
     build = ':TSUpdate',
     dependencies = {
-      'nvim-treesitter/nvim-treesitter-textobjects',
+      { 'nvim-treesitter/nvim-treesitter-textobjects', branch = 'master' },
     },
     config = function()
+      -- Skip ensure_installed if no C compiler is available — otherwise
+      -- nvim-treesitter prints "No C compiler found!" once per parser at
+      -- startup. Users on minimal boxes can :TSInstall manually later.
+      local has_cc = false
+      for _, c in ipairs({ 'cc', 'gcc', 'clang', 'cl', 'zig' }) do
+        if vim.fn.executable(c) == 1 then has_cc = true; break end
+      end
+      local parsers = has_cc and {
+        'c', 'cpp', 'go', 'lua', 'python', 'rust',
+        'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash',
+      } or {}
+
       -- Defer setup to improve startup time
       vim.defer_fn(function()
         require('nvim-treesitter.configs').setup({
-          ensure_installed = {
-            'c',
-            'cpp',
-            'go',
-            'lua',
-            'python',
-            'rust',
-            'tsx',
-            'javascript',
-            'typescript',
-            'vimdoc',
-            'vim',
-            'bash',
-          },
+          ensure_installed = parsers,
           auto_install = false,
           highlight = { enable = true },
           indent = { enable = true },
