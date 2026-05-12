@@ -1,85 +1,99 @@
-#!/bin/bash
-
-clone_repo() {
-	base=$1
-	url=$2
-	repo_name=$(echo $url | perl -pe 's/.*\/(.*)$/\1/')
-	dir_name=$(echo $repo_name | perl -pe 's/\.git$//')
-	if [ ! -d $base/$dir_name ]; then
-		echo "Cloning $repo_name to $base/$dir_name"
-		git clone https://github.com/sidcha/$repo_name $base/$dir_name > /dev/null
-		if [ $? -ne 0 ]; then
-			echo "Could not find a fork; tracking upstream master"
-			git clone $line $base/$dir_name > /dev/null
-		fi
-		git -C $base/$dir_name remote add upstream $line
-	else
-		echo "Processing $repo_name to $base/$dir_name"
-		git -C $base/$dir_name pull upstream master
-
-		# when we have a ssh clone of .files, also update the forks :)
-		if [[ ! -z "$(git remote get-url origin | grep -o -e '^git@github.com')" ]]; then
-			git -C $base/$dir_name remote set-url origin "$(echo https://github.com/sidcha/$repo_name | perl -pe 's|^https://([^/]+)/(.*)(\.git)?|git@\1:\2.git|')"
-			git -C $base/$dir_name push origin master
-		fi
-	fi
-}
-
-foreach_line() {
-	list=$1; shift;
-	while IFS='' read -r line || [[ -n "$line" ]]; do
-		"$@" $line
-	done < $list
-}
-
+#!/usr/bin/env bash
 #
 # Note: This script should be re-runnable. ie., don't do any
 # appends to files here.
 #
+set -euo pipefail
+trap 's=$?; echo "ERROR: deploy.sh failed at line $LINENO (exit $s)" >&2' ERR
 
-DIR=$(realpath "$(dirname "$0")")
-pushd ${DIR} 2>&1 > /dev/null
+clone_repo() {
+	local base=$1
+	local url=$2
+	local repo_name dir_name fork_url default_branch
+	repo_name=$(echo "$url" | perl -pe 's/.*\/(.*)$/\1/')
+	dir_name=$(echo "$repo_name" | perl -pe 's/\.git$//')
+	fork_url="https://github.com/sidcha/$repo_name"
 
-if [[ -z "$(git diff --quiet --exit-code || echo +)" ]]; then
+	if [ ! -d "$base/$dir_name" ]; then
+		echo "Cloning $repo_name to $base/$dir_name"
+		if git clone "$fork_url" "$base/$dir_name" >/dev/null 2>&1; then
+			git -C "$base/$dir_name" remote add upstream "$url"
+		else
+			echo "Could not find a fork; tracking upstream directly"
+			git clone "$url" "$base/$dir_name" >/dev/null
+			git -C "$base/$dir_name" remote add upstream "$url" 2>/dev/null || true
+		fi
+	fi
+
+	echo "Processing $repo_name in $base/$dir_name"
+	# Discover upstream's default branch (master vs main vs ...) instead of
+	# hard-coding "master", which breaks on repos that have migrated.
+	git -C "$base/$dir_name" fetch upstream >/dev/null
+	git -C "$base/$dir_name" remote set-head upstream --auto >/dev/null
+	default_branch=$(git -C "$base/$dir_name" symbolic-ref --short refs/remotes/upstream/HEAD | sed 's@^upstream/@@')
+	git -C "$base/$dir_name" pull upstream "$default_branch"
+
+	# When .files itself is an ssh clone, also keep the forks pushable over ssh.
+	if git remote get-url origin | grep -q '^git@github.com'; then
+		git -C "$base/$dir_name" remote set-url origin \
+			"$(echo "$fork_url" | perl -pe 's|^https://([^/]+)/(.*?)(\.git)?$|git@\1:\2.git|')"
+		git -C "$base/$dir_name" push origin "$default_branch"
+	fi
+}
+
+foreach_line() {
+	local list=$1; shift
+	local line
+	while IFS='' read -r line || [[ -n "$line" ]]; do
+		[ -z "$line" ] && continue
+		"$@" "$line"
+	done < "$list"
+}
+
+DIR=$(cd "$(dirname "$0")" && pwd)
+pushd "$DIR" >/dev/null
+
+if git diff --quiet --exit-code; then
 	git pull origin master --rebase
 else
 	echo "Working tree is dirty! Will not git pull"
 fi
 
-mkdir -p ~/.vim ~/.vim/autoload ~/.vim/bundle ~/.vim/spell ~/.vim/syntax
+mkdir -p ~/.vim/autoload ~/.vim/bundle ~/.vim/spell ~/.vim/syntax
+mkdir -p ~/.config ~/.ssh
+
 if [ ! -f ~/.vim/autoload/pathogen.vim ]; then
 	echo "Downloading pathogen for vim"
-	curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+	curl -fsSLo ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 fi
 
-echo "Fectching new vim plugins.."
+echo "Fetching new vim plugins..."
 rm -rf ~/.vim/bundle/file-line/
-foreach_line $DIR/runcon/vim/plugin.list clone_repo ~/.vim/bundle
+foreach_line "$DIR/runcon/vim/plugin.list" clone_repo ~/.vim/bundle
 
 touch ~/.vim/spell/en.utf-8.add
 rm -rf ~/.vim/syntax ~/.vim/ftplugin
 
-echo -n "Adding simlinks for dotFiles... "
-ln -f -s $DIR/runcon/vim/vimrc ~/.vim/vimrc
-ln -f -s $DIR/runcon/vim/ftplugin ~/.vim/ftplugin
-ln -f -s $DIR/runcon/vim/syntax ~/.vim/syntax
-ln -f -s $DIR/runcon/bashrc ~/.bashrc
-ln -f -s $DIR/runcon/screenrc ~/.screenrc
-ln -f -s $DIR/runcon/Xresources ~/.Xresources
-ln -f -s $DIR/runcon/Xinitrc ~/.Xinitrc
-ln -f -s $DIR/runcon/Xmodmap ~/.Xmodmap
-ln -f -s $DIR/runcon/minttyrc ~/.minttyrc
-ln -f -s $DIR/runcon/mbsyncrc ~/.mbsyncrc
-ln -f -s $DIR/runcon/msmtprc ~/.msmtprc
-ln -f -s $DIR/runcon/zshrc ~/.zshrc
-ln -f -s $DIR/runcon/nvim ~/.config/nvim
-ln -f -s $DIR/runcon/alacritty ~/.config/alacritty
-ln -f -s $DIR/runcon/tmux ~/.config/tmux
-ln -f -s $DIR/runcon/mutt ~/.config/mutt
-ln -f -s $DIR/runcon/zshrc ~/.zshrc
+echo -n "Adding symlinks for dotfiles... "
+ln -fs "$DIR/runcon/vim/vimrc"    ~/.vim/vimrc
+ln -fs "$DIR/runcon/vim/ftplugin" ~/.vim/ftplugin
+ln -fs "$DIR/runcon/vim/syntax"   ~/.vim/syntax
+ln -fs "$DIR/runcon/bashrc"       ~/.bashrc
+ln -fs "$DIR/runcon/screenrc"     ~/.screenrc
+ln -fs "$DIR/runcon/Xresources"   ~/.Xresources
+ln -fs "$DIR/runcon/Xinitrc"      ~/.Xinitrc
+ln -fs "$DIR/runcon/Xmodmap"      ~/.Xmodmap
+ln -fs "$DIR/runcon/minttyrc"     ~/.minttyrc
+ln -fs "$DIR/runcon/mbsyncrc"     ~/.mbsyncrc
+ln -fs "$DIR/runcon/msmtprc"      ~/.msmtprc
+ln -fs "$DIR/runcon/zshrc"        ~/.zshrc
+ln -fs "$DIR/runcon/nvim"         ~/.config/nvim
+ln -fs "$DIR/runcon/alacritty"    ~/.config/alacritty
+ln -fs "$DIR/runcon/tmux"         ~/.config/tmux
+ln -fs "$DIR/runcon/mutt"         ~/.config/mutt
 echo "Done."
 
-git config --global include.path $DIR/config/gitconfig
+git config --global include.path "$DIR/config/gitconfig"
 git config --global user.name "Siddharth Chandrasekaran"
 git config --global init.templatedir "$DIR/git_template"
 git config --global rebase.autoSquash true
@@ -132,38 +146,54 @@ git config --global alias.spr '!f() { git fetch -fu ${2:-$(git remote |grep ^ups
 touch ~/.ssh/config
 if ! grep -qe 'Include .*/\.files/config/ssh_config' ~/.ssh/config; then
 	echo "Adding default ssh_config."
-	echo -e "Include $DIR/config/ssh_config\n" | cat - ~/.ssh/config > ~/.ssh/config.tmp && \
-		mv ~/.ssh/config.tmp ~/.ssh/config
+	{ echo -e "Include $DIR/config/ssh_config\n"; cat ~/.ssh/config; } > ~/.ssh/config.tmp
+	mv ~/.ssh/config.tmp ~/.ssh/config
 fi
 
 if [[ ! -d "$HOME/.fzf" ]]; then
 	echo "Setting up fzf..."
-	git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
-	~/.fzf/install
+	git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf"
+	"$HOME/.fzf/install" --all
 fi
 
-wget -O ~/.gdbinit-gef.py -q https://gef.blah.cat/py
-echo source ~/.gdbinit-gef.py >> ~/.gdbinit
+echo "Updating gdb-gef..."
+curl -fsSL -o ~/.gdbinit-gef.py https://gef.blah.cat/py
+touch ~/.gdbinit
+# Strip any prior source line for .gdbinit-gef.py (the old script appended one
+# every run, leaving duplicates with either ~ or $HOME expanded), then add it
+# back exactly once.
+grep -vF '.gdbinit-gef.py' ~/.gdbinit > ~/.gdbinit.tmp || true
+echo 'source ~/.gdbinit-gef.py' >> ~/.gdbinit.tmp
+mv ~/.gdbinit.tmp ~/.gdbinit
 
-echo -n "Adding custom fonts..."
-ln -f -s $DIR/runcon/fonts ~/.fonts
-fc-cache -f
+echo -n "Adding custom fonts... "
+if [[ "$OSTYPE" == darwin* ]]; then
+	# macOS picks up fonts automatically; just link each one into ~/Library/Fonts.
+	mkdir -p ~/Library/Fonts
+	for f in "$DIR"/fonts/*.[ot]tf; do
+		[ -e "$f" ] && ln -fs "$f" ~/Library/Fonts/
+	done
+else
+	ln -fs "$DIR/fonts" ~/.fonts
+	if command -v fc-cache >/dev/null 2>&1; then
+		fc-cache -f
+	else
+		echo -n "(fc-cache not found, skipping cache rebuild) "
+	fi
+fi
+echo "Done."
 
 if [ ! -f ~/.env ]; then
 	echo "export CFG_SCRIPT_DIR=$DIR" > ~/.env
 fi
 
-echo -n "Resourcing bashrc... "
-source ~/.bashrc
-echo "Done."
+cat <<EOF
 
-cat <<----
-
-Following are your favorite tools make sure you install them!"
-$(cat $DIR/other/software.list)
+Following are your favorite tools, make sure you install them!
+$(cat "$DIR/other/software.list")
 
 Also install parcellite and set the following:
 	- Use copy (Ctrl-C)
 	- Use Primary (Selection)
 	- Sync clipboards
----
+EOF

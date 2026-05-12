@@ -49,9 +49,6 @@ vim.o.startofline = false
 -- Raise a dialogue asking if you wish to save changed files
 vim.o.confirm = true
 
--- Allow buffers to be hidden if modified
-vim.o.hidden = true
-
 -- Spell check settings
 vim.o.spelllang = 'en_us'
 vim.o.spellfile = vim.fn.expand('~/.vim/spell/en.utf-8.add')

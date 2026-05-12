@@ -1,236 +1,127 @@
--- [[ LSP Configuration ]]
+-- [[ LSP — Neovim 0.11+ vim.lsp.config / vim.lsp.enable ]]
+--
+-- Per-server configs live in `lsp/<name>.lua` at the runtimepath root
+-- (auto-discovered by Neovim 0.11). This file wires up the glue:
+-- shared capabilities, LspAttach keymaps, server installation via Mason,
+-- and the single vim.lsp.enable call that activates them all.
 
 return {
+  -- Install/manage external LSP server binaries.
   {
-    'neovim/nvim-lspconfig',
-    dependencies = {
-      -- Mason for LSP server installation
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
-
-      -- Status updates for LSP
-      { 'j-hui/fidget.nvim', opts = {} },
-
-      -- Neovim Lua development
-      'folke/neodev.nvim',
-    },
+    'mason-org/mason.nvim',
+    lazy = false,
     config = function()
-      -- Helper function to find compile_commands.json in build/ directory
-      local function find_compile_commands()
-        local current_dir = vim.fn.expand('%:p:h')
-
-        local root = vim.fs.root(current_dir, function(name, path)
-          local build_dir = vim.fs.joinpath(path, 'build')
-          local compile_commands = vim.fs.joinpath(build_dir, 'compile_commands.json')
-          return vim.fn.filereadable(compile_commands) == 1
-        end)
-
-        if root then
-          return vim.fs.joinpath(root, 'build')
-        end
-
-        return nil
-      end
-
-      -- LSP keymaps (attached when LSP connects)
-      local on_attach = function(_, bufnr)
-        local map = function(keys, func, desc)
-          vim.keymap.set('n', keys, func, { buffer = bufnr, desc = 'LSP: ' .. desc })
-        end
-
-        -- Code actions under <leader>c prefix
-        map('<leader>cr', vim.lsp.buf.rename, '[C]ode [R]ename')
-        map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-        map('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
-
-        -- Go to definitions/references
-        map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-        map('gr', vim.lsp.buf.references, '[G]oto [R]eferences')
-        map('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
-        map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-        map('<leader>ct', vim.lsp.buf.type_definition, '[C]ode [T]ype definition')
-
-        -- Symbols and documentation
-        map('<leader>cs', vim.lsp.buf.document_symbol, '[C]ode [S]ymbols (document)')
-        map('<leader>cS', vim.lsp.buf.workspace_symbol, '[C]ode [S]ymbols (workspace)')
-        map('K', vim.lsp.buf.hover, 'Hover Documentation')
-        map('<C-k>', vim.lsp.buf.signature_help, 'Signature Help')
-
-        -- Workspace folders
-        map('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd folder')
-        map('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove folder')
-        map('<leader>wl', function()
-          print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        end, '[W]orkspace [L]ist folders')
-      end
-
-      -- Setup neodev for Neovim Lua development
-      require('neodev').setup()
-
-      -- Get capabilities from cmp
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      local cmp_ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
-      if cmp_ok then
-        capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
-      end
-
-      -- Server configurations
-      local servers = {
-        clangd = {
-          cmd = function()
-            local base_cmd = {
-              'clangd',
-              '--background-index',
-              '--clang-tidy',
-              '--header-insertion=iwyu',
-              '--completion-style=detailed',
-              '--function-arg-placeholders',
-              '--fallback-style=llvm',
-            }
-
-            local compile_commands_dir = find_compile_commands()
-            if compile_commands_dir then
-              table.insert(base_cmd, '--compile-commands-dir=' .. compile_commands_dir)
-            end
-
-            return base_cmd
-          end,
-          init_options = {
-            clangdFileStatus = true,
-            usePlaceholders = true,
-            completeUnimported = true,
-            semanticHighlighting = true,
-          },
-        },
-        gopls = {
-          gopls = {
-            analyses = {
-              unusedparams = true,
-            },
-            staticcheck = true,
-          },
-        },
-        pyright = {
-          python = {
-            analysis = {
-              autoSearchPaths = true,
-              useLibraryCodeForTypes = true,
-              diagnosticMode = 'workspace',
-            },
-          },
-        },
-        rust_analyzer = {
-          ['rust-analyzer'] = {
-            checkOnSave = {
-              command = 'clippy',
-            },
-            cargo = {
-              allFeatures = true,
-              loadOutDirsFromCheck = true,
-            },
-            procMacro = {
-              enable = true,
-            },
-            diagnostics = {
-              enable = true,
-              experimental = {
-                enable = true,
-              },
-            },
-          },
-        },
-        ts_ls = {},
-        bashls = {},
-        jsonls = {},
-        yamlls = {},
-        lua_ls = {
-          Lua = {
-            workspace = { checkThirdParty = false },
-            telemetry = { enable = false },
-            diagnostics = {
-              globals = { 'vim' },
-            },
-          },
-        },
-      }
-
-      -- Setup Mason
       require('mason').setup()
-      require('mason-lspconfig').setup({
-        ensure_installed = vim.tbl_filter(function(server)
-          -- Don't auto-install rust_analyzer if already installed via rustup
-          return server ~= 'rust_analyzer' or vim.fn.executable('rust-analyzer') ~= 1
-        end, vim.tbl_keys(servers)),
+
+      local ensure_installed = {
+        'clangd',
+        'gopls',
+        'pyright',
+        'typescript-language-server',
+        'bash-language-server',
+        'json-lsp',
+        'yaml-language-server',
+        'lua-language-server',
+      }
+      if vim.fn.executable('rust-analyzer') ~= 1 then
+        table.insert(ensure_installed, 'rust-analyzer')
+      end
+
+      local mr = require('mason-registry')
+      local function install(pkg)
+        if mr.has_package(pkg) and not mr.is_installed(pkg) then
+          mr.get_package(pkg):install()
+        end
+      end
+      if mr.refresh then
+        mr.refresh(function()
+          for _, p in ipairs(ensure_installed) do install(p) end
+        end)
+      else
+        for _, p in ipairs(ensure_installed) do install(p) end
+      end
+    end,
+  },
+
+  -- LSP progress UI.
+  { 'j-hui/fidget.nvim', opts = {} },
+
+  -- Replaces neodev.nvim: auto-configures lua_ls for nvim Lua dev (loads
+  -- the runtime types only when editing nvim plugin/config files).
+  {
+    'folke/lazydev.nvim',
+    ft = 'lua',
+    opts = {
+      library = {
+        { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+      },
+    },
+  },
+  { 'Bilal2453/luvit-meta', lazy = true },
+
+  -- Glue: capabilities, keymaps, server enable.
+  {
+    'hrsh7th/cmp-nvim-lsp',
+    lazy = false,
+    dependencies = { 'mason-org/mason.nvim', 'folke/lazydev.nvim' },
+    config = function()
+      -- 1) Shared capabilities — applied to every server via the '*' config.
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      local ok, cmp_lsp = pcall(require, 'cmp_nvim_lsp')
+      if ok then
+        capabilities = vim.tbl_deep_extend('force', capabilities, cmp_lsp.default_capabilities())
+      end
+      vim.lsp.config('*', {
+        capabilities = capabilities,
+        root_markers = { '.git' },
       })
 
-      -- Default filetypes for servers
-      local default_filetypes = {
-        clangd = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
-        gopls = { 'go', 'gomod', 'gowork', 'gotmpl' },
-        pyright = { 'python' },
-        rust_analyzer = { 'rust' },
-        ts_ls = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
-        bashls = { 'sh', 'bash' },
-        jsonls = { 'json', 'jsonc' },
-        yamlls = { 'yaml' },
-        lua_ls = { 'lua' },
-      }
+      -- 2) Buffer-local keymaps when any LSP attaches.
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup('user-lsp-attach', { clear = true }),
+        callback = function(args)
+          local bufnr = args.buf
+          local map = function(keys, func, desc)
+            vim.keymap.set('n', keys, func, { buffer = bufnr, desc = 'LSP: ' .. desc })
+          end
 
-      -- Setup each LSP server
-      for server_name, server_config in pairs(servers) do
-        local filetypes = server_config.filetypes or default_filetypes[server_name] or {}
+          map('<leader>cr', vim.lsp.buf.rename,                                '[C]ode [R]ename')
+          map('<leader>ca', vim.lsp.buf.code_action,                           '[C]ode [A]ction')
+          map('<leader>cf', function() vim.lsp.buf.format({ async = true }) end, '[C]ode [F]ormat')
 
-        vim.api.nvim_create_autocmd('FileType', {
-          pattern = filetypes,
-          callback = function(args)
-            -- Determine cmd
-            local cmd
-            if server_config.cmd then
-              if type(server_config.cmd) == 'function' then
-                cmd = server_config.cmd()
-              else
-                cmd = server_config.cmd
-              end
-            else
-              cmd = { server_name }
-            end
+          map('gd',         vim.lsp.buf.definition,                            '[G]oto [D]efinition')
+          map('gr',         vim.lsp.buf.references,                            '[G]oto [R]eferences')
+          map('gI',         vim.lsp.buf.implementation,                        '[G]oto [I]mplementation')
+          map('gD',         vim.lsp.buf.declaration,                           '[G]oto [D]eclaration')
+          map('<leader>ct', vim.lsp.buf.type_definition,                       '[C]ode [T]ype definition')
 
-            -- Build settings
-            local settings = {}
-            for key, value in pairs(server_config) do
-              if key ~= 'cmd' and key ~= 'init_options' and key ~= 'filetypes' then
-                settings[key] = value
-              end
-            end
+          map('<leader>cs', vim.lsp.buf.document_symbol,                       '[C]ode [S]ymbols (document)')
+          map('<leader>cS', vim.lsp.buf.workspace_symbol,                      '[C]ode [S]ymbols (workspace)')
+          map('K',          vim.lsp.buf.hover,                                 'Hover Documentation')
+          map('<C-k>',      vim.lsp.buf.signature_help,                        'Signature Help')
 
-            -- Find root directory
-            local root_dir = vim.fs.root(args.buf, {
-              '.git',
-              'Makefile',
-              'go.mod',
-              'package.json',
-              'Cargo.toml',
-              'pyproject.toml',
-            })
-            if not root_dir then
-              root_dir = vim.fn.getcwd()
-            end
+          map('<leader>wa', vim.lsp.buf.add_workspace_folder,                  '[W]orkspace [A]dd folder')
+          map('<leader>wr', vim.lsp.buf.remove_workspace_folder,               '[W]orkspace [R]emove folder')
+          map('<leader>wl', function()
+            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+          end, '[W]orkspace [L]ist folders')
+        end,
+      })
 
-            -- Start LSP client
-            vim.lsp.start({
-              name = server_name,
-              cmd = cmd,
-              root_dir = root_dir,
-              settings = settings,
-              capabilities = capabilities,
-              init_options = server_config.init_options,
-              on_attach = on_attach,
-            })
-          end,
-        })
-      end
+      -- 3) Enable servers (names match files under lsp/<name>.lua).
+      vim.lsp.enable({
+        'clangd',
+        'gopls',
+        'pyright',
+        'rust_analyzer',
+        'ts_ls',
+        'bashls',
+        'jsonls',
+        'yamlls',
+        'lua_ls',
+      })
 
-      -- Update which-key with LSP groups
+      -- 4) which-key group labels (no-op if which-key isn't loaded).
       local wk_ok, wk = pcall(require, 'which-key')
       if wk_ok then
         wk.add({

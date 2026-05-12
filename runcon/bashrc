@@ -10,7 +10,6 @@ shopt -s histappend
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=100000
 HISTFILESIZE=1000000
-HISTCONTROL=ignorespace
 HISTTIMEFORMAT='%F %T '
 HISTIGNORE='ls:history:ll'
 
@@ -57,32 +56,27 @@ export EDITOR="vim"
 #	ssh-agent -a $SSH_AUTH_SOCK > /dev/null
 #fi
 
-source_if_exits() {
-	[ -f $1 ] && source $1
+source_if_exists() {
+	[ -f "$1" ] && source "$1"
 }
 
 if [[ "$(uname)" == "Linux" ]]; then
-	source_if_exits /usr/share/git-core/contrib/completion/git-prompt.sh
+	source_if_exists /usr/share/git-core/contrib/completion/git-prompt.sh
 else
-	source_if_exits /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh
+	source_if_exists /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh
 fi
-source_if_exits ~/.fzf.bash
-source_if_exits ~/.files/runcon/shell_functions.sh
-source_if_exits ~/.files/runcon/shell_alias.sh
-source_if_exits ~/.env # Box secific stuffs.
+source_if_exists ~/.fzf.bash
+source_if_exists ~/.files/runcon/shell_functions.sh
+source_if_exists ~/.files/runcon/shell_alias.sh
+source_if_exists ~/.env # Box secific stuffs.
 
-# Dedup $PATH as it gets really messy!
-case ":$PATH:" in
-	*":$new_entry:"*) :;;
-	*) PATH="$new_entry:$PATH";;
-esac
+# Strip a leading ':' from PATH — build scripts that interpret '::' as CWD
+# would otherwise misbehave.
+PATH="${PATH#:}"
+export PATH
 
-# Remove leading : as that seems to trigger build scripts that
-# look for :: in path, which inturn is interpreted as CWD by bash
-# zsh which is no-good!
-export PATH="$(echo $PATH | perl -pe 's/^://')"
-
-# fzf.vim used this to invoke an external command to fuzzy search files.
-# Let's use ripgrep as its faaast.
-export FZF_DEFAULT_COMMAND='rg --files'
+# fzf.vim uses this to fuzzy-search files. Prefer ripgrep when available.
+if command -v rg >/dev/null 2>&1; then
+	export FZF_DEFAULT_COMMAND='rg --files'
+fi
 export MUTT_CONFIG="~/.config/mutt/muttrc";

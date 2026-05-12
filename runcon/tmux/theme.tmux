@@ -47,38 +47,29 @@ set "status-justify" "left"
 
 set "status-left-length" "100"
 set "status-right-length" "100"
-set "status-right-attr" "none"
 
-set "message-fg" "$onedark_white"
-set "message-bg" "$onedark_black"
+# tmux 3.x: the *-fg / *-bg / *-attr options were replaced by a single *-style
+# string per element.
+set "status-style"          "fg=$onedark_white,bg=$onedark_black,none"
+set "status-left-style"     "default"
+set "status-right-style"    "default"
 
-set "message-command-fg" "$onedark_white"
-set "message-command-bg" "$onedark_black"
+set "message-style"         "fg=$onedark_white,bg=$onedark_black"
+set "message-command-style" "fg=$onedark_white,bg=$onedark_black"
 
-set "status-attr" "none"
-set "status-left-attr" "none"
-
-setw "window-status-fg" "$onedark_black"
-setw "window-status-bg" "$onedark_black"
-setw "window-status-attr" "none"
-
-setw "window-status-activity-bg" "$onedark_black"
-setw "window-status-activity-fg" "$onedark_black"
-setw "window-status-activity-attr" "none"
+setw "window-status-style"          "fg=$onedark_black,bg=$onedark_black,none"
+setw "window-status-activity-style" "fg=$onedark_black,bg=$onedark_black,none"
 
 setw "window-status-separator" ""
 
-set "window-style" "fg=$onedark_off_white,bg=$onedark_black2"
+set "window-style"        "fg=$onedark_off_white,bg=$onedark_black2"
 set "window-active-style" "fg=$onedark_white,bg=$onedark_black2"
 
-set "pane-border-style" "fg=$onedark_white,bg=$onedark_black2"
+set "pane-border-style"        "fg=$onedark_white,bg=$onedark_black2"
 set "pane-active-border-style" "fg=$onedark_white,bg=$onedark_black2"
 
 set "display-panes-active-colour" "$onedark_yellow"
-set "display-panes-colour" "$onedark_blue"
-
-set "status-bg" "$onedark_black"
-set "status-fg" "$onedark_white"
+set "display-panes-colour"        "$onedark_blue"
 
 set "@prefix_highlight_fg" "$onedark_black"
 set "@prefix_highlight_bg" "$onedark_green"

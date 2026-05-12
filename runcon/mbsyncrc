@@ -1,18 +1,25 @@
+# mbsync (isync) — IMAP sync for the accounts driven by mutt.
+#
+# Passwords are looked up via `pass` (https://www.passwordstore.org/).
+# Populate the store once per account, e.g.:
+#   pass insert imap/sidcha.dev@gmail.com
+#   pass insert imap/sidcha.lists@gmail.com
+#   pass insert imap/siddharth@embedjournal.com
+# For Gmail accounts use an App Password, not the account password.
+
 Create Both
 Expunge Both
 Remove Both
 Sync All
 SyncState *
 
-# IMAPAccount sidcha.dev@gmail.com
-# ...
-
+# ----------------------------------------------------------------------
+# sidcha.dev@gmail.com
+# ----------------------------------------------------------------------
 IMAPAccount gmail_sidcha.dev
 Host imap.gmail.com
 User sidcha.dev@gmail.com
-# set Keychain password with:
-# security add-internet-password -l sidcha.dev@gmail.com -s smtp.gmail.com -r smtp -a sidcha.dev@gmail.com -w "abc123"
-PassCmd "security find-internet-password -s smtp.gmail.com -a sidcha.dev@gmail.com -w"
+PassCmd "pass imap/sidcha.dev@gmail.com"
 SSLType IMAPS
 AuthMechs LOGIN
 # Throttle mbsync so we don't go over gmail's quota: OVERQUOTA error would
@@ -49,3 +56,69 @@ Channel gmail_sidcha.dev-inbox
 Channel gmail_sidcha.dev-archive
 Channel gmail_sidcha.dev-sent
 Channel gmail_sidcha.dev-trash
+
+# ----------------------------------------------------------------------
+# sidcha.lists@gmail.com
+# ----------------------------------------------------------------------
+IMAPAccount gmail_sidcha.lists
+Host imap.gmail.com
+User sidcha.lists@gmail.com
+PassCmd "pass imap/sidcha.lists@gmail.com"
+SSLType IMAPS
+AuthMechs LOGIN
+
+IMAPStore gmail_sidcha.lists-remote
+Account gmail_sidcha.lists
+
+MaildirStore gmail_sidcha.lists-local
+Path ~/Mail/mailbox/gmail_sidcha.lists/
+Inbox ~/Mail/mailbox/gmail_sidcha.lists/inbox
+
+Channel gmail_sidcha.lists-inbox
+Far :gmail_sidcha.lists-remote:
+Near :gmail_sidcha.lists-local:
+Patterns "INBOX"
+
+Channel gmail_sidcha.lists-sent
+Far :gmail_sidcha.lists-remote:"[Gmail]/Sent Mail"
+Near :gmail_sidcha.lists-local:sent
+
+Group gmail_sidcha.lists
+Channel gmail_sidcha.lists-inbox
+Channel gmail_sidcha.lists-sent
+
+# ----------------------------------------------------------------------
+# siddharth@embedjournal.com (Zoho)
+# ----------------------------------------------------------------------
+IMAPAccount ej_siddharth
+Host imap.zoho.com
+Port 993
+User siddharth@embedjournal.com
+PassCmd "pass imap/siddharth@embedjournal.com"
+SSLType IMAPS
+AuthMechs LOGIN
+
+IMAPStore ej_siddharth-remote
+Account ej_siddharth
+
+MaildirStore ej_siddharth-local
+Path ~/Mail/mailbox/ej_siddharth/
+Inbox ~/Mail/mailbox/ej_siddharth/inbox
+
+Channel ej_siddharth-inbox
+Far :ej_siddharth-remote:
+Near :ej_siddharth-local:
+Patterns "INBOX"
+
+Channel ej_siddharth-sent
+Far :ej_siddharth-remote:"Sent"
+Near :ej_siddharth-local:sent
+
+Channel ej_siddharth-trash
+Far :ej_siddharth-remote:"Trash"
+Near :ej_siddharth-local:trash
+
+Group ej_siddharth
+Channel ej_siddharth-inbox
+Channel ej_siddharth-sent
+Channel ej_siddharth-trash

@@ -14,14 +14,14 @@ export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
 export EDITOR='vim'
 
-source_if_exits() {
-	[ -f $1 ] && source $1
+source_if_exists() {
+	[ -f "$1" ] && source "$1"
 }
 
 if [[ "$(uname)" == "Linux" ]]; then
-	source_if_exits /usr/share/git-core/contrib/completion/git-prompt.sh
+	source_if_exists /usr/share/git-core/contrib/completion/git-prompt.sh
 else
-	source_if_exits /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh
+	source_if_exists /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh
 fi
 
 setopt BEEP NO_AUTOLIST BASH_AUTOLIST NO_AUTO_MENU
@@ -36,7 +36,7 @@ setopt HIST_IGNORE_SPACE
 setopt HIST_FIND_NO_DUPS
 setopt HIST_SAVE_NO_DUPS
 
-source_if_exits ~/.fzf.zsh
-source_if_exits ~/.files/runcon/shell_functions.sh
-source_if_exits ~/.files/runcon/shell_alias.sh
-source_if_exits ~/.env
+source_if_exists ~/.fzf.zsh
+source_if_exists ~/.files/runcon/shell_functions.sh
+source_if_exists ~/.files/runcon/shell_alias.sh
+source_if_exists ~/.env

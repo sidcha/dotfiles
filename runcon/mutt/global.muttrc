@@ -1,4 +1,6 @@
-set sendmail = "/usr/local/bin/msmtp"
+# Locate msmtp in $PATH so this works on Linux (/usr/bin) and macOS
+# (Homebrew at /usr/local/bin or /opt/homebrew/bin) without editing.
+set sendmail = "msmtp"
 set alias_file = ~/Mail/alias_file
 source $alias_file
 
@@ -6,10 +8,10 @@ source $alias_file
 set header_cache=~/Mail/cache/headers
 set message_cachedir=~/Mail/cache/bodies
 
-# Other config files
-source ~/Mail/config/common.muttrc
-source ~/Mail/config/keybindings.muttrc
-source ~/Mail/config/colors.muttrc
+# Other config files (mutt is symlinked to ~/.config/mutt by deploy.sh).
+source ~/.config/mutt/common.muttrc
+source ~/.config/mutt/keybindings.muttrc
+source ~/.config/mutt/colors.muttrc
 
 # default email
-source ~/Mail/config/accounts/gmail_sidcha.dev.muttrc
+source ~/.config/mutt/accounts/gmail_sidcha.dev.muttrc

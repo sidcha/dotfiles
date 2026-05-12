@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
-exit
+# Skip silently if ctags isn't installed — don't fail the commit.
+command -v ctags >/dev/null 2>&1 || exit 0
 PATH="/usr/local/bin:$PATH"
-dir="`git rev-parse --show-toplevel`"
+dir="$(git rev-parse --show-toplevel)"
 trap 'rm -f "$dir/$$.tags"' EXIT
 git ls-files | \
   ctags --tag-relative -L - -f"$dir/$$.tags" --languages=-javascript,sql

@@ -15,18 +15,27 @@ else
 	alias ls='ls -G'
 fi
 
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+# Notify when a long-running command finishes:  sleep 10; alert
+if command -v notify-send >/dev/null 2>&1; then
+	alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+elif command -v osascript >/dev/null 2>&1; then
+	alias alert='osascript -e "display notification \"$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')\" with title \"Terminal\""'
+fi
 
 alias ll='ls -la'
 alias gcc='gcc -Wall'
 alias gst='git status'
 alias gdf='git diff'
 alias gdfc='git diff --cached'
-alias iface='ifconfig -s | sed 1d | cut -d" " -f1'
+if command -v ip >/dev/null 2>&1; then
+	alias iface='ip -br link'
+else
+	alias iface='ifconfig -s | sed 1d | cut -d" " -f1'
+fi
 alias rm_lines=' perl -ne '\'' system("rm -rf $_"); '\'' '
-alias gg='rg --no-heading --line-number'
+if command -v rg >/dev/null 2>&1; then
+	alias gg='rg --no-heading --line-number'
+fi
 alias syslog='sudo tail -f /var/log/kern.log | perl -pe '\'' s/.*kernel: \[\d+\.\d+\] //; '\'' '
 
 # Switch between https and ssh git remotes
@@ -37,4 +46,3 @@ alias git-http='git remote set-url origin $( git remote get-url origin | perl -p
 alias gfp_num='git format-patch --numbered --numbered-files'
 # get commit message from git-format-patch files.
 alias gfp_cmsg=' perl -ne '\'' last if (/^---$/); $p=1 if (s/^Subject: (\[.+\] )?//); print if $p '\'' '
-alias gs=''

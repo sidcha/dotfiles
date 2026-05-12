@@ -7,6 +7,6 @@ You are free to look around, but don't expect anything useful here. On a new
 machine, I do this:
 
 ``` shell
-curl -Lo- https://raw.github.com/cbsiddharth/dotfiles/master/bootstrap.sh | bash
+curl -Lo- https://raw.githubusercontent.com/sidcha/dotfiles/master/bootstrap.sh | bash
 ```
 
