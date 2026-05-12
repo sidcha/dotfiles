@@ -90,6 +90,7 @@ git config --global core.excludesfile ~/.gitignore
 git config --global core.pager "less -FMRiX"
 
 # Git alias
+git config --global alias.whatchanged 'log --stat'
 git config --global alias.ctags '!.git/hooks/ctags'
 git config --global alias.last 'diff HEAD^ HEAD'
 git config --global alias.su 'submodule update --recursive'
