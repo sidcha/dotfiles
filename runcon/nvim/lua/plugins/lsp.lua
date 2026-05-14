@@ -14,7 +14,6 @@ return {
       require('mason').setup()
 
       local ensure_installed = {
-        'clangd',
         'gopls',
         'pyright',
         'typescript-language-server',
@@ -23,6 +22,17 @@ return {
         'yaml-language-server',
         'lua-language-server',
       }
+      -- Mason has no aarch64-linux build for clangd; only add it on
+      -- platforms where Mason can actually install a prebuilt, and only
+      -- if it isn't already on $PATH (system-installed via apt etc.).
+      local sysname = (vim.uv or vim.loop).os_uname()
+      local mason_has_clangd =
+        sysname.sysname == 'Darwin'
+        or (sysname.sysname == 'Linux' and sysname.machine == 'x86_64')
+        or sysname.sysname:match('Windows')
+      if mason_has_clangd and vim.fn.executable('clangd') ~= 1 then
+        table.insert(ensure_installed, 'clangd')
+      end
       if vim.fn.executable('rust-analyzer') ~= 1 then
         table.insert(ensure_installed, 'rust-analyzer')
       end
@@ -43,8 +53,9 @@ return {
     end,
   },
 
-  -- LSP progress UI.
-  { 'j-hui/fidget.nvim', opts = {} },
+  -- LSP progress UI. Loads on LspAttach so it doesn't add ~200ms to startup
+  -- when no LSP is active yet.
+  { 'j-hui/fidget.nvim', event = 'LspAttach', opts = {} },
 
   -- Replaces neodev.nvim: auto-configures lua_ls for nvim Lua dev (loads
   -- the runtime types only when editing nvim plugin/config files).

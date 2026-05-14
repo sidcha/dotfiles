@@ -13,8 +13,7 @@ return {
   -- Open files at last edit position
   { 'farmergreg/vim-lastplace' },
 
-  -- EditorConfig support
-  { 'editorconfig/editorconfig-vim' },
+  -- EditorConfig: provided by Neovim 0.9+ runtime, no plugin needed.
 
   -- Make f key smarter
   { 'rhysd/clever-f.vim' },
@@ -35,9 +34,16 @@ return {
     end,
   },
 
-  -- Comment plugin
+  -- Comment plugin. Lazy-load on the default mappings so its 5 submodules
+  -- don't eat ~500ms of startup.
   {
     'numToStr/Comment.nvim',
+    keys = {
+      { 'gc', mode = { 'n', 'x' }, desc = 'Comment toggle linewise' },
+      { 'gb', mode = { 'n', 'x' }, desc = 'Comment toggle blockwise' },
+      { 'gcc', mode = 'n', desc = 'Comment toggle current line' },
+      { 'gbc', mode = 'n', desc = 'Comment toggle current block' },
+    },
     opts = {},
   },
 }

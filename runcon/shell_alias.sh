@@ -23,6 +23,7 @@ elif command -v osascript >/dev/null 2>&1; then
 fi
 
 alias ll='ls -la'
+alias vim='nvim'
 alias gcc='gcc -Wall'
 alias gst='git status'
 alias gdf='git diff'
